@@ -11,8 +11,8 @@
 #Slack
 https://cs137-group15.slack.com/
 
-# Project Prompt
-https://canvas.eee.uci.edu/courses/1580/assignments/36959
+# Project Information (CONTAINS EVERYTHING YOU NEED TO KNOW)
+https://docs.google.com/document/d/1GwJMScjl7QsRbkmBJYgxDFVhgkgs6rspn6RrQX2RSIQ/edit
 
 #Github
 https://github.com/thomatn5/cs137group15/
