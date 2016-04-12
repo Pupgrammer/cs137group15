@@ -4,7 +4,8 @@
 
 1) Please use Slack to communicate.
 
-2) Please make a branch then do a pull request when you're working on the project.
+2) If you plan to commit new files that don't exist yet, feel free to push straight to the master branch. (i.e. images, new html files)
+      Otherwise, please make a separate branch, then do a pull request after you're done modifying existing files.
 
 3) The master branch will be the one that is uploaded to the Andromeda server cluster.
 
