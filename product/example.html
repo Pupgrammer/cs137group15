@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Example Order Form</title>
+        <script type="text/javascript" src="../scripts/validate.js"></script>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <p>This file holds the example of the order forms for the detailed product description pages.</p>
+        <p>PLEASE DO NOT DELETE UNTIL DETAILED DESCRIPTION PAGES ARE COMPLETE.</p>
+        
+        <!-- You can define a form.orderForm CSS class to style this. -->
+        <form class="orderForm" name="orderForm" onSubmit="return (validate())" action="mailto:malekware@malekware.com" method="POST"> 
+            <br>Product Number:<br>
+            <input type="number" name="productNumber"/>
+            <br>Quantity:<br>
+            <input type="number" name="quantity"/>
+            
+            <br><br>
+            
+            <br>First Name:<br>
+            <input type="text" name="firstName"/>
+            <br>Last Name:<br>
+            <input type="text" name="lastName"/>
+            <br>E-mail (x@y.z):<br>
+            <input type="email" name="email"/>
+            <br>Phone Number (xxx-xxx-xxxx):<br>
+            <input type="tel" name="phoneNumber"/>
+            
+            <br><br>
+            
+            <br>Shipping Address:<br>
+            <textarea name="shippingAddress" rows="5" cols="40"></textarea>
+            <br>Shipping Method:<br>
+            <select name="shipping">
+                <option value="oneday">One-Day Overnight Shipping</option>
+                <option value="twoday">Two-Day Expedited Shipping</option>
+                <option value="ground" selected="selected">Standard Ground Shipping (5-7 days)</option>
+            </select>
+            
+            <br><br>
+            
+            <br>Credit Card Number (16 digits):<br>
+            <input type="number" name="creditCard"/>
+            <br><button type="submit">Submit Order</button><br>
+        </form>     
+    </body>
+</html>
