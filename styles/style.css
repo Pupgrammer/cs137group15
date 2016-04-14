@@ -1,5 +1,11 @@
 /*
 CS137 Spring 2016 | Group 15
-Main Author: 
-Filename: 
+Main Author:
+Filename:
 */
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 5px;
+}
