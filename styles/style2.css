@@ -21,6 +21,36 @@ table, th, td {
     border: 2px solid black;
 }
 
+tr.info:nth-child(even) {
+    background-color: white;
+}
+
+td.info {
+    font-weight: bold;
+    padding: 6px;
+    text-align: center;
+    border:none;
+    border-bottom: 2px solid black;
+}
+
+td.desc {
+    font-weight: normal;
+    padding: 6px;
+    text-align: center;
+    border: none;
+    border-bottom: 2px solid black;
+}
+
+th.info {
+    border: none;
+    color: #000080;
+}
+
+table.info {
+    border-collapse: collapse;
+    border: none;
+}
+
 td, th {
     padding: 15px;
     text-align: center;
@@ -28,12 +58,16 @@ td, th {
 }
 
 img {
-    width: 180px;
+    width: 200px;
     height: auto;
 }
 
 form {
     font-family: "Arial", Serif;
+}
+
+select {
+    font-size: 14px;
 }
 
 .button1 {
