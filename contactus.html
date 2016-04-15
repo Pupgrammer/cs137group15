@@ -1,15 +1,42 @@
 <!DOCTYPE html>
 <!--
 CS137 Spring 2016 | Group 15
-Main Author: 
-Filename: 
+Main Author: Thomas Nguyen
+Filename: contactus.html
 -->
 
-<html>
+<html lang="en">
 <head>
-	<title>Hello World!</title>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" href="styles/style.css">
+    <script type="text/javascript" src="scripts/validate_contactUs.js"></script>
+    <title>Contact Us</title>
 </head>
 <body>
-	<p>This should be the Contact Us!</p>
+    <p>Have any questions? Feel free to contact us anytime using the form below.</p>
+    <p>We guarantee e-mail replies within 1 business day of your e-mail!</p>
+    <form class="contactUs" name="contactUs" onSubmit="return (validate())" action="mailto:malekware@malekware.com" method="POST"> 
+        <br>First Name:<br>
+        <input type="text" name="firstName"/>
+        <br>Last Name:<br>
+        <input type="text" name="lastName"/>
+        <br>Your E-mail (x@y.z):<br>
+        <input type="email" name="email"/>
+        <br>Phone Number (xxx-xxx-xxxx):<br>
+        <input type="tel" name="phoneNumber"/>
+
+        <br><br>
+
+
+        <br>Related Department:<br>
+        <select name="department">
+            <option value="sales">Sales/Orders Support</option>
+            <option value="feedbackRequest">Feedback/Request</option>
+            <option value="generalQuestion" selected="selected">General Question</option>
+        </select>
+        <br>Question:<br>
+        <textarea name="question" rows="5" cols="40"></textarea>
+        <br><button type="submit">Submit Order</button><br>
+    </form>
 </body>
 </html>

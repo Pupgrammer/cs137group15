@@ -1,7 +1,7 @@
 /* 
  * CS137 Spring 2016 | Group 15
  * Main Author: Thomas Tai Nguyen
- * Filename: validate.js
+ * Filename: validate_orderForm.js
  */
 
 // I'm following the example Slide 79 on Lecture 1. Even though it's programmatically sloppy. - Thomas
