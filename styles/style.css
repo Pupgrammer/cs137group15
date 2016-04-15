@@ -4,6 +4,16 @@ Main Author:
 Filename:
 */
 
+.thumbnail:hover {
+    position:relative;
+    top:2px;
+    left:2px;
+    width:350px;
+    height:auto;
+    display:block;
+    z-index:999;
+}
+
 <!DOCTYPE html>
 <html>
 <head>
