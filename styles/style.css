@@ -4,8 +4,69 @@ Main Author:
 Filename:
 */
 
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+div.container {
+    border: 2px solid grey;
+    margin-left: 200px;
+}
+
+p.one {
+    margin-left: inherit;
+}
+body {
+background-color: lightgrey;
+}
+</style>
+</head>
+<body>
+
+
+<div class="container">
+<style>
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+li {
+    float: left;
+}
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+li a:hover {
+    background-color: #111;
+}
+</style>
+</head>
+<body>
+<ul>
+  <li><a class="active" href="#index">Home</a></li>
+  <li><a href="#shop">Shop</a></li>
+  <li><a href="#aboutus">About Us</a></li>
+  <li><a href="#contactus">Contact</a></li>
+</ul>
+</body>
+</div>
+
+</body>
+</html>
+
+
+/*
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
   padding: 5px;
 }
+*/
