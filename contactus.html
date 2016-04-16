@@ -10,9 +10,67 @@ Filename: contactus.html
     <meta charset="UTF-8">
     <link type="text/css" rel="stylesheet" href="styles/style.css">
     <script type="text/javascript" src="scripts/validate_contactUs.js"></script>
+    <html>
+<head>
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
+	<title>Welcome!</title>
+	<p>
+	<img src="images/logo.png" alt="Logo" style="float:left;width:200px;height:200px;">
+	<style>
+
+div.container {
+    border: 2px solid grey;
+    margin-left: 200px;
+}
+
+p.one {
+    margin-left: inherit;
+}
+body {
+background-color: lightgrey;
+}
+</style>
+</head>
+<body>
+
+
+<div class="container">
+<style>
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+li {
+    float: left;
+}
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+li a:hover {
+    background-color: #111;
+}
+</style>
+</head>
+<body>
+<ul>
+  <li><a class="active" href="index.html">Home</a></li>
+  <li><a href="shop.html">Shop</a></li>
+  <li><a href="aboutus.html">About Us</a></li>
+  <li><a href="contactus.html">Contact</a></li>
+</ul>
+</body>
+</div>
     <title>Contact Us</title>
 </head>
 <body>
+	<tr>
     <p>Have any questions? Feel free to contact us anytime using the form below.</p>
     <p>We guarantee e-mail replies within 1 business day of your e-mail!</p>
     <form class="contactUs" name="contactUs" onSubmit="return (validate())" action="mailto:malekware@malekware.com" method="POST"> 
