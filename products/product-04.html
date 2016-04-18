@@ -14,59 +14,67 @@ Filename: products/product-04.html
 </head>
 
 <body>
-  <table>
-  <tr>
-    <th colspan="2">Dell XPS 13.3" Laptop - Intel Core i7 2.2GHz - 16GB - 512GB SSD</th>
+  <img class="logo" src="../images/logo.png" alt="Logo">
+  <div class="container">
+  <ul>
+    <li><a class="active" href="../index.html">Home</a></li>
+    <li><a href="../shop.html">Shop</a></li>
+    <li><a href="../aboutus.html">About Us</a></li>
+    <li><a href="../contactus.html">Contact</a></li>
+  </ul>
+  </div>
+  <table class="info">
+  <tr class="info">
+    <th class="info" colspan="2">Dell XPS 13.3" Laptop - Intel Core i7 2.2GHz - 16GB - 512GB SSD</th>
   </tr>
   <tr>
-    <td align="center" colspan="2"><img src="../images/04--Dell--XPS--XPS9350-8008SLV.jpg" class="thumbnail" alt="Dell XPS 13.3&quot; Laptop - Intel Core i7 2.2GHz - 16GB - 512GB SSD" title="Dell XPS 13.3&quot; Laptop - Intel Core i7 2.2GHz - 16GB - 512GB SSD" width=200 /></td>
+    <td class="img" colspan="2"><img src="../images/04--Dell--XPS--XPS9350-8008SLV.jpg" class="thumbnail" alt="Dell XPS 13.3&quot; Laptop - Intel Core i7 2.2GHz - 16GB - 512GB SSD" title="Dell XPS 13.3&quot; Laptop - Intel Core i7 2.2GHz - 16GB - 512GB SSD" width=200 /></td>
   </tr>
-  <tr>
-    <td>Model No.</td>
-    <td>XPS9350-8008SLV</td>
+  <tr class="info">
+    <td class="info">Model No.</td>
+    <td class="desc">XPS9350-8008SLV</td>
   </tr>
-  <tr>
-    <td>Manufacturer</td>
-    <td>Dell</td>
+  <tr class="info">
+    <td class="info">Manufacturer</td>
+    <td class="desc">Dell</td>
   </tr>
-  <tr>
-    <td>Price</td>
-    <td>$1,799.99</td>
+  <tr class="info">
+    <td class="info">Price</td>
+    <td class="desc">$1,799.99</td>
   </tr>
-  <tr>
-    <td>Processor</td>
-    <td>Intel Core i7 2.2GHz</td>
+  <tr class="info">
+    <td class="info">Processor</td>
+    <td class="desc">Intel Core i7 2.2GHz</td>
   </tr>
-  <tr>
-    <td>Screen Size</td>
-    <td>13.3"</td>
+  <tr class="info">
+    <td class="info">Screen Size</td>
+    <td class="desc">13.3"</td>
   </tr>
-  <tr>
-    <td>Graphics</td>
-    <td>Integrated Intel Iris Graphics 540</td>
+  <tr class="info">
+    <td class="info">Graphics</td>
+    <td class="desc">Integrated Intel Iris Graphics 540</td>
   </tr>
-  <tr>
-    <td>RAM</td>
-    <td>16GB</td>
+  <tr class="info">
+    <td class="info">RAM</td>
+    <td class="desc">16GB</td>
   </tr>
-  <tr>
-    <td>HDD Size</td>
-    <td>512GB SSD</td>
+  <tr class="info">
+    <td class="info">HDD Size</td>
+    <td class="desc">512GB SSD</td>
   </tr>
-  <tr>
-    <td>OS</td>
-    <td>Windows 10 Pro</td>
+  <tr class="info">
+    <td class="info">OS</td>
+    <td class="desc">Windows 10 Pro</td>
   </tr>
   </table>
 
-  <form class="orderForm" name="orderForm" onSubmit="return (validate())" action="mailto:malekware@malekware.com" method="POST">
+  <form class="orderForm" name="orderForm" onSubmit="return (validate())" action="mailto:malekware@malekware.com?subject=Order" ENCTYPE="text/plain" method="POST">
+    <p>
     <br>Product Number:<br>
     <input type="number" name="productNumber" value="4"/>
     <br>Quantity:<br>
     <input type="number" name="quantity"/>
-
     <br><br>
-
     <br>First Name:<br>
     <input type="text" name="firstName"/>
     <br>Last Name:<br>
@@ -91,7 +99,9 @@ Filename: products/product-04.html
 
     <br>Credit Card Number (16 digits):<br>
     <input type="number" name="creditCard"/>
-    <br><button type="submit">Submit Order</button><br>
+    <br>
+    <br><button class="button1" type="submit">Submit Order</button><br>
+    </p>
   </form>
 </body>
 

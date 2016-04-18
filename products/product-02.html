@@ -14,59 +14,67 @@ Filename: products/product-02.html
 </head>
 
 <body>
-  <table>
-  <tr>
-    <th colspan="2">HP ENVY 15.6" Laptop - AMD FX-Series 2.1GHz - 6GB - 1TB HDD</th>
+  <img class="logo" src="../images/logo.png" alt="Logo">
+  <div class="container">
+  <ul>
+    <li><a class="active" href="../index.html">Home</a></li>
+    <li><a href="../shop.html">Shop</a></li>
+    <li><a href="../aboutus.html">About Us</a></li>
+    <li><a href="../contactus.html">Contact</a></li>
+  </ul>
+  </div>
+  <table class="info">
+  <tr class="info">
+    <th class="info" colspan="2">HP ENVY 15.6" Laptop - AMD FX-Series 2.1GHz - 6GB - 1TB HDD</th>
   </tr>
   <tr>
-    <td align="center" colspan="2"><img src="../images/02--HP--ENVY--m6-p114dx.jpg" class="thumbnail" alt="HP ENVY 15.6&quot; Laptop - AMD FX-Series 2.1GHz - 6GB - 1TB HDD" title="HP ENVY 15.6&quot; Laptop - AMD FX-Series 2.1GHz - 6GB - 1TB HDD" width=200 /></td>
+    <td class="img" colspan="2"><img src="../images/02--HP--ENVY--m6-p114dx.jpg" class="thumbnail" alt="HP ENVY 15.6&quot; Laptop - AMD FX-Series 2.1GHz - 6GB - 1TB HDD" title="HP ENVY 15.6&quot; Laptop - AMD FX-Series 2.1GHz - 6GB - 1TB HDD" width=200 /></td>
   </tr>
-  <tr>
-    <td>Model No.</td>
-    <td>m6-p114dx</td>
+  <tr class="info">
+    <td class="info">Model No.</td>
+    <td class="desc">m6-p114dx</td>
   </tr>
-  <tr>
-    <td>Manufacturer</td>
-    <td>HP</td>
+  <tr class="info">
+    <td class="info">Manufacturer</td>
+    <td class="desc">HP</td>
   </tr>
-  <tr>
-    <td>Price</td>
-    <td>$659.99</td>
+  <tr class="info">
+    <td class="info">Price</td>
+    <td class="desc">$659.99</td>
   </tr>
-  <tr>
-    <td>Processor</td>
-    <td>AMD FX-Series 2.1GHz</td>
+  <tr class="info">
+    <td class="info">Processor</td>
+    <td class="desc">AMD FX-Series 2.1GHz</td>
   </tr>
-  <tr>
-    <td>Screen Size</td>
-    <td>15.6"</td>
+  <tr class="info">
+    <td class="info">Screen Size</td>
+    <td class="desc">15.6"</td>
   </tr>
-  <tr>
-    <td>Graphics</td>
-    <td>AMD Radeon R7</td>
+  <tr class="info">
+    <td class="info">Graphics</td>
+    <td class="desc">AMD Radeon R7</td>
   </tr>
-  <tr>
-    <td>RAM</td>
-    <td>6GB</td>
+  <tr class="info">
+    <td class="info">RAM</td>
+    <td class="desc">6GB</td>
   </tr>
-  <tr>
-    <td>HDD Size</td>
-    <td>1TB HDD</td>
+  <tr class="info">
+    <td class="info">HDD Size</td>
+    <td class="desc">1TB HDD</td>
   </tr>
-  <tr>
-    <td>OS</td>
-    <td>Windows 10 Home</td>
+  <tr class="info">
+    <td class="info">OS</td>
+    <td class="desc">Windows 10 Home</td>
   </tr>
   </table>
 
-  <form class="orderForm" name="orderForm" onSubmit="return (validate())" action="mailto:malekware@malekware.com" method="POST">
+  <form class="orderForm" name="orderForm" onSubmit="return (validate())" action="mailto:malekware@malekware.com?subject=Order" ENCTYPE="text/plain" method="POST">
+    <p>
     <br>Product Number:<br>
     <input type="number" name="productNumber" value="2"/>
     <br>Quantity:<br>
     <input type="number" name="quantity"/>
-
     <br><br>
-
     <br>First Name:<br>
     <input type="text" name="firstName"/>
     <br>Last Name:<br>
@@ -91,7 +99,9 @@ Filename: products/product-02.html
 
     <br>Credit Card Number (16 digits):<br>
     <input type="number" name="creditCard"/>
-    <br><button type="submit">Submit Order</button><br>
+    <br>
+    <br><button class="button1" type="submit">Submit Order</button><br>
+    </p>
   </form>
 </body>
 

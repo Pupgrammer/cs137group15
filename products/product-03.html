@@ -14,59 +14,67 @@ Filename: products/product-03.html
 </head>
 
 <body>
-  <table>
-  <tr>
-    <th colspan="2">Dell Inspiron 15.6" Laptop - Intel Core i5 2.8GHz - 6GB - 1TB HDD</th>
+  <img class="logo" src="../images/logo.png" alt="Logo">
+  <div class="container">
+  <ul>
+    <li><a class="active" href="../index.html">Home</a></li>
+    <li><a href="../shop.html">Shop</a></li>
+    <li><a href="../aboutus.html">About Us</a></li>
+    <li><a href="../contactus.html">Contact</a></li>
+  </ul>
+  </div>
+  <table class="info">
+  <tr class="info">
+    <th class="info" colspan="2">Dell Inspiron 15.6" Laptop - Intel Core i5 2.8GHz - 6GB - 1TB HDD</th>
   </tr>
   <tr>
-    <td align="center" colspan="2"><img src="../images/03--Dell--Inspiron--I5559-1349SLV.jpg" class="thumbnail" alt="Dell Inspiron 15.6&quot; Laptop - Intel Core i5 2.8GHz - 6GB - 1TB HDD" title="Dell Inspiron 15.6&quot; Laptop - Intel Core i5 2.8GHz - 6GB - 1TB HDD" width=200 /></td>
+    <td class="img" colspan="2"><img src="../images/03--Dell--Inspiron--I5559-1349SLV.jpg" class="thumbnail" alt="Dell Inspiron 15.6&quot; Laptop - Intel Core i5 2.8GHz - 6GB - 1TB HDD" title="Dell Inspiron 15.6&quot; Laptop - Intel Core i5 2.8GHz - 6GB - 1TB HDD" width=200 /></td>
   </tr>
-  <tr>
-    <td>Model No.</td>
-    <td>I5559-1349SLV</td>
+  <tr class="info">
+    <td class="info">Model No.</td>
+    <td class="desc">I5559-1349SLV</td>
   </tr>
-  <tr>
-    <td>Manufacturer</td>
-    <td>Dell</td>
+  <tr class="info">
+    <td class="info">Manufacturer</td>
+    <td class="desc">Dell</td>
   </tr>
-  <tr>
-    <td>Price</td>
-    <td>$474.99</td>
+  <tr class="info">
+    <td class="info">Price</td>
+    <td class="desc">$474.99</td>
   </tr>
-  <tr>
-    <td>Processor</td>
-    <td>Intel Core i5 2.8GHz</td>
+  <tr class="info">
+    <td class="info">Processor</td>
+    <td class="desc">Intel Core i5 2.8GHz</td>
   </tr>
-  <tr>
-    <td>Screen Size</td>
-    <td>15.6"</td>
+  <tr class="info">
+    <td class="info">Screen Size</td>
+    <td class="desc">15.6"</td>
   </tr>
-  <tr>
-    <td>Graphics</td>
-    <td>Integrated Intel HD Graphics 520</td>
+  <tr class="info">
+    <td class="info">Graphics</td>
+    <td class="desc">Integrated Intel HD Graphics 520</td>
   </tr>
-  <tr>
-    <td>RAM</td>
-    <td>6GB</td>
+  <tr class="info">
+    <td class="info">RAM</td>
+    <td class="desc">6GB</td>
   </tr>
-  <tr>
-    <td>HDD Size</td>
-    <td>1TB HDD</td>
+  <tr class="info">
+    <td class="info">HDD Size</td>
+    <td class="desc">1TB HDD</td>
   </tr>
-  <tr>
-    <td>OS</td>
-    <td>Windows 10 Pro</td>
+  <tr class="info">
+    <td class="info">OS</td>
+    <td class="desc">Windows 10 Pro</td>
   </tr>
   </table>
 
-  <form class="orderForm" name="orderForm" onSubmit="return (validate())" action="mailto:malekware@malekware.com" method="POST">
+  <form class="orderForm" name="orderForm" onSubmit="return (validate())" action="mailto:malekware@malekware.com?subject=Order" ENCTYPE="text/plain" method="POST">
+    <p>
     <br>Product Number:<br>
     <input type="number" name="productNumber" value="3"/>
     <br>Quantity:<br>
     <input type="number" name="quantity"/>
-
     <br><br>
-
     <br>First Name:<br>
     <input type="text" name="firstName"/>
     <br>Last Name:<br>
@@ -91,7 +99,9 @@ Filename: products/product-03.html
 
     <br>Credit Card Number (16 digits):<br>
     <input type="number" name="creditCard"/>
-    <br><button type="submit">Submit Order</button><br>
+    <br>
+    <br><button class="button1" type="submit">Submit Order</button><br>
+    </p>
   </form>
 </body>
 

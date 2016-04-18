@@ -14,59 +14,67 @@ Filename: products/product-10.html
 </head>
 
 <body>
-  <table>
-  <tr>
-    <th colspan="2">Apple MacBook Air 13.3" Laptop - Intel Core i5 1.6GHz - 4GB - 256GB SSD</th>
+  <img class="logo" src="../images/logo.png" alt="Logo">
+  <div class="container">
+  <ul>
+    <li><a class="active" href="../index.html">Home</a></li>
+    <li><a href="../shop.html">Shop</a></li>
+    <li><a href="../aboutus.html">About Us</a></li>
+    <li><a href="../contactus.html">Contact</a></li>
+  </ul>
+  </div>
+  <table class="info">
+  <tr class="info">
+    <th class="info" colspan="2">Apple MacBook Air 13.3" Laptop - Intel Core i5 1.6GHz - 4GB - 256GB SSD</th>
   </tr>
   <tr>
-    <td align="center" colspan="2"><img src="../images/10--Apple--MacBookAir--MJVG2LL_A.jpg" class="thumbnail" alt="Apple MacBook Air 13.3&quot; Laptop - Intel Core i5 1.6GHz - 4GB - 256GB SSD" title="Apple MacBook Air 13.3&quot; Laptop - Intel Core i5 1.6GHz - 4GB - 256GB SSD" width=200 /></td>
+    <td class="img" colspan="2"><img src="../images/10--Apple--MacBookAir--MJVG2LL_A.jpg" class="thumbnail" alt="Apple MacBook Air 13.3&quot; Laptop - Intel Core i5 1.6GHz - 4GB - 256GB SSD" title="Apple MacBook Air 13.3&quot; Laptop - Intel Core i5 1.6GHz - 4GB - 256GB SSD" width=200 /></td>
   </tr>
-  <tr>
-    <td>Model No.</td>
-    <td>MJVG2LL/A</td>
+  <tr class="info">
+    <td class="info">Model No.</td>
+    <td class="desc">MJVG2LL/A</td>
   </tr>
-  <tr>
-    <td>Manufacturer</td>
-    <td>Apple</td>
+  <tr class="info">
+    <td class="info">Manufacturer</td>
+    <td class="desc">Apple</td>
   </tr>
-  <tr>
-    <td>Price</td>
-    <td>$1,199.99</td>
+  <tr class="info">
+    <td class="info">Price</td>
+    <td class="desc">$1,199.99</td>
   </tr>
-  <tr>
-    <td>Processor</td>
-    <td>Intel Core i5 1.6GHz</td>
+  <tr class="info">
+    <td class="info">Processor</td>
+    <td class="desc">Intel Core i5 1.6GHz</td>
   </tr>
-  <tr>
-    <td>Screen Size</td>
-    <td>13.3"</td>
+  <tr class="info">
+    <td class="info">Screen Size</td>
+    <td class="desc">13.3"</td>
   </tr>
-  <tr>
-    <td>Graphics</td>
-    <td>Intel HD Graphics 6000</td>
+  <tr class="info">
+    <td class="info">Graphics</td>
+    <td class="desc">Intel HD Graphics 6000</td>
   </tr>
-  <tr>
-    <td>RAM</td>
-    <td>4GB</td>
+  <tr class="info">
+    <td class="info">RAM</td>
+    <td class="desc">4GB</td>
   </tr>
-  <tr>
-    <td>HDD Size</td>
-    <td>256GB SSD</td>
+  <tr class="info">
+    <td class="info">HDD Size</td>
+    <td class="desc">256GB SSD</td>
   </tr>
-  <tr>
-    <td>OS</td>
-    <td>OS X</td>
+  <tr class="info">
+    <td class="info">OS</td>
+    <td class="desc">OS X</td>
   </tr>
   </table>
 
-  <form class="orderForm" name="orderForm" onSubmit="return (validate())" action="mailto:malekware@malekware.com" method="POST">
+  <form class="orderForm" name="orderForm" onSubmit="return (validate())" action="mailto:malekware@malekware.com?subject=Order" ENCTYPE="text/plain" method="POST">
+    <p>
     <br>Product Number:<br>
     <input type="number" name="productNumber" value="10"/>
     <br>Quantity:<br>
     <input type="number" name="quantity"/>
-
     <br><br>
-
     <br>First Name:<br>
     <input type="text" name="firstName"/>
     <br>Last Name:<br>
@@ -91,7 +99,9 @@ Filename: products/product-10.html
 
     <br>Credit Card Number (16 digits):<br>
     <input type="number" name="creditCard"/>
-    <br><button type="submit">Submit Order</button><br>
+    <br>
+    <br><button class="button1" type="submit">Submit Order</button><br>
+    </p>
   </form>
 </body>
 
