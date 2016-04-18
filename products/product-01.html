@@ -8,18 +8,27 @@ Filename: products/product-01.html
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link type="text/css" rel="stylesheet" href="../styles/style2.css">
+  <link type="text/css" rel="stylesheet" href="../styles/style.css">
   <script type="text/javascript" src="../scripts/validate_orderForm.js"></script>
   <title>Product 1</title>
 </head>
 
 <body>
+  <img class="logo" src="images/logo.png" alt="Logo">
+  <div class="container">
+  <ul>
+    <li><a class="active" href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="aboutus.html">About Us</a></li>
+    <li><a href="contactus.html">Contact</a></li>
+  </ul>
+  </div>
   <table class="info">
   <tr class="info">
     <th class="info" colspan="2">HP Pavilion 17.3" Laptop - Intel Core i3 2.2GHz - 4GB - 1TB HDD</th>
   </tr>
-  <tr class="info">
-    <td class="info" align="center" colspan="2"><img src="../images/01--HP--Pavilion--17-g148dx.jpg" class="thumbnail" alt="HP Pavilion 17.3&quot; Laptop - Intel Core i3 2.2GHz - 4GB - 1TB HDD" title="HP Pavilion 17.3&quot; Laptop - Intel Core i3 2.2GHz - 4GB - 1TB HDD" width=200 /></td>
+  <tr>
+    <td class="img" colspan="2"><img src="../images/01--HP--Pavilion--17-g148dx.jpg" class="thumbnail" alt="HP Pavilion 17.3&quot; Laptop - Intel Core i3 2.2GHz - 4GB - 1TB HDD" title="HP Pavilion 17.3&quot; Laptop - Intel Core i3 2.2GHz - 4GB - 1TB HDD" width=200 /></td>
   </tr>
   <tr class="info">
     <td class="info">Model No.</td>
@@ -60,13 +69,12 @@ Filename: products/product-01.html
   </table>
 
   <form class="orderForm" name="orderForm" onSubmit="return (validate())" action="mailto:malekware@malekware.com" method="POST">
+    <p>
     <br>Product Number:<br>
     <input type="number" name="productNumber" value="1"/>
     <br>Quantity:<br>
     <input type="number" name="quantity"/>
-
     <br><br>
-
     <br>First Name:<br>
     <input type="text" name="firstName"/>
     <br>Last Name:<br>
@@ -91,7 +99,9 @@ Filename: products/product-01.html
 
     <br>Credit Card Number (16 digits):<br>
     <input type="number" name="creditCard"/>
+    <br>
     <br><button class="button1" type="submit">Submit Order</button><br>
+    </p>
   </form>
 </body>
 
