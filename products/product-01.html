@@ -68,7 +68,7 @@ Filename: products/product-01.html
   </tr>
   </table>
 
-  <form class="orderForm" name="orderForm" onSubmit="return (validate())" action="mailto:malekware@malekware.com" method="POST">
+  <form class="orderForm" name="orderForm" onSubmit="return (validate())" action="mailto:malekware@malekware.com?subject=Order" ENCTYPE="text/plain" method="POST">
     <p>
     <br>Product Number:<br>
     <input type="number" name="productNumber" value="1"/>
