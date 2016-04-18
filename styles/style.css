@@ -15,6 +15,14 @@ div.container {
     margin-left: 200px;
 }
 
+div.pictures {
+    margin: auto;
+    width: 20%;
+    border: 3px solid black;
+    text-align: center;
+    padding: 10px;
+}
+
 h1 {
     text-align: center;
     font-family: "Arial", Serif;
@@ -24,6 +32,11 @@ p {
     margin-left: 200px;
     text-align: left;
     font-family: "Arial", Serif;
+}
+
+center {
+    font-family: "Arial", Serif;
+    font-weight: bold;
 }
 
 /* list style */
@@ -95,6 +108,8 @@ td.info {
 
 td.img {
     padding: 5px 5px;
+    width: 50px;
+    margin: auto;
     border-bottom: 2px solid black;
     background-color: white;
     vertical-align: bottom;
@@ -125,6 +140,11 @@ img.logo {
 img.discount {
     width: 400px;
     height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+img.thumbnail {
     margin-left: auto;
     margin-right: auto;
 }
