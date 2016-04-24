@@ -1,4 +1,7 @@
 .idea/**
+database_creation.sql
+connection_info.php
+product_generation.py
 
 # Created by https://www.gitignore.io/api/osx,windows,jetbrains,eclipse,netbeans
 
