@@ -105,7 +105,7 @@ $data['friendly_name'] =
     </tr>
     <tr class="info">
       <td class="info">HDD</td>
-      <td class="desc"><?= $data['hdd'];?></td>
+      <td class="desc"><?= $data['hdd']; ?></td>
       </td>
     </tr>
     <tr class="info">
@@ -118,7 +118,7 @@ $data['friendly_name'] =
         action="mailto:malekware@malekware.com?subject=Order" ENCTYPE="text/plain" method="POST">
     <p>
       <br>Product Number:<br>
-      <input type="number" name="productNumber" value="<?= $data['product_number']?>"/>
+      <input type="number" name="productNumber" value="<?= $data['product_number'] ?>"/>
       <br>Quantity:<br>
       <input type="number" name="quantity"/>
       <br><br>
