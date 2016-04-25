@@ -7,8 +7,12 @@ Filename: product.php
 
 <?php
 
-// Connect to database and get PDOStatement object
+// Connect to database and get PDO object
 require_once "connection_info.php";
+$pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// Query database and get PDOStatement object
 $sql = 'SELECT * FROM products';
 $statement = $pdo->query($sql);
 
