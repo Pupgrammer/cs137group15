@@ -8,30 +8,36 @@ Filename: product.php
 
 <?php
 
+// Connect to database and get PDOStatement object
 require_once "connection_info.php";
-
-
-// Getting *ALL* data from database and displaying it
 $sql = 'SELECT * FROM products';
-$query = $pdo->query($sql);
-//while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-//  echo '<br>';
-//  echo 'product_number: ' . $row['product_number'] . '<br>';
-//  echo 'model_name: ' . $row['model_name'] . '<br>';
-//}
+$statement = $pdo->query($sql);
 
-// Closing database connection
+// Close database connection
 $pdo = null;
-//echo "Closed connection.";
 
+// Get entire row from table
 $product_number = $_GET['product_number'];
-
-while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+$data = [];
+while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
   if ($row['product_number'] == $product_number) {
-    $data_row = $row;
+    $data = $row;
     break;
   }
 }
+
+// Add or modify entries within associated array, $data
+$data['friendly_name'] =
+    $data['manufacturer'] . ' ' .
+    $data['model_name'] . ' ' .
+    $data['screen_size'] . '&quot;' . ' ' .
+    'Laptop - ' .
+    $data['processor'] . ' - ' .
+    $data['ram_size_gb'] . 'GB - ' .
+    ($data['hdd_size_gb'] < 1000 ? $data['hdd_size_gb'] . 'GB ' : $data['hdd_size_gb'] / 1000 . 'TB ') .
+    $data['hdd_type'];
+$data['price'] = '$' . number_format($data['price'], 2);
+$data['hdd'] = ($data['hdd_size_gb'] < 1000 ? $data['hdd_size_gb'] . 'GB ' : $data['hdd_size_gb'] / 1000 . 'TB ') . $data['hdd_type'];
 ?>
 
 
@@ -40,7 +46,7 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
   <meta charset="UTF-8">
   <link type="text/css" rel="stylesheet" href="styles/style.css">
   <script type="text/javascript" src="scripts/validate_orderForm.js"></script>
-  <title>Product <?php echo $_GET['product_number']; ?></title>
+  <title>Product <?= $_GET['product_number']; ?></title>
 </head>
 
 
@@ -58,64 +64,53 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 
   <table class="info">
 
-    <?php
-    $friendly_name =
-        $data_row['manufacturer'] . ' ' .
-        $data_row['model_name'] . ' ' .
-        $data_row['screen_size'] . '&quot;' . ' ' .
-        'Laptop - ' .
-        $data_row['processor'] . ' - ' .
-        $data_row['ram_size_gb'] . 'GB - ' .
-        ($data_row['hdd_size_gb'] < 1000 ? $data_row['hdd_size_gb'] . 'GB ' : $data_row['hdd_size_gb'] / 1000 . 'TB ') .
-        $data_row['hdd_type'];
-    ?>
     <tr class="info">
-      <th class="info" colspan="2"><?php echo $friendly_name; ?></th>
+      <th class="info" colspan="2"><?= $data['friendly_name']; ?></th>
     </tr>
 
     <tr>
-      <td class="img" colspan="2"><img src="<?php echo $data_row['image_path']; ?>" class="thumbnail"
-                                       alt="<?php echo $friendly_name; ?>"
-                                       title="<?php echo $friendly_name; ?>"
+      <td class="img" colspan="2"><img src="<?= $data['image_path']; ?>" class="thumbnail"
+                                       alt="<?= $data['friendly_name']; ?>"
+                                       title="<?= $data['friendly_name']; ?>"
                                        width=200/></td>
     </tr>
 
     <tr class="info">
       <td class="info">Model No.</td>
-      <td class="desc"><?php echo $data_row['model_number']; ?></td>
+      <td class="desc"><?= $data['model_number']; ?></td>
     </tr>
     <tr class="info">
       <td class="info">Manufacturer</td>
-      <td class="desc"><?php echo $data_row['manufacturer']; ?></td>
+      <td class="desc"><?= $data['manufacturer']; ?></td>
     </tr>
     <tr class="info">
       <td class="info">Price</td>
-      <td class="desc"><?php echo '$' . number_format($data_row['price'], 2); ?></td>
+      <td class="desc"><?= $data['price']; ?></td>
     </tr>
     <tr class="info">
       <td class="info">Processor</td>
-      <td class="desc"><?php echo $data_row['processor']; ?></td>
+      <td class="desc"><?= $data['processor']; ?></td>
     </tr>
     <tr class="info">
       <td class="info">Screen Size</td>
-      <td class="desc"><?php echo $data_row['screen_size'] . '&quot;'; ?></td>
+      <td class="desc"><?= $data['screen_size'] . '&quot;'; ?></td>
     </tr>
     <tr class="info">
       <td class="info">Graphics</td>
-      <td class="desc"><?php echo $data_row['graphics']; ?></td>
+      <td class="desc"><?= $data['graphics']; ?></td>
     </tr>
     <tr class="info">
       <td class="info">RAM</td>
-      <td class="desc"><?php echo $data_row['ram_size_gb'] . 'GB'; ?></td>
+      <td class="desc"><?= $data['ram_size_gb'] . 'GB'; ?></td>
     </tr>
     <tr class="info">
       <td class="info">HDD</td>
-      <td class="desc"><?php echo ($data_row['hdd_size_gb'] < 1000 ? $data_row['hdd_size_gb'] . 'GB ' : $data_row['hdd_size_gb'] / 1000 . 'TB ') . $data_row['hdd_type']; ?>
+      <td class="desc"><?= $data['hdd'];?></td>
       </td>
     </tr>
     <tr class="info">
       <td class="info">OS</td>
-      <td class="desc"><?php echo $data_row['operating_system']; ?></td>
+      <td class="desc"><?= $data['operating_system']; ?></td>
     </tr>
   </table>
 
@@ -123,7 +118,7 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
         action="mailto:malekware@malekware.com?subject=Order" ENCTYPE="text/plain" method="POST">
     <p>
       <br>Product Number:<br>
-      <input type="number" name="productNumber" value="<?php echo $data_row['product_number']?>"/>
+      <input type="number" name="productNumber" value="<?= $data['product_number']?>"/>
       <br>Quantity:<br>
       <input type="number" name="quantity"/>
       <br><br>
