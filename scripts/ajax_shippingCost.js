@@ -1,12 +1,13 @@
 /* 
  * CS137 Spring 2016 | Group 15
  * Main Author: Thomas Tai Nguyen
+ *                                  NOTE: Not Thomas's job to implement. Someone else must implement this via database.
  * Filename: ajax_shippingCost.js
  */
 
 /* Functions */
 
-// Currently not AJAX, but JavaScript instead. If I have time, I will change it later.
+// Currently not AJAX, but JavaScript instead. Change to database later.
 function updateShippingCost()
 {
     var shippingMethod = document.orderForm.shipping.value;

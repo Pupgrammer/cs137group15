@@ -109,15 +109,13 @@ function validate_shippingAddress()
     var zipcode = document.orderForm.zipcode;
     var city = document.orderForm.city;
     var state = document.orderForm.state;
-    var taxRate = document.getElementById("taxRate").innerHTML;
     
     if (checkEmptyText(streetAddress, city, state, zipcode))
     {
         alert("Please do not leave your street address, zipcode, city, or state blank.");
         error = 1;
     }
-    console.log(taxRate);
-    if (taxRate === "-") // Ajax couldn't find the tax rate for this ZIPCODE, which means it doesn't exist.
+    if (false) // I need to figure out when this should be run. (Thomas)
     {
         document.orderForm.zipcode.style.backgroundColor = "yellow";
         alert("Please enter a valid zipcode number that exists. Example: 92697");
