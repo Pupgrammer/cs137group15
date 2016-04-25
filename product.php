@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-
 <!--
 CS137 Spring 2016 | Group 15
 Main Author: Brian Chipman
 Filename: product.php
 -->
+
 
 <?php
 
@@ -17,10 +16,9 @@ $statement = $pdo->query($sql);
 $pdo = null;
 
 // Get entire row from table
-$product_number = $_GET['product_number'];
 $data = [];
 while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-  if ($row['product_number'] == $product_number) {
+  if ($row['product_number'] == $_GET['product_number']) {
     $data = $row;
     break;
   }
@@ -42,12 +40,13 @@ $data['friendly_name'] =
 ?>
 
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <link type="text/css" rel="stylesheet" href="styles/style.css">
   <script type="text/javascript" src="scripts/validate_orderForm.js"></script>
-  <title>Product <?= $_GET['product_number']; ?></title>
+  <title>Product <?= $data['product_number']; ?></title>
 </head>
 
 
@@ -153,6 +152,7 @@ $data['friendly_name'] =
       <br>
     </p>
   </form>
+
 </body>
 
 </html>
