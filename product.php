@@ -60,7 +60,7 @@ $data['friendly_name'] =
   <div class="container">
     <ul>
       <li><a class="active" href="index.html">Home</a></li>
-      <li><a href="shop.html">Shop</a></li>
+      <li><a href="shop.php">Shop</a></li>
       <li><a href="aboutus.html">About Us</a></li>
       <li><a href="contactus.html">Contact</a></li>
     </ul>
