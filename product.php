@@ -51,6 +51,7 @@ $data['friendly_name'] =
   <link type="text/css" rel="stylesheet" href="styles/style.css">
   <script type="text/javascript" src="scripts/validate_orderForm.js"></script>
   <script type="text/javascript" src="scripts/ajax_cityState.js"></script>
+  <script type="text/javascript" src="scripts/ajax_zipSuggestions.js"></script>
   <title>Product <?= $data['product_number']; ?></title>
 </head>
 
@@ -119,9 +120,9 @@ $data['friendly_name'] =
     </tr>
   </table>
 
+  <div>
   <form class="orderForm" name="orderForm" onSubmit="return (validate())"
         action="mailto:malekware@malekware.com?subject=Order" ENCTYPE="text/plain" method="POST">
-    <p>
       <br>Product Number:<br>
       <input type="number" name="productNumber" disabled="disabled" value="<?= $data['product_number'] ?>"/>
       <br>Quantity:<br>
@@ -140,8 +141,11 @@ $data['friendly_name'] =
 
       <br>Street Address:<br>
       <input type="text" name="streetAddress"/>
+      
       <br>Zipcode (5 digits):<br>
-      <input type="text" onblur="getCityState(this.value)" name="zipcode"/>
+      <input type="text" onblur="getCityState(this.value)" onkeyup="getZipSuggestions(this.value)" name="zipcode"/>
+      <div id="suggestions" style="border:0px"></div>
+      
       <br>City:<br>
       <input type="text" name="city" id="city"/>
       <br>State:<br>
@@ -178,7 +182,7 @@ $data['friendly_name'] =
       <br>
       <button class="button1" type="submit">Submit Order</button>
       <br>
-    </p>
+    </div>
     
 
         
