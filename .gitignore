@@ -1,3 +1,4 @@
+nbproject/**
 .idea/**
 database_creation.sql
 connection_info.php
