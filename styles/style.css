@@ -15,6 +15,11 @@ div.container {
     margin-left: 200px;
 }
 
+div.costContainer
+{
+    display:inline;
+}
+
 div.pictures {
     margin: auto;
     width: 20%;

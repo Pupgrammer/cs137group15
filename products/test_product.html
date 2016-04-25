@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!--
+CS137 Spring 2016 | Group 15
+Main Author: --
+Filename: products/test_product.html
+-->
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link type="text/css" rel="stylesheet" href="../styles/style.css">
+  <script type="text/javascript" src="../scripts/validate_orderForm.js"></script>
+  <script type="text/javascript" src="../scripts/ajax_taxRate.js"></script>
+  <script type="text/javascript" src="../scripts/ajax_shippingCost.js"></script>
+  <title>Test Product</title>
+</head>
+
+<body>
+  <img class="logo" src="../images/logo.png" alt="Logo" />
+  <div class="container">
+  <ul>
+    <li><a class="active" href="../index.html">Home</a></li>
+    <li><a href="../shop.html">Shop</a></li>
+    <li><a href="../aboutus.html">About Us</a></li>
+    <li><a href="../contactus.html">Contact</a></li>
+  </ul>
+  </div>
+  <table class="info">
+  <tr class="info">
+    <th class="info" colspan="2">Test Product</th>
+  </tr>
+  <tr>
+    <td class="img" colspan="2"><img src="http://puu.sh/otLuR/468f5d4c9e.png" class="thumbnail" alt="Test Product" title="Test Product" width=200 /></td>
+  </tr>
+  <tr class="info">
+    <td class="info">Model No.</td>
+    <td class="desc">.</td>
+  </tr>
+  <tr class="info">
+    <td class="info">Manufacturer</td>
+    <td class="desc">.</td>
+  </tr>
+  <tr class="info">
+    <td class="info">Price</td>
+    <td class="desc">$1234.56</td>
+  </tr>
+  <tr class="info">
+    <td class="info">Processor</td>
+    <td class="desc">.</td>
+  </tr>
+  <tr class="info">
+    <td class="info">Screen Size</td>
+    <td class="desc">.</td>
+  </tr>
+  <tr class="info">
+    <td class="info">Graphics</td>
+    <td class="desc">.</td>
+  </tr>
+  <tr class="info">
+    <td class="info">RAM</td>
+    <td class="desc">.</td>
+  </tr>
+  <tr class="info">
+    <td class="info">HDD Size</td>
+    <td class="desc">.</td>
+  </tr>
+  <tr class="info">
+    <td class="info">OS</td>
+    <td class="desc">.</td>
+  </tr>
+  </table>
+
+  <form class="orderForm" name="orderForm" onSubmit="return (validate())" action="mailto:malekware@malekware.com?subject=Order" ENCTYPE="text/plain" method="POST">
+	<p>
+		<!-- Need someone to style this span element to look nicer. - Thomas --->
+		<span>--- Order Form ---</span> 
+		<br>DEPRECATED Product Number (will be removed):<br>
+		<input type="number" name="productNumber" value="1"/>
+		<br>Quantity:<br>
+		<input type="number" name="quantity"/>
+		<br><br>
+		<br>First Name:<br>
+		<input type="text" name="firstName"/>
+		<br>Last Name:<br>
+		<input type="text" name="lastName"/>
+		<br>E-mail (x@y.z):<br>
+		<input type="email" name="email"/>
+		<br>Phone Number (xxx-xxx-xxxx):<br>
+		<input type="tel" name="phoneNumber"/>
+
+		<br><br>
+
+		<br>Street Address:<br>
+		<input type="text" name="streetAddress"/>
+		<br>Zipcode (5 digits):<br>
+		<input type="text" name="zipcode"/>
+		<br>City:<br>
+		<input type="text" name="city"/>
+		<br>State:<br>
+		<input type="text" name="state"/>
+		
+		<br>Shipping Method:<br>
+		<select name="shipping" onChange="updateShippingCost(this.value)">
+	      <option value="default" selected="selected" disabled="disabled">Please select an option...</option>
+		  <option value="oneday">($10.00) One-Day Overnight Shipping</option>
+		  <option value="twoday">($5.00) Two-Day Expedited Shipping</option>
+		  <option value="ground">FREE Standard Ground Shipping (5-7 days)</option>
+		</select>
+
+		<br><br>
+
+		<br>Credit Card Number (16 digits):<br>
+		<input type="number" name="creditCard"/>
+		<br><br>
+	</p>
+	
+    <!-- Can someone else please fix the CSS for this? I don't know how Bryan/Alex did it. - Thomas --->
+	<table class="info">
+		<tr class="info">
+			<td class="info">Subtotal</td>
+			<td class="desc">$<span id="subtotalCost">1234.56</span></td> <!--- It's just the product price. --->
+		</tr>
+		 <tr class="info">
+			 <td class="info">Shipping Cost</td>
+			 <td class="desc">$<span id="shippingCost">0.00</span></td>
+		</tr>
+		<tr class="info">
+			<td class="info">Tax Rate</td>
+			<td class="desc"><span id="taxRate">-</span>%</td>
+		</tr>
+		<tr class="info">
+			<td class="info">Total Cost</td>
+			<td class="desc">$<span id="totalCost">-</span></td>
+		</tr>
+  </table>
+	 
+	
+	<p>
+    <br><button class="button1" type="submit">Submit Order</button><br>
+	</p>
+	
+  </form>
+</body>
+
+</html>
