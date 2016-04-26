@@ -57,7 +57,7 @@ $pdo = null;
       echo "\n";
 
       // Add or modify entries within associated array, $data
-      require_once 'prettifyDatabaseOutput.php';
+      require_once 'php/prettifyDatabaseOutput.php';
       $data = prettifyData($data);
 
       // Create html table row with data from database?>

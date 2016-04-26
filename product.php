@@ -29,7 +29,7 @@ while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
 }
 
 // Add or modify entries within associated array, $data
-require_once 'prettifyDatabaseOutput.php';
+require_once 'php/prettifyDatabaseOutput.php';
 $data = prettifyData($data);
 ?>
 
