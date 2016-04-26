@@ -8,7 +8,7 @@ Filename: product.php
 <?php
 
 // Connect to database and get PDO object
-require_once "connection_info.php";
+require_once 'connection_info.php';
 $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -29,18 +29,8 @@ while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
 }
 
 // Add or modify entries within associated array, $data
-$data['price'] = '$' . number_format($data['price'], 2);
-$data['hdd'] = ($data['hdd_size_gb'] < 1000 ? $data['hdd_size_gb'] . 'GB ' : $data['hdd_size_gb'] / 1000 . 'TB ') . $data['hdd_type'];
-$data['ram_size'] = $data['ram_size_gb'] . 'GB';
-$data['screen_size'] = $data['screen_size'] . '&quot;';
-$data['friendly_name'] =
-    $data['manufacturer'] . ' ' .
-    $data['model_name'] . ' ' .
-    $data['screen_size'] . ' ' .
-    'Laptop - ' .
-    $data['processor'] . ' - ' .
-    $data['ram_size'] . ' ' .
-    $data['hdd'];
+require_once 'prettifyDatabaseOutput.php';
+$data = prettifyData($data);
 ?>
 
 
@@ -146,7 +136,7 @@ $data['friendly_name'] =
       <input type="text" name="city" id="city"/>
       <br>State:<br>
       <input type="text" name="state" id="state"/>
-       
+
      <br>Shipping Method:<br>
      <select name="shipping" onChange="updateShippingCost(this.value)"> <!-- This feature doesn't work yet. -->
         <option value="default" selected="selected" disabled="disabled">Please select an option...</option>
@@ -179,9 +169,9 @@ $data['friendly_name'] =
       <button class="button1" type="submit">Submit Order</button>
       <br>
     </p>
-    
 
-        
+
+
   </form>
 
 </body>

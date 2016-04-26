@@ -8,7 +8,7 @@ Filename: shop.php
 <?php
 
 // Connect to database and get PDO object
-require_once "connection_info.php";
+require_once 'connection_info.php';
 $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -57,18 +57,8 @@ $pdo = null;
       echo "\n";
 
       // Add or modify entries within associated array, $data
-      $data['price'] = '$' . number_format($data['price'], 2);
-      $data['hdd'] = ($data['hdd_size_gb'] < 1000 ? $data['hdd_size_gb'] . 'GB ' : $data['hdd_size_gb'] / 1000 . 'TB ') . $data['hdd_type'];
-      $data['ram_size'] = $data['ram_size_gb'] . 'GB';
-      $data['screen_size'] = $data['screen_size'] . '&quot;';
-      $data['friendly_name'] =
-          $data['manufacturer'] . ' ' .
-          $data['model_name'] . ' ' .
-          $data['screen_size'] . ' ' .
-          'Laptop - ' .
-          $data['processor'] . ' - ' .
-          $data['ram_size'] . ' ' .
-          $data['hdd'];
+      require_once 'prettifyDatabaseOutput.php';
+      $data = prettifyData($data);
 
       // Create html table row with data from database?>
       <tr class="info">
