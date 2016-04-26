@@ -5,7 +5,7 @@
  * Filename: getCityState.php
  */
 
-// Most of the following code for DB connection was created by Brian Chipman
+// Most of the following code for DB connection was created by Brian Chipman and reused here
 
 try
 {
