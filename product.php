@@ -42,6 +42,7 @@ $data = prettifyData($data);
   <script type="text/javascript" src="scripts/validate_orderForm.js"></script>
   <script type="text/javascript" src="scripts/ajax_cityState.js"></script>
   <script type="text/javascript" src="scripts/ajax_zipSuggestions.js"></script>
+  <script type="text/javascript" src="scripts/ajax_shippingCost.js"></script>
   <title>Product <?= $data['product_number']; ?></title>
 </head>
 
@@ -132,9 +133,10 @@ $data = prettifyData($data);
       <br>Street Address:<br>
       <input type="text" name="streetAddress"/>
 
-      <br>Zipcode (5 digits):<br>
-      <input type="text" onblur="getCityState(this.value)" onkeyup="getZipSuggestions(this.value)" name="zipcode"/>
-      <div id="suggestions" style="border:0px"></div>
+      
+        <br>Zipcode (5 digits):<br>
+        <input type="text" onblur="getCityState(this.value)" onkeyup="getZipSuggestions(this.value)" id="zipcode" name="zipcode"/><br>
+        <span id="suggestions" style="border:0px"></span>
 
       <br>City:<br>
       <input type="text" name="city" id="city"/>
@@ -142,7 +144,7 @@ $data = prettifyData($data);
       <input type="text" name="state" id="state"/>
 
      <br>Shipping Method:<br>
-     <select name="shipping" onChange="updateShippingCost(this.value)"> <!-- This feature doesn't work yet. -->
+     <select name="shipping" onChange="updateShippingCost()">
         <option value="default" selected="selected" disabled="disabled">Please select an option...</option>
         <option value="oneday">($10.00) One-Day Overnight Shipping</option>
         <option value="twoday">($5.00) Two-Day Expedited Shipping</option>

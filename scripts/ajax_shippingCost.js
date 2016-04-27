@@ -7,21 +7,21 @@
 
 /* Functions */
 
-// Currently not AJAX, but JavaScript instead. Change to database later.
+// Currently not AJAX, but JavaScript instead. Change to database later if we have time (this would be the 3rd AJAX feature though. Not required.)
 function updateShippingCost()
 {
     var shippingMethod = document.orderForm.shipping.value;
     if (shippingMethod == "ground")
     {
-        document.getElementById("shippingCost").innerHTML = 0.00;
+        document.getElementById("shippingCost").innerHTML = "0.00";
     }
     else if (shippingMethod == "oneday")
     {
-        document.getElementById("shippingCost").innerHTML = 9.99;
+        document.getElementById("shippingCost").innerHTML = "10.00";
     }
     else if (shippingMethod == "twoday")
     {
-        document.getElementById("shippingCost").innerHTML = 4.99;
+        document.getElementById("shippingCost").innerHTML = "5.00";
     }
     else if (shippingMethod == "default") // Just in case.
     {

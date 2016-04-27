@@ -15,9 +15,9 @@ div.container {
     margin-left: 200px;
 }
 
-div.costContainer
+label.zipSuggestion:hover
 {
-    display:inline;
+    text-decoration: underline;
 }
 
 div.pictures {

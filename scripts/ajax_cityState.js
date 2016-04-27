@@ -6,6 +6,13 @@
 
 // in progress
 
+/* Helper Functions */
+
+function getLengthOfNumber(number)
+{
+    return number.toString().length;
+}
+
 function closeSuggestions()
 {
     document.getElementById("suggestions").style.backgroundColor="";
@@ -13,36 +20,49 @@ function closeSuggestions()
     document.getElementById("suggestions").innerHTML="";
 }
 
+/* Active Functions */
+
 function changeCityState(city, state)
 {
-    if (city == "") // && state == ""? Works without it, and doesn't work with it. Gotta fix.
-    {
-        // Temporary Error for debugging purposes. Probably have to change this.
-        document.getElementById("city").value = "DOES NOT EXIST";
-        document.getElementById("state").value = "DOES NOT EXIST";
-    }
-    else
+    if (city != "") // && state == ""? Works without it, and doesn't work with it.
     {
         document.getElementById("city").value = city;
+    }
+    if (state != "")
+    {
         document.getElementById("state").value = state;
     }
 }
 
 function getCityState(zipcode)
-{   // This is being called twice. Fix this issue, thinking about also the dropdown box bug (where it won't go away unless you select something.)
-    if (zipcode !== "") // If ZIP isn't empty and the user selected a ZIP
+{ 
+    if (zipcode != "")
     {
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200)
-            {
-                var cityState = xhr.responseText;
-                var split = cityState.split(',');
-                changeCityState(split[0], split[1]);
-            }
-        };
-        xhr.open("POST", "./php/getCityState.php", true);
-        xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-        xhr.send("zipcode=" + zipcode);
+        if (getLengthOfNumber(zipcode) == 5)
+        {
+            setTimeout(closeSuggestions, 200);
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200)
+                {
+                    var cityState = xhr.responseText;
+                    var split = cityState.split(',');
+                    changeCityState(split[0], split[1]);
+                }
+            };
+            xhr.open("POST", "./php/getCityState.php", true);
+            xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+            xhr.send("zipcode=" + zipcode);
+        }
+        else if (getLengthOfNumber(zipcode) > 5)
+        {
+            alert("Zipcode should only contain 5 digits maximum.");
+            document.getElementById("zipcode").value = "";
+            closeSuggestions();
+        }
+        else
+        {
+            setTimeout(closeSuggestions, 200);
+        }
     }
 }
