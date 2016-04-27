@@ -7,6 +7,31 @@
 /* Fork of validate_orderForm.js */
 
 /* Helper Functions */ 
+
+function checkSymbolInText()
+{
+    
+    var error = 0;
+    for (var i = 0; i < arguments.length; i++)
+    {
+        if (/^[a-zA-Z]+$/.test(arguments[i].value) === false)
+        {
+            error = 1; /* A field was empty. You want to continue looking though. */
+            arguments[i].style.backgroundColor = "yellow";
+        }
+        else
+        {
+            arguments[i].style.backgroundColor = "";
+        }
+    }
+    
+    if (error > 0)
+    {
+        return true;
+    }
+    else return false;
+}
+
 function checkEmptyText()
 {
     var error = 0;
@@ -71,6 +96,11 @@ function validate_checkEmptyText()
         alert("Please do not leave any text fields blank.");
         return 1;
     } 
+    else if (checkSymbolInText(firstName, lastName))
+    {
+       alert("Please use only A-Z alphabet in your name.");
+       return 1;
+    }
     else return 0;
 }
 

@@ -10,6 +10,31 @@
 var maxProductNumber = 10; /* The maximum number of products available. */
 
 /* Helper Functions */ 
+
+function checkSymbolInText()
+{
+    
+    var error = 0;
+    for (var i = 0; i < arguments.length; i++)
+    {
+        if (/^[a-zA-Z]+$/.test(arguments[i].value) === false)
+        {
+            error = 1; /* A field was empty. You want to continue looking though. */
+            arguments[i].style.backgroundColor = "yellow";
+        }
+        else
+        {
+            arguments[i].style.backgroundColor = "";
+        }
+    }
+    
+    if (error > 0)
+    {
+        return true;
+    }
+    else return false;
+}
+
 function getLengthOfNumber(number)
 {
     return number.toString().length;
@@ -22,6 +47,7 @@ function checkEmptyText()
     {
         if (arguments[i].value.length === 0)
         {
+            console.log(arguments[i].value);
             error = 1; /* A field was empty. You want to continue looking though. */
             arguments[i].style.backgroundColor = "yellow";
         }
@@ -115,12 +141,6 @@ function validate_shippingAddress()
         alert("Please do not leave your street address, zipcode, city, or state blank.");
         error = 1;
     }
-    if (false) // I need to figure out when this should be run. (Thomas)
-    {
-        document.orderForm.zipcode.style.backgroundColor = "yellow";
-        alert("Please enter a valid zipcode number that exists. Example: 92697");
-        error = 1;
-    }
     else
     {
         document.orderForm.zipcode.style.backgroundColor = "";
@@ -133,6 +153,7 @@ function validate_shippingAddress()
     else return 0;
 }
 
+
 function validate_checkEmptyText()
 {
     var firstName = document.orderForm.firstName;
@@ -143,7 +164,12 @@ function validate_checkEmptyText()
     {
         alert("Please do not leave your personal information fields blank.");
         return 1;
-    } 
+    }
+    else if (checkSymbolInText(firstName, lastName))
+    {
+        alert("Please only use A-Z alphabet in your name.");
+        return 1;
+    }
     else return 0;
 }
 
