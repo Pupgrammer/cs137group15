@@ -111,76 +111,69 @@ $data = prettifyData($data);
     </tr>
   </table>
 
-  <div>
-  <form class="orderForm" name="orderForm" onSubmit="return (validate())"
-        action="mailto:malekware@malekware.com?subject=Order" ENCTYPE="text/plain" method="POST">
-      <br>Product Number:<br>
-      <input type="number" name="productNumber" disabled="disabled" value="<?= $data['product_number'] ?>"/>
-      <br>Quantity:<br>
-      <input type="number" name="quantity"/>
-      <br><br>
-      <br>First Name:<br>
-      <input type="text" name="firstName"/>
-      <br>Last Name:<br>
-      <input type="text" name="lastName"/>
-      <br>E-mail (x@y.z):<br>
-      <input type="email" name="email"/>
-      <br>Phone Number (xxx-xxx-xxxx):<br>
-      <input type="tel" name="phoneNumber"/>
+  <form action=php/send_order.php class="orderForm" name="orderForm" onSubmit="return (validate())" method="POST">
+    <br>Product Number:<br>
+    <input type="number" name="productNumber" disabled="disabled" value="<?= $data['product_number'] ?>"/>     <br>Quantity:<br>     <input type="number" name="quantity"/>     <br><br>
+    <br>First Name:<br>
+    <input type="text" name="firstName"/>
+    <br>Last Name:<br>
+    <input type="text" name="lastName"/>
+    <br>E-mail (x@y.z):<br>
+    <input type="email" name="email"/>
+    <br>Phone Number (xxx-xxx-xxxx):<br>
+    <input type="tel" name="phoneNumber"/>
 
-      <br><br>
-
-      <br>Street Address:<br>
-      <input type="text" name="streetAddress"/>
+    <br><br>
+      
+     
+    <br>Street Address:<br>
+    <input type="text" name="streetAddress"/>
 
       
-        <br>Zipcode (5 digits):<br>
-        <input type="text" onblur="getCityState(this.value)" onkeyup="getZipSuggestions(this.value)" id="zipcode" name="zipcode"/><br>
-        <span id="suggestions" style="border:0px"></span>
+    <br>Zipcode (5 digits):<br>
+    <input type="text" onblur="getCityState(this.value)" onkeyup="getZipSuggestions(this.value)" id="zipcode" name="zipcode"/><br>
+    <span id="suggestions" style="border:0px"></span>
 
-      <br>City:<br>
-      <input type="text" name="city" id="city"/>
-      <br>State:<br>
-      <input type="text" name="state" id="state"/>
+    <br>City:<br>
+    <input type="text" name="city" id="city"/>
+    <br>State:<br>
+    <input type="text" name="state" id="state"/>
 
-     <br>Shipping Method:<br>
-     <select name="shipping" onChange="updateShippingCost()">
-        <option value="default" selected="selected" disabled="disabled">Please select an option...</option>
-        <option value="oneday">($10.00) One-Day Overnight Shipping</option>
-        <option value="twoday">($5.00) Two-Day Expedited Shipping</option>
-        <option value="ground">FREE Standard Ground Shipping (5-7 days)</option>
-     </select>
+   <br>Shipping Method:<br>
+   <select name="shipping" onChange="updateShippingCost()">
+   <option value="default" selected="selected" disabled="disabled">Please select an option...</option>
+   <option value="oneday">($10.00) One-Day Overnight Shipping</option>
+   <option value="twoday">($5.00) Two-Day Expedited Shipping</option>
+   <option value="ground">FREE Standard Ground Shipping (5-7 days)</option>
+   </select>
+`
+   <br><br>
 
-      <br><br>
-
-      <br>Credit Card Number (16 digits):<br>
-      <input type="number" name="creditCard"/>
-      <br>
-        <!-- Can someone else please fix the CSS for this and the button? I don't know how Bryan/Alex did it. - Thomas --->
-        <table class="info">
-        <tr class="info">
-            <td class="info">Subtotal</td>
-            <td class="desc">$<span id="subtotalCost">0.00</span></td> <!--- It's just the product price times quantity. Someone else's job to implement, not mine. (Thomas) --->
-        </tr>
-        <tr class="info">
-            <td class="info">Shipping Cost</td>
-            <td class="desc">$<span id="shippingCost">0.00</span></td> <!--- Shipping cost based off of database or JS. Someone else's job to implement, not mine. (Thomas) --->
-        <tr>                                                             <!--- Note: A rudimentary JS implementation has been provided in scripts/ajax_shippingCost.js (Thomas) --->
-        <tr class="info">
-            <td class="info">Total Cost</td>
-            <td class="desc">$<span id="totalCost">0.00</span></td> <!--- Total cost = Subtotal + Shipping Cost. Someone else's job to implement, not mine. (Thomas) --->
-        </tr>
-        </table>
-      <br>
-      <button class="button1" type="submit">Submit Order</button>
-      <br>
-    </div>
+    <br>Credit Card Number (16 digits):<br>
+    <input type="number" name="creditCard"/>
+    <br>
+    <table>
+    <tr>
+      <td>Subtotal</td>
+      <td>$<span id="subtotalCost">0.00</span></td> <!--- It's just the product price times quantity. Someone else's job to implement, not mine. (Thomas) --->
+    </tr>
+    <tr style="border-bottom: 2px solid black">
+      <td>Shipping Cost<    /td>
+      <td>$<span id="shippingCost">0.00</span></td> <!--- Shipping cost based off of database or JS. Someone else's job to implement, not mine. (Thomas) --->
+    <tr>                                                             <!--- Note: A rudimentary JS implementation has been provided in scripts/ajax_shippingCost.js (Thomas) --->
+    <tr>
+      <td>Total Cost</td>
+      <td>$<span id="totalCost">0.00</span></td> <!--- Total cost = Subtotal + Shipping Cost. Someone else's job to implement, not mine. (Thomas) --->
+    </tr>
+    </table>
+    <br>
+    <p><input type="submit" value="Submit Order"/></p>
+    <br>
     
-
-
-
+    
+    
   </form>
-
+  
 </body>
 
 </html>
