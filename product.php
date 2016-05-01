@@ -16,9 +16,6 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $sql = 'SELECT * FROM products';
 $statement = $pdo->query($sql);
 
-// Close database connection
-$pdo = null;
-
 // Get entire row from table
 $data = [];
 while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
@@ -31,6 +28,32 @@ while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
 // Add or modify entries within associated array, $data
 require_once 'php/prettifyDatabaseOutput.php';
 $data = prettifyData($data);
+
+if (isset($_POST['quantity'])) {
+$order = "INSERT INTO order_info (order_id, product_number, product_name, quantity, first_name, last_name, email, phone_number, address, zipcode, city, state, shipping_method, credit_card)  
+    VALUES (:order_id, :product_number, :product_name, :quantity, :first_name, :last_name, :email, :phone_number, :address, :zipcode, :city, :state, :shipping_method, :credit_card)";
+$order_stmt = $pdo->prepare($order);
+$order_stmt->execute(array(
+    ':order_id' => "null",
+    ':product_number' => $data['product_number'],
+    ':product_name' => $data['friendly_name'],
+    ':quantity' => $_POST['quantity'],
+    ':first_name' => $_POST['first_name'],
+    ':last_name' => $_POST['last_name'],
+    ':email' => $_POST['email'],
+    ':phone_number' => $_POST['phone_number'],
+    ':address' => $_POST['address'],
+    ':zipcode' => $_POST['zipcode'],
+    ':city' => $_POST['city'],
+    ':state' => $_POST['state'],
+    ':shipping_method' => $_POST['shipping_method'],
+    ':credit_card' => $_POST['credit_card'],
+));   
+}
+
+// Close database connection
+$pdo = null;
+
 ?>
 
 
@@ -111,23 +134,23 @@ $data = prettifyData($data);
     </tr>
   </table>
 
-  <form action=php/send_order.php class="orderForm" name="orderForm" onSubmit="return (validate())" method="POST">
+  <form class="orderForm" name="orderForm" onSubmit="return (validate())" method="POST">
     <br>Product Number:<br>
-    <input type="number" name="productNumber" disabled="disabled" value="<?= $data['product_number'] ?>"/>     <br>Quantity:<br>     <input type="number" name="quantity"/>     <br><br>
+    <input type="number" name="product_number" disabled="disabled" value="<?= $data['product_number'] ?>"/>     <br>Quantity:<br>     <input type="number" name="quantity"/>     <br><br>
     <br>First Name:<br>
-    <input type="text" name="firstName"/>
+    <input type="text" name="first_name"/>
     <br>Last Name:<br>
-    <input type="text" name="lastName"/>
+    <input type="text" name="last_name"/>
     <br>E-mail (x@y.z):<br>
     <input type="email" name="email"/>
     <br>Phone Number (xxx-xxx-xxxx):<br>
-    <input type="tel" name="phoneNumber"/>
+    <input type="tel" name="phone_number"/>
 
     <br><br>
       
      
     <br>Street Address:<br>
-    <input type="text" name="streetAddress"/>
+    <input type="text" name="address"/>
 
       
     <br>Zipcode (5 digits):<br>
@@ -140,7 +163,7 @@ $data = prettifyData($data);
     <input type="text" name="state" id="state"/>
 
    <br>Shipping Method:<br>
-   <select name="shipping" onChange="updateShippingCost()">
+   <select name="shipping_method" onChange="updateShippingCost()">
    <option value="default" selected="selected" disabled="disabled">Please select an option...</option>
    <option value="oneday">($10.00) One-Day Overnight Shipping</option>
    <option value="twoday">($5.00) Two-Day Expedited Shipping</option>
@@ -150,24 +173,24 @@ $data = prettifyData($data);
    <br><br>
 
     <br>Credit Card Number (16 digits):<br>
-    <input type="number" name="creditCard"/>
-    <br>
-    <table>
+    <input name="credit_card"/>
+    <br><br>
+    <table class="cost">
     <tr>
-      <td>Subtotal</td>
-      <td>$<span id="subtotalCost">0.00</span></td> <!--- It's just the product price times quantity. Someone else's job to implement, not mine. (Thomas) --->
+      <td class="cost">Subtotal</td>
+      <td class="cost">$<span id="subtotalCost">0.00</span></td> <!--- It's just the product price times quantity. Someone else's job to implement, not mine. (Thomas) --->
     </tr>
     <tr style="border-bottom: 2px solid black">
-      <td>Shipping Cost<    /td>
-      <td>$<span id="shippingCost">0.00</span></td> <!--- Shipping cost based off of database or JS. Someone else's job to implement, not mine. (Thomas) --->
+      <td class="cost">Shipping Cost</td>
+      <td class="cost">$<span id="shippingCost">0.00</span></td> <!--- Shipping cost based off of database or JS. Someone else's job to implement, not mine. (Thomas) --->
     <tr>                                                             <!--- Note: A rudimentary JS implementation has been provided in scripts/ajax_shippingCost.js (Thomas) --->
     <tr>
-      <td>Total Cost</td>
-      <td>$<span id="totalCost">0.00</span></td> <!--- Total cost = Subtotal + Shipping Cost. Someone else's job to implement, not mine. (Thomas) --->
+      <td class="cost">Total Cost</td>
+      <td class="cost">$<span id="totalCost">0.00</span></td> <!--- Total cost = Subtotal + Shipping Cost. Someone else's job to implement, not mine. (Thomas) --->
     </tr>
     </table>
     <br>
-    <p><input type="submit" value="Submit Order"/></p>
+    <input type="submit" value="Submit Order"/>
     <br>
     
     
