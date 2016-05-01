@@ -134,7 +134,7 @@ $pdo = null;
     </tr>
   </table>
 
-  <form class="orderForm" name="orderForm" onSubmit="return (validate())" method="POST">
+  <form action="confirmation.php" class="orderForm" name="orderForm" onSubmit="return (validate())" method="POST">
     <br>Product Number:<br>
     <input type="number" name="product_number" disabled="disabled" value="<?= $data['product_number'] ?>"/>     <br>Quantity:<br>     <input type="number" name="quantity"/>     <br><br>
     <br>First Name:<br>
@@ -165,9 +165,9 @@ $pdo = null;
    <br>Shipping Method:<br>
    <select name="shipping_method" onChange="updateShippingCost()">
    <option value="default" selected="selected" disabled="disabled">Please select an option...</option>
-   <option value="oneday">($10.00) One-Day Overnight Shipping</option>
-   <option value="twoday">($5.00) Two-Day Expedited Shipping</option>
-   <option value="ground">FREE Standard Ground Shipping (5-7 days)</option>
+   <option value="One Day">($10.00) One-Day Overnight Shipping</option>
+   <option value="Two Day">($5.00) Two-Day Expedited Shipping</option>
+   <option value="Ground">FREE Standard Ground Shipping (5-7 days)</option>
    </select>
 `
    <br><br>
