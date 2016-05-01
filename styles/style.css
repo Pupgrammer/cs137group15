@@ -20,6 +20,14 @@ label.zipSuggestion:hover
     text-decoration: underline;
 }
 
+div.confirmation {
+    text-align: center;
+    padding: 1px;
+    margin: auto;
+    width: 500px;
+}
+
+
 div.pictures {
     margin: auto;
     width: 20%;
