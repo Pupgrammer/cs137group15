@@ -6,16 +6,13 @@ Filename: product.php
 
 
 <?php
-
 // Connect to database and get PDO object
 require_once 'connection_info.php';
 $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
 // Query database and get PDOStatement object
 $sql = 'SELECT * FROM products';
 $statement = $pdo->query($sql);
-
 // Get entire row from table
 $data = [];
 while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
@@ -24,15 +21,11 @@ while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
     break;
   }
 }
-
 // Add or modify entries within associated array, $data
 require_once 'php/prettifyDatabaseOutput.php';
 $data = prettifyData($data);
-
-
 // Close database connection
 $pdo = null;
-
 ?>
 
 
@@ -115,24 +108,25 @@ $pdo = null;
 
   <form action="confirmation.php" class="orderForm" name="orderForm" onSubmit="return (validate())" method="POST">
     <br>Product Number:<br>
-    <input type="number" name="product_number" value="<?= $data['product_number'] ?>"/>     
+    <input type="number" name="product_number" value="<?= $data['product_number'] ?>" readonly/>     
     <br>Product Name:<br>
-    <input type="text" name="friendly_name" value="<?= $data['friendly_name'] ?>"/>
-    <br>Quantity:<br>     <input type="number" name="quantity"/>     <br><br>
+    <input type="text" name="friendly_name" value="<?= $data['friendly_name'] ?>" readonly/>
+    <br>Quantity:<br>    
+    <input type="number" name="quantity"/>     <br><br>
     <br>First Name:<br>
-    <input type="text" name="first_name"/>
+    <input type="text" name="firstName"/>
     <br>Last Name:<br>
-    <input type="text" name="last_name"/>
+    <input type="text" name="lastName"/>
     <br>E-mail (x@y.z):<br>
     <input type="email" name="email"/>
     <br>Phone Number (xxx-xxx-xxxx):<br>
-    <input type="tel" name="phone_number"/>
+    <input type="tel" name="phoneNumber"/>
 
     <br><br>
       
      
     <br>Street Address:<br>
-    <input type="text" name="address"/>
+    <input type="text" name="streetAddress"/>
 
       
     <br>Zipcode (5 digits):<br>
@@ -145,7 +139,7 @@ $pdo = null;
     <input type="text" name="state" id="state"/>
 
    <br>Shipping Method:<br>
-   <select name="shipping_method" onChange="updateShippingCost()">
+   <select name="shipping" onChange="updateShippingCost()">
    <option value="default" selected="selected" disabled="disabled">Please select an option...</option>
    <option value="One Day">($10.00) One-Day Overnight Shipping</option>
    <option value="Two Day">($5.00) Two-Day Expedited Shipping</option>
@@ -155,7 +149,7 @@ $pdo = null;
    <br><br>
 
     <br>Credit Card Number (16 digits):<br>
-    <input name="credit_card"/>
+    <input name="creditCard"/>
     <br><br>
     <table class="cost">
     <tr>
@@ -180,5 +174,4 @@ $pdo = null;
   </form>
   
 </body>
-
 </html>
