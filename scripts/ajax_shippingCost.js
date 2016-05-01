@@ -10,7 +10,7 @@
 // Currently not AJAX, but JavaScript instead. Change to database later if we have time (this would be the 3rd AJAX feature though. Not required.)
 function updateShippingCost()
 {
-    var shippingMethod = document.orderForm.shipping_method.value;
+    var shippingMethod = document.orderForm.shipping.value;
     if (shippingMethod == "Ground")
     {
         document.getElementById("shippingCost").innerHTML = "0.00";
