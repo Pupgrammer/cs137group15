@@ -45,7 +45,6 @@ function checkEmptyText()
     {
         if (arguments[i].value.length === 0)
         {
-            console.log(arguments[i].value);
             error = 1; /* A field was empty. You want to continue looking though. */
             arguments[i].style.backgroundColor = "yellow";
         }
@@ -54,7 +53,6 @@ function checkEmptyText()
             arguments[i].style.backgroundColor = "";
         }
     }
-    
     if (error > 0)
     {
         return true;
@@ -65,7 +63,7 @@ function checkEmptyText()
 /* Validation Functions */
 function validate_creditCard()
 {
-    if (!parseInt(document.orderForm.creditCard.value) > 0 || document.orderForm.productNumber.value[0] === "-" || getLengthOfNumber(document.orderForm.creditCard.value) !== 16)
+    if (!parseInt(document.orderForm.creditCard.value) > 0 || document.orderForm.creditCard.value[0] === "-" || getLengthOfNumber(document.orderForm.creditCard.value) !== 16)
     {
         document.orderForm.creditCard.style.backgroundColor = "yellow";
         alert("Please enter a valid, 16-digit credit card number.");
@@ -180,7 +178,6 @@ function validate_shippingMethod()
 function validate()
 {
     var error = 0 + validate_quantity() + validate_checkEmptyText() + validate_email() + validate_phoneNumber() + validate_shippingAddress() + validate_shippingMethod() + validate_creditCard();
-    console.log(error);
     if (error === 0)
     {
         return true;
