@@ -104,10 +104,33 @@ function validate_checkEmptyText()
     else return 0;
 }
 
+function validate_questionLength()
+{
+    if (document.contactUs.question.value !== "")
+    {
+        var question = document.contactUs.question.value.length;
+        if (question > 2000)
+        {
+            document.contactUs.question.style.backgroundColor = "yellow";
+            alert("Please keep your message under 2000 characters.");
+            return 1;
+        }
+        else
+        {
+            document.contactUs.question.style.backgroundColor = "";
+            return 0;
+        }
+    }
+    else
+    {
+        return 1;
+    }
+}
+
 /* Main Function */
 function validate()
 {
-    var error = 0 + validate_checkEmptyText() + validate_email() + validate_phoneNumber();
+    var error = 0 + validate_checkEmptyText() + validate_email() + validate_phoneNumber() + validate_questionLength();
     if (error === 0)
     {
         return true;
