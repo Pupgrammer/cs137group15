@@ -4,6 +4,35 @@ require_once 'connection_info.php';
 $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+/*   Prints out the POST array values in order.
+
+foreach ($_POST as $data2)
+{
+    echo "$data2 <br>";
+}
+
+*/
+
+$order = "INSERT INTO order_info (order_id, product_number, product_name, quantity, first_name, last_name, email, phone_number, address, zipcode, city, state, shipping_method, credit_card)  
+    VALUES (:order_id, :product_number, :product_name, :quantity, :first_name, :last_name, :email, :phone_number, :address, :zipcode, :city, :state, :shipping_method, :credit_card)";
+$order_stmt = $pdo->prepare($order);
+$order_stmt->execute(array(
+    ':order_id' => "null",
+    ':product_number' => $_POST['product_number'],
+    ':product_name' => $_POST['friendly_name'],
+    ':quantity' => $_POST['quantity'],
+    ':first_name' => $_POST['first_name'],
+    ':last_name' => $_POST['last_name'],
+    ':email' => $_POST['email'],
+    ':phone_number' => $_POST['phone_number'],
+    ':address' => $_POST['address'],
+    ':zipcode' => $_POST['zipcode'],
+    ':city' => $_POST['city'],
+    ':state' => $_POST['state'],
+    ':shipping_method' => $_POST['shipping_method'],
+    ':credit_card' => $_POST['credit_card'],
+));
+
 ?>
 
 <!DOCTYPE html>

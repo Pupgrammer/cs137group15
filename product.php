@@ -29,27 +29,6 @@ while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
 require_once 'php/prettifyDatabaseOutput.php';
 $data = prettifyData($data);
 
-if (isset($_POST['quantity'])) {
-$order = "INSERT INTO order_info (order_id, product_number, product_name, quantity, first_name, last_name, email, phone_number, address, zipcode, city, state, shipping_method, credit_card)  
-    VALUES (:order_id, :product_number, :product_name, :quantity, :first_name, :last_name, :email, :phone_number, :address, :zipcode, :city, :state, :shipping_method, :credit_card)";
-$order_stmt = $pdo->prepare($order);
-$order_stmt->execute(array(
-    ':order_id' => "null",
-    ':product_number' => $data['product_number'],
-    ':product_name' => $data['friendly_name'],
-    ':quantity' => $_POST['quantity'],
-    ':first_name' => $_POST['first_name'],
-    ':last_name' => $_POST['last_name'],
-    ':email' => $_POST['email'],
-    ':phone_number' => $_POST['phone_number'],
-    ':address' => $_POST['address'],
-    ':zipcode' => $_POST['zipcode'],
-    ':city' => $_POST['city'],
-    ':state' => $_POST['state'],
-    ':shipping_method' => $_POST['shipping_method'],
-    ':credit_card' => $_POST['credit_card'],
-));   
-}
 
 // Close database connection
 $pdo = null;
@@ -136,7 +115,10 @@ $pdo = null;
 
   <form action="confirmation.php" class="orderForm" name="orderForm" onSubmit="return (validate())" method="POST">
     <br>Product Number:<br>
-    <input type="number" name="product_number" disabled="disabled" value="<?= $data['product_number'] ?>"/>     <br>Quantity:<br>     <input type="number" name="quantity"/>     <br><br>
+    <input type="number" name="product_number" value="<?= $data['product_number'] ?>"/>     
+    <br>Product Name:<br>
+    <input type="text" name="friendly_name" value="<?= $data['friendly_name'] ?>"/>
+    <br>Quantity:<br>     <input type="number" name="quantity"/>     <br><br>
     <br>First Name:<br>
     <input type="text" name="first_name"/>
     <br>Last Name:<br>
