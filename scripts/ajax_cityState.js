@@ -4,8 +4,6 @@
  * Filename: ajax_cityState.js
  */
 
-// in progress
-
 /* Helper Functions */
 
 function getLengthOfNumber(number)

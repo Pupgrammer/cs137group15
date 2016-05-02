@@ -6,9 +6,6 @@
  * Filename: getZipSuggestions.php
  */
 
-// Currently, suggestions are based on distance from each other numerically (i.e. if you type in 01, closest is 02 and 03, etc, not 011, 012)
-// I don't know how to do the other one, so I'm going to leave it at this for now. I might change it for closest ZIP proximity based on Latitude/Longitude.
-
 // Most of the following code for DB connection was created by Brian Chipman and reused here
 
 try

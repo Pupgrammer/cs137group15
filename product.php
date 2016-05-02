@@ -113,9 +113,9 @@ $pdo = null;
     <br>Product Name:<br>
     <input type="text" name="friendly_name" value="<?= $data['friendly_name'] ?>" readonly/>
     <br>Quantity:<br>    
-    <input type="number" name="quantity" onchange="updateCosts();"/><br><br>
+    <input type="number" name="quantity" onchange="updateCosts();"/>
 
-    <!--<br><br>-->
+    <br><br>
     <br>First Name:<br>
     <input type="text" name="firstName"/>
     <br>Last Name:<br>
