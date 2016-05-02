@@ -81,6 +81,12 @@ function validate_quantity()
         alert("Please enter a valid quantity (greater than 0).");
         return 1;
     }
+    else if (parseInt(document.orderForm.quantity.value) > 1000)
+    {
+        document.orderForm.quantity.style.backgroundColor = "yellow";
+        alert("For orders greater than 1000 quantity, please message us directly (Sales/Order department) via Contact Us for bulk pricing.");
+        return 1;
+    }
     document.orderForm.quantity.style.backgroundColor = "";
     return 0;
 }

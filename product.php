@@ -112,8 +112,8 @@ $pdo = null;
     <input type="number" name="product_number" value="<?php echo $data['product_number'] ?>" readonly/>     
     <br>Product Name:<br>
     <input type="text" name="friendly_name" value="<?php echo $data['friendly_name'] ?>" readonly/>
-    <br>Quantity:<br>    
-    <input type="number" name="quantity" onchange="updateCosts();"/>
+    <br>Quantity:<br>
+    <input type="number" name="quantity" onkeyup="ensureValidQuantity()" onchange="updateCosts()"/>
 
     <br><br>
     <br>First Name:<br>
