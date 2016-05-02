@@ -62,18 +62,18 @@ $pdo = null;
 
       // Create html table row with data from database?>
       <tr class="info">
-        <td><?= $data['product_number'] ?></td>
-        <td><?= $data['model_name'] ?></td>
+        <td><?php echo $data['product_number'] ?></td>
+        <td><?php echo $data['model_name'] ?></td>
         <td class="img">
-          <a href="product.php?product_number=<?= $data['product_number'] ?>">
-            <img src="<?= $data['image_path'] ?>"
-                 alt="<?= $data['friendly_name'] ?>"
-                 title="<?= $data['friendly_name'] ?>"/>
+          <a href="product.php?product_number=<?php echo $data['product_number'] ?>">
+            <img src="<?php echo $data['image_path'] ?>"
+                 alt="<?php echo $data['friendly_name'] ?>"
+                 title="<?php echo $data['friendly_name'] ?>"/>
           </a>
         </td>
-        <td><?= $data['model_number'] ?></td>
-        <td><?= $data['manufacturer'] ?></td>
-        <td><?= $data['price'] ?></td>
+        <td><?php echo $data['model_number'] ?></td>
+        <td><?php echo $data['manufacturer'] ?></td>
+        <td><?php echo $data['price'] ?></td>
       </tr>
     <?php } ?>
   </table>
