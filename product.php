@@ -38,7 +38,6 @@ $pdo = null;
   <script type="text/javascript" src="scripts/validate_orderForm.js"></script>
   <script type="text/javascript" src="scripts/ajax_cityState.js"></script>
   <script type="text/javascript" src="scripts/ajax_zipSuggestions.js"></script>
-  <script type="text/javascript" src="scripts/ajax_shippingCost.js"></script>
   <script type="text/javascript" src="scripts/calculatePrices.js"></script>
   <title>Product <?= $data['product_number']; ?></title>
 </head>
@@ -114,21 +113,9 @@ $pdo = null;
     <br>Product Name:<br>
     <input type="text" name="friendly_name" value="<?= $data['friendly_name'] ?>" readonly/>
     <br>Quantity:<br>    
-    <input type="number" name="quantity" onchange="getSubtotal();"/>
-   
-     <?php
-    $sub_price = 0;
-    if (isset($_POST['postprice'])) {
-    $sub_price = $_POST['postprice'];
-    }
-   
-    else{
-        echo 'no quantity set';
-        
-    }
-    echo 'current sub price is ' . $sub_price;
-    ?>
-    <br><br>
+    <input type="number" name="quantity" onchange="updateCosts();"/><br><br>
+
+    <!--<br><br>-->
     <br>First Name:<br>
     <input type="text" name="firstName"/>
     <br>Last Name:<br>
@@ -155,11 +142,11 @@ $pdo = null;
     <input type="text" name="state" id="state"/>
 
    <br>Shipping Method:<br>
-   <select name="shipping" onChange="updateShippingCost()">
-   <option value="default" selected="selected" disabled="disabled">Please select an option...</option>
+   <select name="shipping" onChange="updateCosts()">
+   <!--<option value="default" selected="selected" disabled="disabled">Please select an option...</option>-->
    <option value="One Day">($10.00) One-Day Overnight Shipping</option>
    <option value="Two Day">($5.00) Two-Day Expedited Shipping</option>
-   <option value="Ground">FREE Standard Ground Shipping (5-7 days)</option>
+   <option value="Ground" selected="selected">FREE Standard Ground Shipping (5-7 days)</option>
    </select>
    <br><br>
     <br>Credit Card Number (16 digits):<br>
@@ -168,15 +155,15 @@ $pdo = null;
     <table class="cost">
     <tr>
       <td class="cost">Subtotal</td>
-      <td class="cost">$<span id="subtotalCost">0.00</span></td> <!--- It's just the product price times quantity. Someone else's job to implement, not mine. (Thomas) --->
+      <td class="cost">$<span id="subtotalCost">0.00</span></td> 
     </tr>
     <tr style="border-bottom: 2px solid black">
       <td class="cost">Shipping Cost</td>
-      <td class="cost">$<span id="shippingCost">0.00</span></td> <!--- Shipping cost based off of database or JS. Someone else's job to implement, not mine. (Thomas) --->
-    <tr>                                                             <!--- Note: A rudimentary JS implementation has been provided in scripts/ajax_shippingCost.js (Thomas) --->
+      <td class="cost">$<span id="shippingCost">0.00</span></td> 
+    <tr>                                                            
     <tr>
       <td class="cost">Total Cost</td>
-      <td class="cost">$<span id="totalCost">0.00</span></td> <!--- Total cost = Subtotal + Shipping Cost. Someone else's job to implement, not mine. (Thomas) --->
+      <td class="cost">$<span id="totalCost">0.00</span></td>
     </tr>
     </table>
     <br>
