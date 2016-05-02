@@ -1,9 +1,3 @@
-/*
-CS137 Spring 2016 | Group 15
-Main Author: Bryan Nham & Alex Lin
-Filename: style.css
-*/
-
 /* body style */
 
 body { 
@@ -15,18 +9,12 @@ div.container {
     margin-left: 200px;
 }
 
-label.zipSuggestion:hover
-{
-    text-decoration: underline;
-}
-
 div.confirmation {
     text-align: center;
     padding: 1px;
     margin: auto;
     width: 500px;
 }
-
 
 div.pictures {
     margin: auto;
@@ -51,6 +39,8 @@ center {
     font-family: "Arial", Serif;
     font-weight: bold;
 }
+
+
 
 /* list style */
 
@@ -78,6 +68,7 @@ li a:hover {
     background-color: #111;
 }
 
+
 /* table style */
 
 table {
@@ -89,6 +80,20 @@ table {
 table, th, td {
     border-bottom: 2px solid black;
 }
+
+table.cost {
+    border-collapse: collapse;
+    background-color: gainsboro;
+    border: none;
+    width: auto;
+}
+
+td.cost {
+    text-align: left;
+    padding: 2px;
+    border: none;
+}
+
 
 td, th {
     padding: 15px;
@@ -128,6 +133,7 @@ td.img {
     vertical-align: bottom;
 }
 
+
 td.desc {
     font-weight: normal;
     padding: 6px;
@@ -136,11 +142,14 @@ td.desc {
     border-bottom: 2px solid black;
 }
 
+
+
+
 /* image style */
 
 img {
     width: 200px;
-    height: auto;
+    height: 200px;
     display: block;
 }
 
@@ -167,7 +176,7 @@ img.thumbnail:hover {
     top:2px;
     left:2px;
     right:2px;
-    width:400px;
+    width:500px;
     height:auto;
     display:block;
     z-index:100;
@@ -203,6 +212,7 @@ input[type=submit] {
     background-color: red;
     color: white;
     box-shadow: 0 8px #999;
+    align-self: auto;
 }
 
 input[type=submit]:hover {
