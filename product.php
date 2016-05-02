@@ -26,6 +26,7 @@ require_once 'php/prettifyDatabaseOutput.php';
 $data = prettifyData($data);
 // Close database connection
 $pdo = null;
+
 ?>
 
 
@@ -38,6 +39,7 @@ $pdo = null;
   <script type="text/javascript" src="scripts/ajax_cityState.js"></script>
   <script type="text/javascript" src="scripts/ajax_zipSuggestions.js"></script>
   <script type="text/javascript" src="scripts/ajax_shippingCost.js"></script>
+  <script type="text/javascript" src="scripts/calculatePrices.js"></script>
   <title>Product <?= $data['product_number']; ?></title>
 </head>
 
@@ -77,7 +79,7 @@ $pdo = null;
     </tr>
     <tr class="info">
       <td class="info">Price</td>
-      <td class="desc"><?= $data['price']; ?></td>
+      <td class="desc" id="getPriceFromJS"><?= $data['price']; ?></td>
     </tr>
     <tr class="info">
       <td class="info">Processor</td>
@@ -112,7 +114,21 @@ $pdo = null;
     <br>Product Name:<br>
     <input type="text" name="friendly_name" value="<?= $data['friendly_name'] ?>" readonly/>
     <br>Quantity:<br>    
-    <input type="number" name="quantity"/>     <br><br>
+    <input type="number" name="quantity" onchange="getSubtotal();"/>
+   
+     <?php
+    $sub_price = 0;
+    if (isset($_POST['postprice'])) {
+    $sub_price = $_POST['postprice'];
+    }
+   
+    else{
+        echo 'no quantity set';
+        
+    }
+    echo 'current sub price is ' . $sub_price;
+    ?>
+    <br><br>
     <br>First Name:<br>
     <input type="text" name="firstName"/>
     <br>Last Name:<br>
@@ -145,9 +161,7 @@ $pdo = null;
    <option value="Two Day">($5.00) Two-Day Expedited Shipping</option>
    <option value="Ground">FREE Standard Ground Shipping (5-7 days)</option>
    </select>
-`
    <br><br>
-
     <br>Credit Card Number (16 digits):<br>
     <input name="creditCard"/>
     <br><br>
