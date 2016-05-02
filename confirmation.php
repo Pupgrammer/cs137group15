@@ -13,8 +13,15 @@ foreach ($_POST as $data2)
 
 */
 
-$order = "INSERT INTO order_info (order_id, product_number, product_name, quantity, first_name, last_name, email, phone_number, address, zipcode, city, state, shipping_method, credit_card)  
-    VALUES (:order_id, :product_number, :product_name, :quantity, :first_name, :last_name, :email, :phone_number, :address, :zipcode, :city, :state, :shipping_method, :credit_card)";
+$price = "SELECT price FROM products WHERE products.product_number = " . $_POST['product_number'] . ";";
+$coststatement = $pdo->query($price);
+
+$costarray = $coststatement->fetch(PDO::FETCH_ASSOC);
+$cost = $costarray['price'];
+
+
+$order = "INSERT INTO order_info (order_id, product_number, product_name, quantity, first_name, last_name, email, phone_number, address, zipcode, city, state, shipping_method, credit_card, cost)  
+    VALUES (:order_id, :product_number, :product_name, :quantity, :first_name, :last_name, :email, :phone_number, :address, :zipcode, :city, :state, :shipping_method, :credit_card, :cost)";
 $order_stmt = $pdo->prepare($order);
 $order_stmt->execute(array(
     ':order_id' => "null",
@@ -31,6 +38,7 @@ $order_stmt->execute(array(
     ':state' => $_POST['state'],
     ':shipping_method' => $_POST['shipping'],
     ':credit_card' => $_POST['creditCard'],
+    ':cost' => $cost,
 ));
 
 ?>
@@ -77,12 +85,22 @@ $order_stmt->execute(array(
     echo "<br><b>Shipping Method: </b>" . $order['shipping_method'];
     $card = "**** **** **** " . substr($order['credit_card'],-4);
     echo "<br><b>Credit Card: </b>" . $card;
+    $cost *= $order['quantity'];
+    if ($order['shipping_method'] == 'One Day') {
+        $cost += 10;
+    }
+    elseif ($order['shipping_method'] == 'Two Day') {
+        $cost += 5;
+    }
+    echo "<br><b>Total Cost: </b>$" . $cost;
+    $changecost = "UPDATE order_info SET cost=" . $cost . " WHERE order_id=" . $order['order_id'] . ";";
+    $costupdate = $pdo->query($changecost);
   }
-
   
   ?>
   </div>
   </p>
 </body>
 </html>
+
 
