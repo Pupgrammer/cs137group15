@@ -16,7 +16,7 @@ try
 
     // Query database and get PDOStatement object
     $zipcode = $_POST['zipcode'];
-    $sql = 'SELECT City, State FROM zipcode WHERE Zipcode = '.$zipcode;
+    $sql = 'SELECT City, State FROM location_data WHERE Zipcode = '.$zipcode;
     $statement = $pdo->query($sql);
 
     // Close database connection
