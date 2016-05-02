@@ -28,6 +28,7 @@ function updateSubtotal()
 {
     var price = document.getElementById("getPriceFromJS").innerHTML;
     price = price.substr(1, price.length); // gets rid of $ sign
+    price = price.replace(/,/g, ''); // gets rid of commas
     var quantity = document.orderForm.quantity.value;    
     var sub_price = (parseFloat(price) * parseFloat(quantity));
     document.getElementById("subtotalCost").innerHTML = sub_price.toFixed(2);

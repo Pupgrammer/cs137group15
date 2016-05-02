@@ -66,16 +66,16 @@ $order_stmt->execute(array(
     echo "<br><b>Product Number: </b>" . $order['product_number']; 
     echo "<br><b>Product Name: </b>" . $order['product_name'];
     echo "<br><b>Quantity: </b>" . $order['quantity'];
-    echo "<br><b>First Name: </b>" . $order['firstName'];
-    echo "<br><b>Last Name: </b>" . $order['lastName'];
+    echo "<br><b>First Name: </b>" . $order['first_name'];
+    echo "<br><b>Last Name: </b>" . $order['last_name'];
     echo "<br><b>Email: </b>" . $order['email'];
-    echo "<br><b>Phone Number: </b>" . $order['phoneNumber'];
-    echo "<br><b>Address: </b>" . $order['streetAddress'];
+    echo "<br><b>Phone Number: </b>" . $order['phone_number'];
+    echo "<br><b>Address: </b>" . $order['address'];
     echo "<br><b>Zip Code: </b>" . $order['zipcode'];
     echo "<br><b>City: </b>" . $order['city'];
     echo "<br><b>State: </b>" . $order['state'];
-    echo "<br><b>Shipping Method: </b>" . $order['shipping'];
-    $card = "**** **** **** " . substr($order['creditCard'],-4);
+    echo "<br><b>Shipping Method: </b>" . $order['shipping_method'];
+    $card = "**** **** **** " . substr($order['credit_card'],-4);
     echo "<br><b>Credit Card: </b>" . $card;
   }
 
