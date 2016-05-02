@@ -14,7 +14,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $sql = 'SELECT * FROM products';
 $statement = $pdo->query($sql);
 // Get entire row from table
-$data = [];
+$data = array();
 while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
   if ($row['product_number'] == $_GET['product_number']) {
     $data = $row;
@@ -39,7 +39,7 @@ $pdo = null;
   <script type="text/javascript" src="scripts/ajax_cityState.js"></script>
   <script type="text/javascript" src="scripts/ajax_zipSuggestions.js"></script>
   <script type="text/javascript" src="scripts/calculatePrices.js"></script>
-  <title>Product <?= $data['product_number']; ?></title>
+  <title>Product <?php echo $data['product_number']; ?></title>
 </head>
 
 
@@ -58,60 +58,60 @@ $pdo = null;
   <table class="info">
 
     <tr class="info">
-      <th class="info" colspan="2"><?= $data['friendly_name']; ?></th>
+      <th class="info" colspan="2"><?php echo $data['friendly_name']; ?></th>
     </tr>
 
     <tr>
-      <td class="img" colspan="2"><img src="<?= $data['image_path']; ?>" class="thumbnail"
-                                       alt="<?= $data['friendly_name']; ?>"
-                                       title="<?= $data['friendly_name']; ?>"
+      <td class="img" colspan="2"><img src="<?php echo $data['image_path']; ?>" class="thumbnail"
+                                       alt="<?php echo $data['friendly_name']; ?>"
+                                       title="<?php echo $data['friendly_name']; ?>"
                                        width=200/></td>
     </tr>
 
     <tr class="info">
       <td class="info">Model No.</td>
-      <td class="desc"><?= $data['model_number']; ?></td>
+      <td class="desc"><?php echo $data['model_number']; ?></td>
     </tr>
     <tr class="info">
       <td class="info">Manufacturer</td>
-      <td class="desc"><?= $data['manufacturer']; ?></td>
+      <td class="desc"><?php echo $data['manufacturer']; ?></td>
     </tr>
     <tr class="info">
       <td class="info">Price</td>
-      <td class="desc" id="getPriceFromJS"><?= $data['price']; ?></td>
+      <td class="desc" id="getPriceFromJS"><?php echo $data['price']; ?></td>
     </tr>
     <tr class="info">
       <td class="info">Processor</td>
-      <td class="desc"><?= $data['processor']; ?></td>
+      <td class="desc"><?php echo $data['processor']; ?></td>
     </tr>
     <tr class="info">
       <td class="info">Screen Size</td>
-      <td class="desc"><?= $data['screen_size']; ?></td>
+      <td class="desc"><?php echo $data['screen_size']; ?></td>
     </tr>
     <tr class="info">
       <td class="info">Graphics</td>
-      <td class="desc"><?= $data['graphics']; ?></td>
+      <td class="desc"><?php echo $data['graphics']; ?></td>
     </tr>
     <tr class="info">
       <td class="info">RAM</td>
-      <td class="desc"><?= $data['ram_size']; ?></td>
+      <td class="desc"><?php echo $data['ram_size']; ?></td>
     </tr>
     <tr class="info">
       <td class="info">HDD</td>
-      <td class="desc"><?= $data['hdd']; ?></td>
+      <td class="desc"><?php echo $data['hdd']; ?></td>
       </td>
     </tr>
     <tr class="info">
       <td class="info">OS</td>
-      <td class="desc"><?= $data['operating_system']; ?></td>
+      <td class="desc"><?php echo $data['operating_system']; ?></td>
     </tr>
   </table>
 
   <form action="confirmation.php" class="orderForm" name="orderForm" onSubmit="return (validate())" method="POST">
     <br>Product Number:<br>
-    <input type="number" name="product_number" value="<?= $data['product_number'] ?>" readonly/>     
+    <input type="number" name="product_number" value="<?php echo $data['product_number'] ?>" readonly/>     
     <br>Product Name:<br>
-    <input type="text" name="friendly_name" value="<?= $data['friendly_name'] ?>" readonly/>
+    <input type="text" name="friendly_name" value="<?php echo $data['friendly_name'] ?>" readonly/>
     <br>Quantity:<br>    
     <input type="number" name="quantity" onchange="updateCosts();"/>
 
