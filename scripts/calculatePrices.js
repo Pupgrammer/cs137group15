@@ -30,12 +30,12 @@ function updateSubtotal()
     price = price.substr(1, price.length); // gets rid of $ sign
     var quantity = document.orderForm.quantity.value;    
     var sub_price = (parseFloat(price) * parseFloat(quantity));
-    document.getElementById("subtotalCost").innerHTML = sub_price;
+    document.getElementById("subtotalCost").innerHTML = sub_price.toFixed(2);
     return sub_price;
 }
 
 function updateCosts()
 {
-    document.getElementById("totalCost").innerHTML = updateShippingCost() + updateSubtotal();
+    document.getElementById("totalCost").innerHTML = (updateShippingCost() + updateSubtotal()).toFixed(2);
 }
 
