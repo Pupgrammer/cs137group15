@@ -11,8 +11,8 @@
     <title>$Title$</title>
   </head>
   <body>
-  <h1><a href="st">ServerTest</a></h1>
-  <h1><a href="db">DatabaseAccess</a></h1>
+  <h1><a href="st">ServletTest</a></h1>
+  <h1><a href="db">DatabaseAccessTest</a></h1>
   <%--$END$--%>
   </body>
 </html>
