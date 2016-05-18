@@ -11,12 +11,12 @@ public class DatabaseAccessTest extends HttpServlet {
 
         // JDBC driver name and database URL
         final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-        final String SERVER_NAME = "jdbc:mysql://localhost:3306/";
-        final String DB_NAME = "inf124grp15";
+        final String SERVER_NAME = ConnectionInfo.SERVER_NAME;
+        final String DB_NAME = ConnectionInfo.DATABASE_NAME;
 
         //  Database credentials
-        final String USER = "root";
-        final String PASS = "password";
+        final String USER = ConnectionInfo.USER_NAME;
+        final String PASS = ConnectionInfo.PASSWORD;
 
         Statement statement = null;
         Connection connection = null;
