@@ -16,7 +16,7 @@ public class DatabaseAccess extends HttpServlet {
 
         //  Database credentials
         final String USER = "root";
-        final String PASS = "";
+        final String PASS = "password";
 
         Statement stmt = null;
         Connection conn = null;
