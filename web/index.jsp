@@ -13,6 +13,7 @@
   <body>
   <h1><a href="st">ServletTest</a></h1>
   <h1><a href="db">DatabaseAccessTest</a></h1>
+  <h1><a href="shop">ShopServlet</a></h1>
   <%--$END$--%>
   </body>
 </html>

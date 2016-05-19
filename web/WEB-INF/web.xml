@@ -24,4 +24,14 @@
         <url-pattern>/db</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ShopServlet</servlet-name>
+        <servlet-class>ShopServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ShopServlet</servlet-name>
+        <url-pattern>/shop</url-pattern>
+    </servlet-mapping>
+
 </web-app>
