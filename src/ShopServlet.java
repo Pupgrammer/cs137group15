@@ -105,6 +105,25 @@ public class ShopServlet extends HttpServlet {
             Integer i = rs.getInt(str);
             map.put(str, i.toString());
         }
+
+        map.put("model_number", map.get("model_number") + "!!!");
+        map.put("price", "$" + String.format("%.2f", Double.parseDouble(map.get("price"))));
+
+        Double d = Double.parseDouble(map.get("hdd_size_gb"));
+        String s = ( (d < 1000) ? map.get("hdd_size_gb") + "GB" : ((Double) (d / 1000)).toString() + "TB" ) + map.get("hdd_type");
+        map.put("hdd", s);
+        map.put("ram_size", map.get("ram_size") + "GB");
+        map.put("screen_size", map.get("screen_size" + "&quot;"));
+
+        map.put("friendly_name",
+                map.get("manufacturer") + " " +
+                map.get("model_name") + " " +
+                map.get("screen_size") + " " +
+                "Laptop - " +
+                map.get("processor") + " - " +
+                map.get("ram_size") + " " +
+                map.get("hdd"));
+
         return map;
     }
 }
