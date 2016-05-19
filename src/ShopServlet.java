@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
+import java.util.*;
 
 public class ShopServlet extends HttpServlet {
 
@@ -67,13 +68,13 @@ public class ShopServlet extends HttpServlet {
             ResultSet rs = statement.executeQuery(sql);
 
             while (rs.next()) {
+                Map<String, String> map = prettifyData(rs);
                 out.println("<tr class=\"info\">");
-                out.println("<td>" + rs.getInt("product_number") + "</td>");
-                out.println("<td>" + rs.getString("model_name") + "</td>");
-
-                out.println("<td>" + rs.getString("model_number") + "</td>");
-                out.println("<td>" + rs.getString("manufacturer") + "</td>");
-                out.println("<td>" + rs.getDouble("price") + "</td>");
+                out.println("<td>" + map.get("product_number") + "</td>");
+                out.println("<td>" + map.get("model_name") + "</td>");
+                out.println("<td>" + map.get("model_number") + "</td>");
+                out.println("<td>" + map.get("manufacturer") + "</td>");
+                out.println("<td>" + map.get("price") + "</td>");
                 out.println("</tr>");
             }
 
@@ -84,5 +85,26 @@ public class ShopServlet extends HttpServlet {
         catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+
+    private Map<String, String> prettifyData(ResultSet rs) throws SQLException {
+        List<String> strings = Arrays.asList("model_name", "image_path", "model_number", "manufacturer", "processor", "graphics", "hdd_type", "operating_system");
+        List<String> doubles = Arrays.asList("price", "screen_size", "ram_size_gb", "hdd_size_gb");
+        List<String> ints = Arrays.asList("product_number");
+
+        Map<String, String> map = new HashMap<>();
+        for (String str : strings) {
+            map.put(str, rs.getString(str));
+        }
+        for (String str : doubles) {
+            Double d = rs.getDouble(str);
+            map.put(str, d.toString());
+        }
+        for (String str : ints) {
+            Integer i = rs.getInt(str);
+            map.put(str, i.toString());
+        }
+        return map;
     }
 }
