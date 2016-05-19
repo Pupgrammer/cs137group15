@@ -30,7 +30,7 @@ public class ShopServlet extends HttpServlet {
         out.println("<html lang=\"en\">");
         out.println("<head>");
         out.println("<meta charset=\"UTF-8\">");
-        out.println("<link type=\"text/css\" rel=\"stylesheet\" href=\"old/styles/style.css\">");
+        out.println("<link type=\"text/css\" rel=\"stylesheet\" href=\"styles/style.css\">");
         out.println("<title>Shop</title>");
         out.println("</head>");
         out.println("<body>");
