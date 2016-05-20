@@ -35,10 +35,10 @@ $pdo = null;
 <head>
   <meta charset="UTF-8">
   <link type="text/css" rel="stylesheet" href="../styles/style.css">
-  <script type="text/javascript" src="scripts/validate_orderForm.js"></script>
-  <script type="text/javascript" src="scripts/ajax_cityState.js"></script>
-  <script type="text/javascript" src="scripts/ajax_zipSuggestions.js"></script>
-  <script type="text/javascript" src="scripts/calculatePrices.js"></script>
+  <script type="text/javascript" src="../scripts/validate_orderForm.js"></script>
+  <script type="text/javascript" src="../scripts/ajax_cityState.js"></script>
+  <script type="text/javascript" src="../scripts/ajax_zipSuggestions.js"></script>
+  <script type="text/javascript" src="../scripts/calculatePrices.js"></script>
   <title>Product <?php echo $data['product_number']; ?></title>
 </head>
 
