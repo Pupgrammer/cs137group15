@@ -34,7 +34,7 @@ $pdo = null;
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link type="text/css" rel="stylesheet" href="styles/style.css">
+  <link type="text/css" rel="stylesheet" href="../styles/style.css">
   <script type="text/javascript" src="scripts/validate_orderForm.js"></script>
   <script type="text/javascript" src="scripts/ajax_cityState.js"></script>
   <script type="text/javascript" src="scripts/ajax_zipSuggestions.js"></script>
@@ -44,7 +44,7 @@ $pdo = null;
 
 
 <body>
-  <img class="logo" src="images/logo.png" alt="Logo"/>
+  <img class="logo" src="../images/logo.png" alt="Logo"/>
 
   <div class="container">
     <ul>
@@ -62,7 +62,7 @@ $pdo = null;
     </tr>
 
     <tr>
-      <td class="img" colspan="2"><img src="<?php echo $data['image_path']; ?>" class="thumbnail"
+      <td class="img" colspan="2"><img src="../<?php echo $data['image_path']; ?>" class="thumbnail"
                                        alt="<?php echo $data['friendly_name']; ?>"
                                        title="<?php echo $data['friendly_name']; ?>"
                                        width=200/></td>
@@ -109,10 +109,10 @@ $pdo = null;
 
   <form action="processorder.php" class="orderForm" name="orderForm" onSubmit="return (validate())" method="POST">
     <br>Product Number:<br>
-    <input type="number" name="product_number" value="<?php echo $data['product_number'] ?>" readonly/>     
+    <input type="number" name="product_number" value="<?php echo $data['product_number'] ?>" readonly/>
     <br>Product Name:<br>
     <input type="text" name="friendly_name" value="<?php echo $data['friendly_name'] ?>" readonly/>
-    <br>Quantity:<br>    
+    <br>Quantity:<br>
     <input type="number" name="quantity" onkeyup="ensureValidQuantity()" onchange="updateCosts()"/>
 
     <br><br>
@@ -126,12 +126,12 @@ $pdo = null;
     <input type="tel" name="phoneNumber"/>
 
     <br><br>
-      
-     
+
+
     <br>Street Address:<br>
     <input type="text" name="streetAddress"/>
 
-      
+
     <br>Zipcode (5 digits):<br>
     <input type="text" onblur="getCityState(this.value)" onkeyup="getZipSuggestions(this.value)" id="zipcode" name="zipcode"/><br>
     <span id="suggestions" style="border:0px"></span>
@@ -155,12 +155,12 @@ $pdo = null;
     <table class="cost">
     <tr>
       <td class="cost">Subtotal</td>
-      <td class="cost">$<span id="subtotalCost">0.00</span></td> 
+      <td class="cost">$<span id="subtotalCost">0.00</span></td>
     </tr>
     <tr style="border-bottom: 2px solid black">
       <td class="cost">Shipping Cost</td>
-      <td class="cost">$<span id="shippingCost">0.00</span></td> 
-    <tr>                                                            
+      <td class="cost">$<span id="shippingCost">0.00</span></td>
+    <tr>
     <tr>
       <td class="cost">Total Cost</td>
       <td class="cost">$<span id="totalCost">0.00</span></td>
@@ -169,10 +169,10 @@ $pdo = null;
     <br>
     <input type="submit" value="Submit Order"/>
     <br>
-    
-    
-    
+
+
+
   </form>
-  
+
 </body>
 </html>

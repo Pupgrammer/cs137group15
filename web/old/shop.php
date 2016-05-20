@@ -26,13 +26,13 @@ $pdo = null;
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link type="text/css" rel="stylesheet" href="styles/style.css">
+  <link type="text/css" rel="stylesheet" href="../styles/style.css">
   <title>Shop</title>
 </head>
 
 
 <body>
-  <img class="logo" src="images/logo.png" alt="Logo"/>
+  <img class="logo" src="../images/logo.png" alt="Logo"/>
   <div class="container">
     <ul>
       <li><a class="active" href="index.html">Home</a></li>
@@ -66,7 +66,7 @@ $pdo = null;
         <td><?php echo $data['model_name'] ?></td>
         <td class="img">
           <a href="product.php?product_number=<?php echo $data['product_number'] ?>">
-            <img src="<?php echo $data['image_path'] ?>"
+            <img src="../<?php echo $data['image_path'] ?>"
                  alt="<?php echo $data['friendly_name'] ?>"
                  title="<?php echo $data['friendly_name'] ?>"/>
           </a>
