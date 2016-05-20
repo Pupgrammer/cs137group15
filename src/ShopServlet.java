@@ -72,6 +72,15 @@ public class ShopServlet extends HttpServlet {
                 out.println("<tr class=\"info\">");
                 out.println("<td>" + map.get("product_number") + "</td>");
                 out.println("<td>" + map.get("model_name") + "</td>");
+
+                out.println("<td class=\"img\">" );
+                out.println("<a href=\"shop\">");
+                out.println("<img src=\"" + map.get("image_path") + "\"");
+                out.println("alt=\"" + map.get("friendly_name") + "\"");
+                out.println("title=\"" + map.get("friendly_name") + "\"/>");
+                out.println("</a>");
+                out.println("</td>");
+
                 out.println("<td>" + map.get("model_number") + "</td>");
                 out.println("<td>" + map.get("manufacturer") + "</td>");
                 out.println("<td>" + map.get("price") + "</td>");
@@ -110,10 +119,14 @@ public class ShopServlet extends HttpServlet {
         map.put("price", "$" + String.format("%.2f", Double.parseDouble(map.get("price"))));
 
         Double d = Double.parseDouble(map.get("hdd_size_gb"));
-        String s = ( (d < 1000) ? map.get("hdd_size_gb") + "GB" : ((Double) (d / 1000)).toString() + "TB" ) + map.get("hdd_type");
+        String s = ( (d < 1000) ? map.get("hdd_size_gb") + "GB" : ((Double) (d / 1000)).toString() + "TB" ) + " " + map.get("hdd_type");
         map.put("hdd", s);
-        map.put("ram_size", map.get("ram_size") + "GB");
-        map.put("screen_size", map.get("screen_size" + "&quot;"));
+
+        Double d2 = Double.parseDouble(map.get("ram_size_gb"));
+        Integer i = d2.intValue();
+        map.put("ram_size", i.toString() + "GB");
+
+        map.put("screen_size", map.get("screen_size") + "&quot;");
 
         map.put("friendly_name",
                 map.get("manufacturer") + " " +
