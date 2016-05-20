@@ -1,4 +1,4 @@
-/* 
+/*
  * CS137 Spring 2016 | Group 15
  * Main Author: Thomas Tai Nguyen
  * Filename: validate_orderForm.js
@@ -7,11 +7,11 @@
 // I'm following the example Slide 79 on Lecture 1. Even though it's programmatically sloppy. - Thomas
 // If anyone else knows how to check for negative integer, please let me know (right now, I'm doing document.orderForm.input.value[0] === "-" which is a bit crude.)
 
-/* Helper Functions */ 
+/* Helper Functions */
 
 function checkSymbolInText()
 {
-    
+
     var error = 0;
     for (var i = 0; i < arguments.length; i++)
     {
@@ -25,7 +25,7 @@ function checkSymbolInText()
             arguments[i].style.backgroundColor = "";
         }
     }
-    
+
     if (error > 0)
     {
         return true;
@@ -72,7 +72,7 @@ function validate_creditCard()
     document.orderForm.creditCard.style.backgroundColor = "";
     return 0;
 }
-    
+
 function validate_quantity()
 {
     if (!parseInt(document.orderForm.quantity.value) > 0 || document.orderForm.quantity.value[0] === "-")
@@ -125,7 +125,7 @@ function validate_shippingAddress()
     var zipcode = document.orderForm.zipcode;
     var city = document.orderForm.city;
     var state = document.orderForm.state;
-    
+
     if (checkEmptyText(streetAddress, city, state, zipcode))
     {
         alert("Please do not leave your street address, zipcode, city, or state blank.");
@@ -135,7 +135,7 @@ function validate_shippingAddress()
     {
         document.orderForm.zipcode.style.backgroundColor = "";
     }
-    
+
     if (error === 1)
     {
         return 1;
@@ -166,7 +166,7 @@ function validate_checkEmptyText()
 function validate_shippingMethod()
 {
     var shippingMethod = document.orderForm.shipping.value;
-    
+
     if (shippingMethod === "default")
     {
         document.orderForm.shipping.style.backgroundColor = "yellow";
@@ -183,7 +183,7 @@ function validate_shippingMethod()
 /* Main Function */
 function validate()
 {
-    var error = 0 + validate_quantity() + validate_checkEmptyText() + validate_email() + validate_phoneNumber() + validate_shippingAddress() + validate_shippingMethod() + validate_creditCard();
+    var error = 0 + validate_checkEmptyText() + validate_email() + validate_phoneNumber() + validate_shippingAddress() + validate_shippingMethod() + validate_creditCard();
     if (error === 0)
     {
         return true;

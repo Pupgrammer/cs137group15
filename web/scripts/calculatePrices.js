@@ -1,4 +1,4 @@
-/* 
+/*
  * CS137 Spring 2016 | Group 15
  * Main Author: Alex Lin/Thomas Tai Nguyen
  * Filename: calculate_prices.js
@@ -76,10 +76,8 @@ function getQuantity()
 
 function updateSubtotal()
 {
-    var price = document.getElementById("getPriceFromJS").innerHTML;
-    price = price.substr(1, price.length); // gets rid of $ sign
-    price = price.replace(/,/g, ''); // gets rid of commas
-    var quantity = getQuantity();
+    var price = 0; // IMPLEMENT GET TOTAL PRICE!!
+    var quantity = 0; // IMPLEMENT GET TOTAL PRICE!!
     var sub_price = (parseFloat(price) * parseFloat(quantity));
     document.getElementById("subtotalCost").innerHTML = sub_price.toFixed(2);
     return sub_price;
