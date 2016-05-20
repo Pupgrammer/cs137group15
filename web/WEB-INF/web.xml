@@ -34,4 +34,14 @@
         <url-pattern>/shop</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ProductServlet</servlet-name>
+        <servlet-class>ProductServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ProductServlet</servlet-name>
+        <url-pattern>/product</url-pattern>
+    </servlet-mapping>
+
 </web-app>

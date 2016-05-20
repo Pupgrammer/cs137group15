@@ -74,7 +74,7 @@ public class ShopServlet extends HttpServlet {
                 out.println("<td>" + dataRow.get("model_name") + "</td>");
 
                 out.println("<td class=\"img\">" );
-                out.println("<a href=\"shop\">");
+                out.println("<a href=\"product?product_number=" + dataRow.get("product_number") + "\">");
                 out.println("<img src=\"" + dataRow.get("image_path") + "\"");
                 out.println("alt=\"" + dataRow.get("friendly_name") + "\"");
                 out.println("title=\"" + dataRow.get("friendly_name") + "\"/>");
