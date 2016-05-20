@@ -31,11 +31,7 @@ public class ProductServlet extends HttpServlet {
         out.println("<head>");
         out.println("<meta charset=\"UTF-8\">");
         out.println("<link type=\"text/css\" rel=\"stylesheet\" href=\"styles/style.css\">");
-        out.println("<script type=\"text/javascript\" src=\"../scripts/validate_orderForm.js\"></script>");
-        out.println("<script type=\"text/javascript\" src=\"../scripts/ajax_cityState.js\"></script>");
-        out.println("<script type=\"text/javascript\" src=\"../scripts/ajax_zipSuggestions.js\"></script>");
-        out.println("<script type=\"text/javascript\" src=\"../scripts/calculatePrices.js\"></script>");
-        out.println("<title>?????</title>");
+        out.println("<title>Product " + request.getParameter("product_number") + "</title>");
         out.println("</head>");
 
         out.println("<body>");
@@ -65,11 +61,51 @@ public class ProductServlet extends HttpServlet {
             while (rs.next()) {
                 DataRow dataRow = new DataRow(rs);
                 out.println("<tr class=\"info\">");
-
-
-                out.println(dataRow.get("product_number") + "<br>");
-                out.println(dataRow.get("model_name") + "<br>");
-                out.println(dataRow.get("friendly_name") + "<br>");
+                out.println("<th class=\"info\" colspan=\"2\">" + dataRow.get("friendly_name") + "</th>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<td class=\"img\" colspan=\"2\"><img src=\"../" + dataRow.get("image_path") + "\" class=\"thumbnail\"");
+                out.println("alt=\"" + dataRow.get("friendly_name") + "\"");
+                out.println("title=\"" + dataRow.get("friendly_name") + "\"");
+                out.println("width=200/></td>");
+                out.println("</tr>");
+                out.println("<tr class=\"info\">");
+                out.println("<td class=\"info\">Model No.</td>");
+                out.println("<td class=\"desc\">" + dataRow.get("model_number") + "</td>");
+                out.println("</tr>");
+                out.println("<tr class=\"info\">");
+                out.println("<td class=\"info\">Manufacturer</td>");
+                out.println("<td class=\"desc\">" + dataRow.get("manufacturer") + "</td>");
+                out.println("</tr>");
+                out.println("<tr class=\"info\">");
+                out.println("<td class=\"info\">Price</td>");
+                out.println("<td class=\"desc\" id=\"getPriceFromJS\">" + dataRow.get("price") + "</td>");
+                out.println("</tr>");
+                out.println("<tr class=\"info\">");
+                out.println("<td class=\"info\">Processor</td>");
+                out.println("<td class=\"desc\">" + dataRow.get("processor") + "</td>");
+                out.println("</tr>");
+                out.println("<tr class=\"info\">");
+                out.println("<td class=\"info\">Screen Size</td>");
+                out.println("<td class=\"desc\">" + dataRow.get("screen_size") + "</td>");
+                out.println("</tr>");
+                out.println("<tr class=\"info\">");
+                out.println("<td class=\"info\">Graphics</td>");
+                out.println("<td class=\"desc\">" + dataRow.get("graphics") + "</td>");
+                out.println("</tr>");
+                out.println("<tr class=\"info\">");
+                out.println("<td class=\"info\">RAM</td>");
+                out.println("<td class=\"desc\">" + dataRow.get("ram_size") + "</td>");
+                out.println("</tr>");
+                out.println("<tr class=\"info\">");
+                out.println("<td class=\"info\">HDD</td>");
+                out.println("<td class=\"desc\">" + dataRow.get("hdd") + "</td>");
+                out.println("</td>");
+                out.println("</tr>");
+                out.println("<tr class=\"info\">");
+                out.println("<td class=\"info\">OS</td>");
+                out.println("<td class=\"desc\">" + dataRow.get("operating_system") + "</td>");
+                out.println("</tr>");
             }
         }
 
