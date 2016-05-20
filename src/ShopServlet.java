@@ -68,22 +68,22 @@ public class ShopServlet extends HttpServlet {
             ResultSet rs = statement.executeQuery(sql);
 
             while (rs.next()) {
-                Map<String, String> map = prettifyData(rs);
+                DataRow dataRow = new DataRow(rs);
                 out.println("<tr class=\"info\">");
-                out.println("<td>" + map.get("product_number") + "</td>");
-                out.println("<td>" + map.get("model_name") + "</td>");
+                out.println("<td>" + dataRow.get("product_number") + "</td>");
+                out.println("<td>" + dataRow.get("model_name") + "</td>");
 
                 out.println("<td class=\"img\">" );
                 out.println("<a href=\"shop\">");
-                out.println("<img src=\"" + map.get("image_path") + "\"");
-                out.println("alt=\"" + map.get("friendly_name") + "\"");
-                out.println("title=\"" + map.get("friendly_name") + "\"/>");
+                out.println("<img src=\"" + dataRow.get("image_path") + "\"");
+                out.println("alt=\"" + dataRow.get("friendly_name") + "\"");
+                out.println("title=\"" + dataRow.get("friendly_name") + "\"/>");
                 out.println("</a>");
                 out.println("</td>");
 
-                out.println("<td>" + map.get("model_number") + "</td>");
-                out.println("<td>" + map.get("manufacturer") + "</td>");
-                out.println("<td>" + map.get("price") + "</td>");
+                out.println("<td>" + dataRow.get("model_number") + "</td>");
+                out.println("<td>" + dataRow.get("manufacturer") + "</td>");
+                out.println("<td>" + dataRow.get("price") + "</td>");
                 out.println("</tr>");
             }
 
@@ -96,45 +96,4 @@ public class ShopServlet extends HttpServlet {
         }
     }
 
-
-    private Map<String, String> prettifyData(ResultSet rs) throws SQLException {
-        List<String> strings = Arrays.asList("model_name", "image_path", "model_number", "manufacturer", "processor", "graphics", "hdd_type", "operating_system");
-        List<String> doubles = Arrays.asList("price", "screen_size");
-        List<String> ints = Arrays.asList("product_number", "ram_size_gb", "hdd_size_gb");
-
-        Map<String, String> map = new HashMap<>();
-        for (String str : strings) {
-            map.put(str, rs.getString(str));
-        }
-        for (String str : doubles) {
-            map.put(str, ((Double) rs.getDouble(str)).toString());
-        }
-        for (String str : ints) {
-            map.put(str, ((Integer) rs.getInt(str)).toString());
-        }
-
-        map.put("model_number", map.get("model_number"));
-        map.put("price", "$" + String.format("%.2f", Double.parseDouble(map.get("price"))));
-
-        Integer i = Integer.parseInt(map.get("hdd_size_gb"));
-        map.put("hdd",
-                ((i < 1000) ? map.get("hdd_size_gb") + "GB" : Integer.valueOf(i / 1000).toString() + "TB" )
-                        + " " + map.get("hdd_type"));
-
-        Integer i2 = Integer.parseInt(map.get("ram_size_gb"));
-        map.put("ram_size", i2.toString() + "GB");
-
-        map.put("screen_size", map.get("screen_size") + "&quot;");
-
-        map.put("friendly_name",
-                map.get("manufacturer") + " " +
-                map.get("model_name") + " " +
-                map.get("screen_size") + " " +
-                "Laptop - " +
-                map.get("processor") + " - " +
-                map.get("ram_size") + " " +
-                map.get("hdd"));
-
-        return map;
-    }
 }
