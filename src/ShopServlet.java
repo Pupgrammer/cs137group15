@@ -99,8 +99,8 @@ public class ShopServlet extends HttpServlet {
 
     private Map<String, String> prettifyData(ResultSet rs) throws SQLException {
         List<String> strings = Arrays.asList("model_name", "image_path", "model_number", "manufacturer", "processor", "graphics", "hdd_type", "operating_system");
-        List<String> doubles = Arrays.asList("price", "screen_size", "ram_size_gb", "hdd_size_gb");
-        List<String> ints = Arrays.asList("product_number");
+        List<String> doubles = Arrays.asList("price", "screen_size");
+        List<String> ints = Arrays.asList("product_number", "ram_size_gb", "hdd_size_gb");
 
         Map<String, String> map = new HashMap<>();
         for (String str : strings) {
@@ -115,16 +115,16 @@ public class ShopServlet extends HttpServlet {
             map.put(str, i.toString());
         }
 
-        map.put("model_number", map.get("model_number") + "!!!");
+        map.put("model_number", map.get("model_number"));
         map.put("price", "$" + String.format("%.2f", Double.parseDouble(map.get("price"))));
 
-        Double d = Double.parseDouble(map.get("hdd_size_gb"));
-        String s = ( (d < 1000) ? map.get("hdd_size_gb") + "GB" : ((Double) (d / 1000)).toString() + "TB" ) + " " + map.get("hdd_type");
-        map.put("hdd", s);
+        Integer i = Integer.parseInt(map.get("hdd_size_gb"));
+        map.put("hdd",
+                ((i < 1000) ? map.get("hdd_size_gb") + "GB" : Integer.valueOf(i / 1000).toString() + "TB" )
+                        + " " + map.get("hdd_type"));
 
-        Double d2 = Double.parseDouble(map.get("ram_size_gb"));
-        Integer i = d2.intValue();
-        map.put("ram_size", i.toString() + "GB");
+        Integer i2 = Integer.parseInt(map.get("ram_size_gb"));
+        map.put("ram_size", i2.toString() + "GB");
 
         map.put("screen_size", map.get("screen_size") + "&quot;");
 
