@@ -4,8 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.*;
 
 public class ProductServlet extends HttpServlet {
 
@@ -49,12 +48,39 @@ public class ProductServlet extends HttpServlet {
         out.println("<li><a href=\"contactus.html\">Contact</a></li>");
         out.println("</ul>");
         out.println("</div>");
-        //out.println("<table class=\"info\">");
-        //out.println("<tr class=\"info\">");
+        out.println("<table class=\"info\">");
+
+        try {
+            // Register JDBC driver
+            Class.forName(JDBC_DRIVER);
+
+            // Open a connection
+            connection = DriverManager.getConnection(SERVER_NAME + DB_NAME, USER, PASS);
+
+            // Execute SQL query
+            statement = connection.createStatement();
+            String sql = "SELECT * FROM products WHERE product_number=" + request.getParameter("product_number")  + ";";
+            ResultSet rs = statement.executeQuery(sql);
+
+            while (rs.next()) {
+                DataRow dataRow = new DataRow(rs);
+                out.println("<tr class=\"info\">");
+
+
+                out.println(dataRow.get("product_number") + "<br>");
+                out.println(dataRow.get("model_name") + "<br>");
+                out.println(dataRow.get("friendly_name") + "<br>");
+            }
+        }
+
+        catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
 
         out.println("</body>");
         out.println("</html>");
-
 
 
 
