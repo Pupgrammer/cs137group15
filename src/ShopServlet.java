@@ -107,12 +107,10 @@ public class ShopServlet extends HttpServlet {
             map.put(str, rs.getString(str));
         }
         for (String str : doubles) {
-            Double d = rs.getDouble(str);
-            map.put(str, d.toString());
+            map.put(str, ((Double) rs.getDouble(str)).toString());
         }
         for (String str : ints) {
-            Integer i = rs.getInt(str);
-            map.put(str, i.toString());
+            map.put(str, ((Integer) rs.getInt(str)).toString());
         }
 
         map.put("model_number", map.get("model_number"));
