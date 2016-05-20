@@ -39,7 +39,7 @@ public class ShopServlet extends HttpServlet {
         out.println("<div class=\"container\">");
         out.println("<ul>");
         out.println("<li><a class=\"active\" href=\"index.html\">Home</a></li>");
-        out.println("<li><a href=\"shop.php\">Shop</a></li>");
+        out.println("<li><a href=\"shop\">Shop</a></li>");
         out.println("<li><a href=\"aboutus.html\">About Us</a></li>");
         out.println("<li><a href=\"contactus.html\">Contact</a></li>");
         out.println("</ul>");
