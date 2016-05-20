@@ -25,7 +25,6 @@ public class DataRow {
             map.put(str, ((Integer) rs.getInt(str)).toString());
         }
 
-        map.put("model_number", map.get("model_number"));
         map.put("price", "$" + String.format("%.2f", Double.parseDouble(map.get("price"))));
 
         Integer i = Integer.parseInt(map.get("hdd_size_gb"));
