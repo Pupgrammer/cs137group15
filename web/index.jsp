@@ -13,6 +13,20 @@
   <body>
   <h1><a href="st">ServletTest</a></h1>
   <h1><a href="db">DatabaseAccessTest</a></h1>
-  <%--$END$--%>
+  <h1><a href="checkout">(Checkout) No GET parameters test</a></h1>
+  <br>
+    <form method="get" action="checkout">
+        <p>(Checkout) GET parameter test:</p>
+        <span>Arbitrary Parameter - </span><input type="number" name="test" value="1" />
+        <input type='submit' />
+    </form>
+  <br>
+    <form method="post" action="checkout">
+        <p>(Checkout) POST parameter test:</p>
+        <span>Arbitrary Parameter - </span><input type="number" name="test" value="1" />
+        <input type='submit' />
+    </form>
   </body>
 </html>
+
+  <%--$END$--%>
