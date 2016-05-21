@@ -42,6 +42,7 @@ public class ShopServlet extends HttpServlet {
         out.println("<li><a href=\"shop\">Shop</a></li>");
         out.println("<li><a href=\"aboutus.html\">About Us</a></li>");
         out.println("<li><a href=\"contactus.html\">Contact</a></li>");
+        out.println("<li><a href=\"checkout\">Cart/Checkout</a></li>");
         out.println("</ul>");
         out.println("</div>");
         out.println("<p>Interested in a product? Click on the product image for more details and to order it!</p>");

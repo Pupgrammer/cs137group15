@@ -24,11 +24,11 @@
 
   <div class="container">
     <ul>
-      <li><a href="./index.jsp">Home</a></li>
-      <li><a href="">Shop</a></li>
-      <li><a href="">About Us</a></li>
-      <li><a href="">Contact</a></li>
-      <li><a href="" class="active">Checkout</a></li>
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./shop">Shop</a></li>
+      <li><a href="./aboutus.html">About Us</a></li>
+      <li><a href="./contactus.html">Contact</a></li>
+      <li><a href="checkout" class="active">Checkout</a></li>
     </ul>
   </div>  
       <br><br>
