@@ -16,6 +16,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+// Note: DB code created by Brian Chipman and reused here.
+
 // I'm getting a lot of OutOfMemoryErrors after running this for a while. Do I need to explicitly empty the heap? Hopefully the session API will help me out here,
 // because I'm creating a lot of new ArrayLists since I don't have a static one stored with a session... - Thomas
 
@@ -113,7 +115,7 @@ public class Checkout extends HttpServlet {
     
     /* Begin Helper Functions */ 
     ArrayList<DataRow> getProductInfo(ArrayList productList)
-    {
+    { // Main function that is called to retrieve product information.
         if (productList.isEmpty())
         {
             return null;
@@ -126,7 +128,7 @@ public class Checkout extends HttpServlet {
     }
     
     String createProductSQLStatement(ArrayList<DataRow> productList)
-    {
+    { // Assumes that productList has at least one element.
         String sql = "SELECT * from products WHERE product_number = " + productList.get(0);
         for (int i = 1; i != productList.size(); i++)
         {
@@ -136,7 +138,7 @@ public class Checkout extends HttpServlet {
     }
     
     ArrayList<DataRow> retrieveProductsFromDB(String sql)
-    {
+    { // Retrieves product information from DB and stores it into a ArrayList<DataRow>
        ArrayList<DataRow> result = new ArrayList<DataRow>();
        try {
             final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
