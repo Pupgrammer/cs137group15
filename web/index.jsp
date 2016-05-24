@@ -11,8 +11,6 @@
     <title>$Title$</title>
   </head>
   <body>
-  <h1><a href="st">ServletTest</a></h1>
-  <h1><a href="db">DatabaseAccessTest</a></h1>
   <h1><a href="shop">ShopServlet</a></h1>
   <h1><a href="checkout">(Checkout) No GET parameters test</a></h1>
   <br>
