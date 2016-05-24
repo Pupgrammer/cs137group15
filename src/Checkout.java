@@ -24,19 +24,64 @@ public class Checkout extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // doGet is called in a standard <ahref='..> as well as method GET. Will be most likely used to retrieve current cart.
 
-        /* The following code will be replaced with session code once implemented. */
-        ArrayList productList = new ArrayList<DataRow>();
-        productList.add(1);
-        productList.add(2);
+        if (request.getParameter("zip") != null) {
+            myAjaxTestFunction(request, response);
+        }
+        else {
+            /* The following code will be replaced with session code once implemented. */
+            ArrayList productList = new ArrayList<DataRow>();
+            productList.add(1);
+            productList.add(2);
 
-        // Get the information for the products.
-        ArrayList<DataRow> prettyProductList = getProductInfo(productList);
+            // Get the information for the products.
+            ArrayList<DataRow> prettyProductList = getProductInfo(productList);
+            PrintWriter out = response.getWriter();
+            printPage(out, prettyProductList, "");
+            prettyProductList = null;
+            // Send the products to JSP for printing.
+            //request.setAttribute("products", prettyProductList); // This will be available as ${message}
+            //request.getRequestDispatcher("/WEB-INF/checkout_test.jsp").forward(request, response); // maybe temporary.
+        }
+    }
+
+    private void myAjaxTestFunction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // JDBC driver name and database URL
+        final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+        final String SERVER_NAME = ConnectionInfo.SERVER_NAME;
+        final String DB_NAME = ConnectionInfo.DATABASE_NAME;
+
+        //  Database credentials
+        final String USER = ConnectionInfo.USER_NAME;
+        final String PASS = ConnectionInfo.PASSWORD;
+
+        Statement statement = null;
+        Connection connection = null;
+
+        response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        printPage(out, prettyProductList, "");
-        prettyProductList = null;
-        // Send the products to JSP for printing.
-        //request.setAttribute("products", prettyProductList); // This will be available as ${message}
-        //request.getRequestDispatcher("/WEB-INF/checkout_test.jsp").forward(request, response); // maybe temporary.
+
+        String zip = request.getParameter("zip");
+        System.out.println("zip = " + zip);
+
+        try {
+            // Register JDBC driver
+            Class.forName(JDBC_DRIVER);
+
+            // Open a connection
+            connection = DriverManager.getConnection(SERVER_NAME + DB_NAME, USER, PASS);
+
+            // Execute SQL query
+            statement = connection.createStatement();
+            String sql = "SELECT City, State FROM location_data WHERE Zipcode=" + zip;
+            ResultSet rs = statement.executeQuery(sql);
+
+            while (rs.next()) {
+                out.print(rs.getString("City") + "," + rs.getString("State"));
+            }
+        }
+        catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -168,10 +213,10 @@ public class Checkout extends HttpServlet {
         out.println("<head>");
         out.println("<meta charset=\'UTF-8\'>");
         out.println("<link type=\'text/css\' rel=\'stylesheet\' href=\'styles/style.css\'>");
-        out.println("<script type=\"text/javascript\" src=\"./scripts/validate_orderForm.js\"></script>");
-        out.println("<script type=\"text/javascript\" src=\"./scripts/ajax_cityState.js\"></script>");
-        out.println("<script type=\"text/javascript\" src=\"./scripts/ajax_zipSuggestions.js\"></script>");
-        out.println("<script type=\"text/javascript\" src=\"./scripts/calculatePrices.js\"></script>");
+        out.println("<script type=\"text/javascript\" src=\"scripts/validate_orderForm.js\" defer></script>");
+        out.println("<script type=\"text/javascript\" src=\"scripts/ajax_cityState.js\" defer></script>");
+        out.println("<script type=\"text/javascript\" src=\"scripts/ajax_zipSuggestions.js\" defer></script>");
+        out.println("<script type=\"text/javascript\" src=\"scripts/calculatePrices.js\" defer></script>");
         out.println("<title>Cart/Checkout</title>");
         out.println("</head>");
         out.println("<body>");
@@ -266,7 +311,8 @@ public class Checkout extends HttpServlet {
 
 
             out.println("<br>Zipcode (5 digits):<br>");
-            out.println("<input type='text' onblur='getCityState(this.value)' onkeyup='getZipSuggestions(this.value)' id='zipcode' name='zipcode'/><br>");
+            //out.println("<input type='text' onblur='getCityState(this.value)' onkeyup='getZipSuggestions(this.value)' id='zipcode' name='zipcode'/><br>");
+            out.println("<input type='text' id='zipcode' name='zipcode'/><br>");
             out.println("<span id='suggestions' style='border:0px'></span>");
 
             out.println("<br>City:<br>");
