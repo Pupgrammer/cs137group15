@@ -54,7 +54,7 @@ public class DataRow {
     public String get(String name) {
         return map.get(name);
     }
-    
+
     public String getRaw(String name)
     {
         return raw_map.get(name);

@@ -2,6 +2,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
@@ -11,19 +12,6 @@ public class ShopServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        // JDBC driver name and database URL
-        final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-        final String SERVER_NAME = ConnectionInfo.SERVER_NAME;
-        final String DB_NAME = ConnectionInfo.DATABASE_NAME;
-
-        //  Database credentials
-        final String USER = ConnectionInfo.USER_NAME;
-        final String PASS = ConnectionInfo.PASSWORD;
-
-        Statement statement = null;
-        Connection connection = null;
-
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
@@ -57,19 +45,11 @@ public class ShopServlet extends HttpServlet {
         out.println("</tr>");
 
         try {
-            // Register JDBC driver
-            Class.forName(JDBC_DRIVER);
-
-            // Open a connection
-            connection = DriverManager.getConnection(SERVER_NAME + DB_NAME, USER, PASS);
-
-            // Execute SQL query
-            statement = connection.createStatement();
             String sql = "SELECT * from products";
-            ResultSet rs = statement.executeQuery(sql);
+            DatabaseResultSet dbrs = new DatabaseResultSet(sql);
 
-            while (rs.next()) {
-                DataRow dataRow = new DataRow(rs);
+            while (dbrs.getResultSet().next()) {
+                DataRow dataRow = new DataRow(dbrs.getResultSet());
                 out.println("<tr class=\"info\">");
                 out.println("<td>" + dataRow.get("product_number") + "</td>");
                 out.println("<td>" + dataRow.get("model_name") + "</td>");
@@ -92,7 +72,7 @@ public class ShopServlet extends HttpServlet {
             out.println("</body>");
             out.println("</html>");
         }
-        catch (SQLException | ClassNotFoundException e) {
+        catch (SQLException e) {
             e.printStackTrace();
         }
     }

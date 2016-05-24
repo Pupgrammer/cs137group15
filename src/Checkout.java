@@ -25,7 +25,7 @@ public class Checkout extends HttpServlet {
         // doGet is called in a standard <ahref='..> as well as method GET. Will be most likely used to retrieve current cart.
 
         if (request.getParameter("zip") != null) {
-            myAjaxTestFunction(request, response);
+            getCityStateFromDB(request, response);
         }
         else {
             /* The following code will be replaced with session code once implemented. */
@@ -41,46 +41,6 @@ public class Checkout extends HttpServlet {
             // Send the products to JSP for printing.
             //request.setAttribute("products", prettyProductList); // This will be available as ${message}
             //request.getRequestDispatcher("/WEB-INF/checkout_test.jsp").forward(request, response); // maybe temporary.
-        }
-    }
-
-    private void myAjaxTestFunction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // JDBC driver name and database URL
-        final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-        final String SERVER_NAME = ConnectionInfo.SERVER_NAME;
-        final String DB_NAME = ConnectionInfo.DATABASE_NAME;
-
-        //  Database credentials
-        final String USER = ConnectionInfo.USER_NAME;
-        final String PASS = ConnectionInfo.PASSWORD;
-
-        Statement statement = null;
-        Connection connection = null;
-
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-
-        String zip = request.getParameter("zip");
-        System.out.println("zip = " + zip);
-
-        try {
-            // Register JDBC driver
-            Class.forName(JDBC_DRIVER);
-
-            // Open a connection
-            connection = DriverManager.getConnection(SERVER_NAME + DB_NAME, USER, PASS);
-
-            // Execute SQL query
-            statement = connection.createStatement();
-            String sql = "SELECT City, State FROM location_data WHERE Zipcode=" + zip;
-            ResultSet rs = statement.executeQuery(sql);
-
-            while (rs.next()) {
-                out.print(rs.getString("City") + "," + rs.getString("State"));
-            }
-        }
-        catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -170,31 +130,13 @@ public class Checkout extends HttpServlet {
     ArrayList<DataRow> retrieveProductsFromDB(String sql) { // Retrieves product information from DB and stores it into a ArrayList<DataRow>
         ArrayList<DataRow> result = new ArrayList<DataRow>();
         try {
-            final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-            final String SERVER_NAME = ConnectionInfo.SERVER_NAME;
-            final String DB_NAME = ConnectionInfo.DATABASE_NAME;
-
-            //  Database credentials
-            final String USER = ConnectionInfo.USER_NAME;
-            final String PASS = ConnectionInfo.PASSWORD;
-
-            Statement statement = null;
-            Connection connection = null;
-
-            // Register JDBC driver
-            Class.forName(JDBC_DRIVER);
-
-            // Open a connection
-            connection = DriverManager.getConnection(SERVER_NAME + DB_NAME, USER, PASS);
-            statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
-
-            while (rs.next()) {
-                DataRow dataRow = new DataRow(rs);
+            DatabaseResultSet dbrs = new DatabaseResultSet(sql);
+            while (dbrs.getResultSet().next()) {
+                DataRow dataRow = new DataRow(dbrs.getResultSet());
                 result.add(dataRow);
             }
         }
-        catch (SQLException | ClassNotFoundException e) {
+        catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
@@ -338,4 +280,24 @@ public class Checkout extends HttpServlet {
         out.println("</body>");
         out.println("</html>");
     }
+
+    // Handles AJAX request, "returning" string of "city,state"
+    private void getCityStateFromDB(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        String zip = request.getParameter("zip");
+        System.out.println("zip = " + zip);
+
+        try {
+            String sql = "SELECT City, State FROM location_data WHERE Zipcode=" + zip;
+            DatabaseResultSet dbrs = new DatabaseResultSet(sql);
+            while (dbrs.getResultSet().next()) {
+                out.print(dbrs.getResultSet().getString("City") + "," + dbrs.getResultSet().getString("State"));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -10,19 +10,6 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        // JDBC driver name and database URL
-        final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-        final String SERVER_NAME = ConnectionInfo.SERVER_NAME;
-        final String DB_NAME = ConnectionInfo.DATABASE_NAME;
-
-        //  Database credentials
-        final String USER = ConnectionInfo.USER_NAME;
-        final String PASS = ConnectionInfo.PASSWORD;
-
-        Statement statement = null;
-        Connection connection = null;
-
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
@@ -47,19 +34,11 @@ public class ProductServlet extends HttpServlet {
         out.println("<table class=\"info\">");
 
         try {
-            // Register JDBC driver
-            Class.forName(JDBC_DRIVER);
-
-            // Open a connection
-            connection = DriverManager.getConnection(SERVER_NAME + DB_NAME, USER, PASS);
-
-            // Execute SQL query
-            statement = connection.createStatement();
             String sql = "SELECT * FROM products WHERE product_number=" + request.getParameter("product_number")  + ";";
-            ResultSet rs = statement.executeQuery(sql);
+            DatabaseResultSet dbrs = new DatabaseResultSet(sql);
 
-            while (rs.next()) {
-                DataRow dataRow = new DataRow(rs);
+            while (dbrs.getResultSet().next()) {
+                DataRow dataRow = new DataRow(dbrs.getResultSet());
                 out.println("<tr class=\"info\">");
                 out.println("<th class=\"info\" colspan=\"2\">" + dataRow.get("friendly_name") + "</th>");
                 out.println("</tr>");
@@ -109,20 +88,13 @@ public class ProductServlet extends HttpServlet {
             }
         }
 
-        catch (SQLException | ClassNotFoundException e) {
+        catch (SQLException e) {
             e.printStackTrace();
         }
-
-
 
         out.println("</body>");
         out.println("</html>");
 
-
-
-
-
     }
-
 
 }
