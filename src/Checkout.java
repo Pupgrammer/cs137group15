@@ -4,15 +4,13 @@ Main Author: Thomas Tai Nguyen
 Filename: src/Checkout.java
 */
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
@@ -23,15 +21,14 @@ import java.util.Enumeration;
 
 public class Checkout extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
-    {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // doGet is called in a standard <ahref='..> as well as method GET. Will be most likely used to retrieve current cart.
-        
+
         /* The following code will be replaced with session code once implemented. */
         ArrayList productList = new ArrayList<DataRow>();
         productList.add(1);
         productList.add(2);
-        
+
         // Get the information for the products.
         ArrayList<DataRow> prettyProductList = getProductInfo(productList);
         PrintWriter out = response.getWriter();
@@ -41,106 +38,93 @@ public class Checkout extends HttpServlet {
         //request.setAttribute("products", prettyProductList); // This will be available as ${message}
         //request.getRequestDispatcher("/WEB-INF/checkout_test.jsp").forward(request, response); // maybe temporary.
     }
-    
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
-    {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // doPost only called explicitly in action. Will be most likely used to process a new product.
-        
+
         PrintWriter out = response.getWriter();
         Enumeration parameters = (Enumeration) request.getParameterNames();
         ArrayList<String> parameterList = new ArrayList<String>();
-        
+
         // Note to self: Might change this entire program control flow to having just a hidden value for submission to treat it like others. Currently temporary.
-        while(parameters.hasMoreElements()) 
-        {
+        while (parameters.hasMoreElements()) {
             parameterList.add((String) parameters.nextElement());
         }
-        if (parameterList.size() == 1)
-        {
+        if (parameterList.size() == 1) {
             String current = parameterList.get(0);
-            String action = parameterList.get(0).substring(0, current.length()-1);
-            if (action.equals("updateProductQuantity"))
-            {
+            String action = parameterList.get(0).substring(0, current.length() - 1);
+            if (action.equals("updateProductQuantity")) {
                 // update the new quantity in the session. Will be moved to a helper function later
                 // edge case: might somehow be called when product doesn't exist.
-                
+
                 /* The following code will be replaced with session code once implemented. */
                 ArrayList productList = new ArrayList<DataRow>();
                 productList.add(1);
                 productList.add(2);
                 ArrayList<DataRow> prettyProductList = getProductInfo(productList);
-                
+
                 /* Print the page. */
                 printPage(out, prettyProductList, "Notice: Quantity update initiated for product ID " + current.substring(current.length() - 1) + ". New quantity is " + request.getParameter(current) + ". Note that this isn't implemented yet. ");
                 prettyProductList = null;
             }
-            else if (action.equals("addNewProduct"))
-            {
+            else if (action.equals("addNewProduct")) {
                 // add a new product to the cart. question: quantity allowed or no?
                 // edge case: what happens if something is already in the cart? add to current quantity, or cause error message?
-                
+
                 /* The following code will be replaced with session code once implemented. */
                 ArrayList productList = new ArrayList<DataRow>();
                 productList.add(1);
                 productList.add(2);
                 ArrayList<DataRow> prettyProductList = getProductInfo(productList);
-                
+
                 /* Print the page. */
                 printPage(out, prettyProductList, "Notice: Add product initiated for product ID " + current.substring(current.length() - 1));
                 prettyProductList = null;
             }
-            else if (action.equals("removeCurrentProduct"))
-            {
+            else if (action.equals("removeCurrentProduct")) {
                 // remove a current product from the cart. Will be moved to a helper function later
                 // edge case: might somehow be called when product doesn't exist.
-                
+
                 /* The following code will be replaced with session code once implemented. */
                 ArrayList productList = new ArrayList<DataRow>();
                 productList.add(1);
                 productList.add(2);
                 ArrayList<DataRow> prettyProductList = getProductInfo(productList);
-                
+
                 /* Print the page. */
                 printPage(out, prettyProductList, "Notice: Remove product initiated for product ID " + current.substring(current.length() - 1));
                 prettyProductList = null;
             }
         }
-        else
-        {
+        else {
             // order submission handling. Will be moved to a helper function later
         }
         parameterList = null;
     }
-    
-    /* Begin Helper Functions */ 
-    ArrayList<DataRow> getProductInfo(ArrayList productList)
-    { // Main function that is called to retrieve product information.
-        if (productList.isEmpty())
-        {
+
+    /* Begin Helper Functions */
+    ArrayList<DataRow> getProductInfo(ArrayList productList) { // Main function that is called to retrieve product information.
+        if (productList.isEmpty()) {
             return null;
         }
-        else
-        {
+        else {
             ArrayList<DataRow> result = retrieveProductsFromDB(createProductSQLStatement(productList));
             return result;
         }
     }
-    
-    String createProductSQLStatement(ArrayList<DataRow> productList)
-    { // Assumes that productList has at least one element.
+
+    String createProductSQLStatement(ArrayList<DataRow> productList) { // Assumes that productList has at least one element.
         String sql = "SELECT * from products WHERE product_number = " + productList.get(0);
-        for (int i = 1; i != productList.size(); i++)
-        {
+        for (int i = 1; i != productList.size(); i++) {
             sql = sql + " OR product_number = " + productList.get(i);
         }
         return sql;
     }
-    
-    ArrayList<DataRow> retrieveProductsFromDB(String sql)
-    { // Retrieves product information from DB and stores it into a ArrayList<DataRow>
-       ArrayList<DataRow> result = new ArrayList<DataRow>();
-       try {
+
+    ArrayList<DataRow> retrieveProductsFromDB(String sql) { // Retrieves product information from DB and stores it into a ArrayList<DataRow>
+        ArrayList<DataRow> result = new ArrayList<DataRow>();
+        try {
             final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
             final String SERVER_NAME = ConnectionInfo.SERVER_NAME;
             final String DB_NAME = ConnectionInfo.DATABASE_NAME;
@@ -151,7 +135,7 @@ public class Checkout extends HttpServlet {
 
             Statement statement = null;
             Connection connection = null;
-            
+
             // Register JDBC driver
             Class.forName(JDBC_DRIVER);
 
@@ -160,28 +144,24 @@ public class Checkout extends HttpServlet {
             statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
 
-            while (rs.next()) 
-            {
+            while (rs.next()) {
                 DataRow dataRow = new DataRow(rs);
                 result.add(dataRow);
             }
         }
-        catch (SQLException | ClassNotFoundException e) 
-        {
+        catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return result;
     }
-    
-    double roundDecimalPlaces(double number)
-    {
+
+    double roundDecimalPlaces(double number) {
         double result = Math.round(number * 100);
-        result = result/100;
+        result = result / 100;
         return result;
     }
-    
-    void printPage(PrintWriter out, ArrayList<DataRow> prettyProductList, String notice)
-    {
+
+    void printPage(PrintWriter out, ArrayList<DataRow> prettyProductList, String notice) {
         double subtotal = 0.00;
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\'en\'>");
@@ -205,13 +185,11 @@ public class Checkout extends HttpServlet {
         out.println("<li><a href=\'checkout\'>Cart/Checkout</a></li>");
         out.println("</ul>");
         out.println("</div>");
-        
-        if (prettyProductList == null || prettyProductList.isEmpty())
-        {
+
+        if (prettyProductList == null || prettyProductList.isEmpty()) {
             out.println("<p id=\"notice\">The cart is currently empty.</p>");
         }
-        else
-        {
+        else {
             out.println("<p id=\"notice\">" + notice + "</p>");
             out.println("<table>");
             out.println("<tr>");
@@ -223,8 +201,7 @@ public class Checkout extends HttpServlet {
             out.println("</tr>");
 
             /* Print Product Information Here */
-            for (int i = 0; i != prettyProductList.size(); i++)
-            {
+            for (int i = 0; i != prettyProductList.size(); i++) {
                 DataRow current = prettyProductList.get(i);
                 out.println("<tr>");
                 out.println("<td>" + current.get("product_number") + "</td>");
@@ -248,20 +225,20 @@ public class Checkout extends HttpServlet {
                 out.println("</tr>");
             }
             out.println("</table>");
-        
+
             out.println("<br><br>");
 
             out.println("<table class='cost'>");
             out.println("<tr>");
             // Handle Subtotal.
             out.println("<td class='cost'>Subtotal</td>");
-            out.println("<td class='cost'>$<span id='subtotalCost'>" + roundDecimalPlaces(subtotal) + "</span></td>"); 
+            out.println("<td class='cost'>$<span id='subtotalCost'>" + roundDecimalPlaces(subtotal) + "</span></td>");
             // End Handle Subtotal.
             out.println("</tr>");
             out.println("<tr style='border-bottom: 2px solid black'>");
             out.println("<td class='cost'>Shipping Cost</td>");
-            out.println("<td class='cost'>$<span id='shippingCost'>0.00</span></td>"); 
-            out.println("<tr>");                                                            
+            out.println("<td class='cost'>$<span id='shippingCost'>0.00</span></td>");
+            out.println("<tr>");
             out.println("<tr>");
             // Handle Current Total Cost
             out.println("<td class='cost'>Total Cost</td>");
