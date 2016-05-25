@@ -8,7 +8,6 @@ import java.util.Map;
 public class DataRow {
 
     private Map<String, String> map;
-    private Map<String, String> raw_map; // To Brian: current sloppy implementation, feel free to change so long as I can retrieve raw values with getRaw() i.e. i want price as 34.99 instead of $34.99
 
     public DataRow(ResultSet rs) throws SQLException {
         List<String> strings = Arrays.asList("model_name", "image_path", "model_number", "manufacturer", "processor", "graphics", "hdd_type", "operating_system");
@@ -16,19 +15,17 @@ public class DataRow {
         List<String> ints = Arrays.asList("product_number", "ram_size_gb", "hdd_size_gb");
 
         map = new HashMap<>();
-        raw_map = new HashMap<>();
         for (String str : strings) {
             map.put(str, rs.getString(str));
         }
         for (String str : doubles) {
             map.put(str, ((Double) rs.getDouble(str)).toString());
-            raw_map.put(str, ((Double) rs.getDouble(str)).toString());
         }
         for (String str : ints) {
             map.put(str, ((Integer) rs.getInt(str)).toString());
-            raw_map.put(str, ((Integer) rs.getInt(str)).toString());
         }
 
+        map.put("raw_price", map.get("price"));
         map.put("price", "$" + String.format("%.2f", Double.parseDouble(map.get("price"))));
 
         Integer i = Integer.parseInt(map.get("hdd_size_gb"));
@@ -53,11 +50,6 @@ public class DataRow {
 
     public String get(String name) {
         return map.get(name);
-    }
-
-    public String getRaw(String name)
-    {
-        return raw_map.get(name);
     }
 
 }

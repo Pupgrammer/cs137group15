@@ -208,7 +208,7 @@ public class Checkout extends HttpServlet {
                 out.println("</td>");
                 // End Handle Quantity
                 // While we're here, we might as well get the subtotal for use later.
-                subtotal = subtotal + (Double.parseDouble("1") * Double.parseDouble(current.getRaw("price")));
+                subtotal = subtotal + (Double.parseDouble("1") * Double.parseDouble(current.get("raw_price")));
                 out.println("</tr>");
             }
             out.println("</table>");
