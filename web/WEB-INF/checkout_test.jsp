@@ -4,7 +4,8 @@
     Author     : Thomas Tai Nguyen
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>\
+<%@page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,9 +18,8 @@
   <title>Checkout</title>
 </head>
 
-
 <body>
-    <p>Request Parameter Value: ${test}</p>
+    <p>Request Parameter Value: ${products}</p>
   <img class="logo" src="${pageContext.request.contextPath}/images/logo.png" alt="Logo"/>
 
   <div class="container">
@@ -31,8 +31,23 @@
       <li><a href="checkout" class="active">Checkout</a></li>
     </ul>
   </div>  
-      <br><br>
-      <table class="cost">
+  
+    <br><br>
+
+  <table>
+    <tr>
+      <th>Product ID</th>
+      <th>Name</th>
+      <th>Image</th>
+      <th>Model No.</th>
+      <th>Price</th>
+      <th>Quantity</th>
+    </tr>
+
+  </table>
+    <br><br>
+      
+    <table class="cost">
     <tr>
       <td class="cost">Subtotal</td>
       <td class="cost">$<span id="subtotalCost">0.00</span></td> 

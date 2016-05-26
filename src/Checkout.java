@@ -38,9 +38,8 @@ public class Checkout extends HttpServlet {
             if (session.getAttribute("cart") == null)
             {
                 Map<Integer, Integer> map = new HashMap<Integer, Integer>(20);
-                map.put(1, 1);
                 session.setAttribute("cart", map);
-                printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "Session cart for session " + session.getId() + " was empty, so 1 product added for debugging."); // Cart is empty.
+                printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "[DEBUG MESSAGE] Session cart for session " + session.getId() + " was empty, so a cart map was created with empty values."); // Cart is empty.
             }
             else
             {
@@ -72,9 +71,8 @@ public class Checkout extends HttpServlet {
                     if (session.getAttribute("cart") == null) // || product not in getattribute.
                     {
                         Map<Integer, Integer> map = new HashMap<Integer, Integer>(20);
-                        map.put(1, 1);
                         session.setAttribute("cart", map);
-                        printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product was not found in your shopping cart, which was empty. Quantity update failed.");
+                        printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product was not found in your shopping cart, which was empty. Quantity update failed. Session ID: " + session.getId());
                     }
                     else
                     {
@@ -84,12 +82,12 @@ public class Checkout extends HttpServlet {
                         
                         if (quantity != null)
                         {
-                            cart.put(product_id, quantity+Integer.parseInt(request.getParameter(parameter)));
-                            printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product quantity was successfully updated.");
+                            cart.put(product_id, Integer.parseInt(request.getParameter(parameter)));
+                            printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product quantity for Product ID " + product_id + " was successfully updated. Session ID: " + session.getId());
                         }
                         else
                         {
-                            printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product was not found in your shopping cart. Quantity update failed.");
+                            printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The Product ID " + product_id + " was not found in your shopping cart. Quantity update failed. Session ID: " + session.getId());
                         }
                     }
                 }
@@ -98,9 +96,8 @@ public class Checkout extends HttpServlet {
                     if (session.getAttribute("cart") == null)
                     {
                         Map<Integer, Integer> map = new HashMap<Integer, Integer>(20);
-                        map.put(1, 1);
                         session.setAttribute("cart", map);
-                        printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product was not found in your shopping cart, which was empty. Remove product failed.");
+                        printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product ID was not found in your shopping cart. Remove product failed. [DEBUG] Your session did not have a cart map. A new cart map has been created for your session ID " + session.getId());
                     }
                     else
                     {
@@ -169,25 +166,27 @@ public class Checkout extends HttpServlet {
         for (int i = 0; i != products.size(); i++) 
         {
             DataRow current = products.get(i);
+            Integer product_id = Integer.parseInt(current.get("product_number"));
+            
             out.println("<tr>");
-            out.println("<td>" + current.get("product_number") + "</td>");
+            out.println("<td>" + product_id + "</td>");
             out.println("<td>" + current.get("friendly_name") + "</td>");
             out.println("<td>" + "<img src=\"" + current.get("image_path") + "\"" + "/>" + "</td>");
             out.println("<td>" + current.get("price") + "</td>");
             // Handle Quantity.
             out.println("<td>");
             out.println("<form action=\"checkout\" method=\"post\">");
-            out.println("<input name=\"updateProductQuantity" + current.get("product_number") + "\" type=\"number\" value=\"1\"/>");
+            out.println("<input name=\"updateProductQuantity" + product_id + "\" type=\"number\" value=\""+ cart.get(product_id) +"\"/>");
             out.println("<input class=\"updateProductQuantity\" type=\"submit\" value=\"Update Quantity\"/>");
             out.println("</form><br>");
             out.println("<form action=\"checkout\" method=\"post\">");
-            out.println("<input name=\"removeProduct" + current.get("product_number") + "\" type=\"hidden\" value=\"" + current.get("product_number") + "\"/>");
-            out.println("<input class=\"removeProduct" + current.get("product_number") + "\" type=\"submit\" value=\"Remove Product\"/>");
+            out.println("<input name=\"removeProduct" + product_id + "\" type=\"hidden\" value=\"" + current.get("product_number") + "\"/>");
+            out.println("<input class=\"removeProduct" + product_id + "\" type=\"submit\" value=\"Remove Product\"/>");
             out.println("</form>");
             out.println("</td>");
             // End Handle Quantity
             // While we're here, we might as well get the subtotal for use later.
-            subtotal = subtotal + (Double.parseDouble("1") * Double.parseDouble(current.getRaw("price")));
+            subtotal = subtotal + ( ((double) cart.get(product_id)) * Double.parseDouble(current.getRaw("price")));
             out.println("</tr>");
         }
         return subtotal;
@@ -215,6 +214,7 @@ public class Checkout extends HttpServlet {
         out.println("<li><a href=\'aboutus.html\'>About Us</a></li>");
         out.println("<li><a href=\'contactus.html\'>Contact</a></li>");
         out.println("<li><a href=\'checkout\'>Cart/Checkout</a></li>");
+        out.println("<li><a href=\'checkoutdebug\'>Cart/Checkout DEBUG</a></li>");
         out.println("</ul>");
         out.println("</div>");
 
