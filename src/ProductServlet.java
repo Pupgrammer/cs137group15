@@ -26,10 +26,10 @@ public class ProductServlet extends HttpServlet {
         out.println("<div class=\"container\">");
         out.println("<ul>");
         out.println("<li><a class=\"active\" href=\"index.html\">Home</a></li>");
-        out.println("<li><a href=\"shop.php\">Shop</a></li>");
+        out.println("<li><a href=\"shop\">Shop</a></li>");
         out.println("<li><a href=\"aboutus.html\">About Us</a></li>");
         out.println("<li><a href=\"contactus.html\">Contact</a></li>");
-        out.println("<li><a href=\'checkoutdebug\'>Cart/Checkout DEBUG</a></li>");
+        out.println("<li><a href=\'checkout\'>Cart/Checkout</a></li>");
         out.println("</ul>");
         out.println("</div>");
         out.println("<table class=\"info\">");
@@ -44,7 +44,7 @@ public class ProductServlet extends HttpServlet {
                 out.println("<th class=\"info\" colspan=\"2\">" + dataRow.get("friendly_name") + "</th>");
                 out.println("</tr>");
                 out.println("<tr>");
-                out.println("<td class=\"img\" colspan=\"2\"><img src=\"../" + dataRow.get("image_path") + "\" class=\"thumbnail\"");
+                out.println("<td class=\"img\" colspan=\"2\"><img src=\"./" + dataRow.get("image_path") + "\" class=\"thumbnail\"");
                 out.println("alt=\"" + dataRow.get("friendly_name") + "\"");
                 out.println("title=\"" + dataRow.get("friendly_name") + "\"");
                 out.println("width=200/></td>");
