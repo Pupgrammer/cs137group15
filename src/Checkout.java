@@ -19,6 +19,7 @@ import java.util.HashMap;
 public class Checkout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
         if (request.getParameter("zip") != null) 
         {
             getCityStateFromDB(request, response);
@@ -43,8 +44,7 @@ public class Checkout extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // doPost only called explicitly in action. Will be most likely used to process a new product.
-
+        response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         Map<String, String[]> parameters = request.getParameterMap();
