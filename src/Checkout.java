@@ -16,17 +16,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-// Note: DB code created by Brian Chipman and reused here.
-
-// I'm getting a lot of OutOfMemoryErrors after running this for a while. Do I need to explicitly empty the heap? Hopefully the session API will help me out here,
-// because I'm creating a lot of new ArrayLists since I don't have a static one stored with a session... - Thomas
-
 public class Checkout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // doGet is called in a standard <ahref='..> as well as method GET. Will be most likely used to retrieve current cart.
-        PrintWriter out = response.getWriter();
-        
         if (request.getParameter("zip") != null) 
         {
             getCityStateFromDB(request, response);
@@ -34,16 +26,17 @@ public class Checkout extends HttpServlet {
         else 
         {
             HttpSession session = request.getSession();
-
-            if (session.getAttribute("cart") == null)
+            PrintWriter out = response.getWriter();
+            HashMap<Integer, Integer> cart = (HashMap<Integer, Integer>) session.getAttribute("cart");
+            
+            if (cart == null)
             {
-                Map<Integer, Integer> map = new HashMap<Integer, Integer>(20);
-                session.setAttribute("cart", map);
-                printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "[DEBUG MESSAGE] Session cart for session " + session.getId() + " was empty, so a cart map was created with empty values."); // Cart is empty.
+                cart = createNewCart(session);
+                printPage(out, cart, "[DEBUG MESSAGE] Session cart for session " + session.getId() + " was empty, so a cart map was created with empty values."); // Cart is empty.
             }
             else
             {
-                printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "");
+                printPage(out, cart, "");
             }
         }
     }
@@ -55,63 +48,57 @@ public class Checkout extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         Map<String, String[]> parameters = request.getParameterMap();
+        HashMap<Integer, Integer> cart = (HashMap<Integer, Integer>) session.getAttribute("cart");
         
-        // Note to self: Might change this entire program control flow to having just a hidden value for submission to treat it like others. Currently temporary.
         if(request.getParameterMap().isEmpty())
         {
-            printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "");
+            printPage(out, cart, "");
         }
         else
-        { // NTS: might want to store session.getAttribute("cart") in a variable before any of this, might clean  up control flow.
-            // Do I need to re-setAttribute after modifying cart? Probably not but this might be a bug later.
+        { // Do I need to re-setAttribute after modifying cart? Probably not but this might be a bug later.
             for (String parameter : parameters.keySet())
             {
                 if (parameter.startsWith("updateProductQuantity"))
                 {
-                    if (session.getAttribute("cart") == null) // || product not in getattribute.
+                    if (cart == null)
                     {
-                        Map<Integer, Integer> map = new HashMap<Integer, Integer>(20);
-                        session.setAttribute("cart", map);
-                        printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product was not found in your shopping cart, which was empty. Quantity update failed. Session ID: " + session.getId());
+                        cart = createNewCart(session);
+                        printPage(out, cart, "The product was not found in your shopping cart, which was empty. Quantity update failed.");
                     }
                     else
                     {
                         Integer product_id = Integer.parseInt(parameter.substring(parameter.length() - 1));
-                        HashMap <Integer, Integer> cart = (HashMap <Integer, Integer>) session.getAttribute("cart");
                         Integer quantity = cart.get(product_id);
-                        
+
                         if (quantity != null)
                         {
                             cart.put(product_id, Integer.parseInt(request.getParameter(parameter)));
-                            printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product quantity for Product ID " + product_id + " was successfully updated. Session ID: " + session.getId());
+                            printPage(out, cart, "The quantity for Product ID " + product_id + " was successfully updated.");
                         }
                         else
                         {
-                            printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The Product ID " + product_id + " was not found in your shopping cart. Quantity update failed. Session ID: " + session.getId());
+                            printPage(out, cart, "The Product ID " + product_id + " was not found in your shopping cart. Quantity update stopped.");
                         }
                     }
                 }
                 else if (parameter.startsWith("removeProduct"))
                 {
-                    if (session.getAttribute("cart") == null)
+                    Integer product_id = Integer.parseInt(parameter.substring(parameter.length() - 1));
+                    if (cart == null)
                     {
-                        Map<Integer, Integer> map = new HashMap<Integer, Integer>(20);
-                        session.setAttribute("cart", map);
-                        printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product ID was not found in your shopping cart. Remove product failed. [DEBUG] Your session did not have a cart map. A new cart map has been created for your session ID " + session.getId());
+                        cart = createNewCart(session);
+                        printPage(out, cart, "Product ID " + product_id + " was not found in your shopping cart, which was empty. Removal stopped.");
                     }
                     else
                     {
-                        Integer product_id = Integer.parseInt(parameter.substring(parameter.length() - 1));
-                        HashMap <Integer, Integer> cart = (HashMap <Integer, Integer>) session.getAttribute("cart");
-
                         if (cart.containsKey(product_id) == true)
                         {
                             cart.remove(product_id);
-                            printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product was successfully removed from your cart.");
+                            printPage(out, cart, "Product ID " + product_id + " was successfully removed from your cart.");
                         }
                         else
                         {
-                            printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product was not found in your shopping cart. Remove product failed.");
+                            printPage(out, cart, "Product ID " + product_id + " was not found in your shopping cart. Removal stopped.");
                         }
                     }
                 }
@@ -120,6 +107,12 @@ public class Checkout extends HttpServlet {
     }
     
     /* Begin Helper Functions */
+    HashMap<Integer, Integer> createNewCart(HttpSession session) { // Creates a new cart map for the session, and returns it.
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>(20);
+        session.setAttribute("cart", map);
+        return map;
+    }
+    
     String createProductSQLStatement(HashMap<Integer, Integer> cart) { // Assumes that productList has at least one element.
         int counter = 0;
         String sql = "SELECT * from products WHERE product_number = ";
@@ -153,14 +146,13 @@ public class Checkout extends HttpServlet {
         return result;
     }
 
-    double roundDecimalPlaces(double number) {
+    double roundDecimalPlaces(double number) { // Rounds doubles for presentation.
         double result = Math.round(number * 100);
         result = result / 100;
         return result;
     }
 
-   double printCart(PrintWriter out, HashMap<Integer, Integer> cart)
-   { // Returns subtotal of all products.
+   double printCart(PrintWriter out, HashMap<Integer, Integer> cart) { // Returns subtotal of all products.
         double subtotal = 0.00;
         ArrayList<DataRow> products = retrieveProductsFromDB(createProductSQLStatement(cart));
         for (int i = 0; i != products.size(); i++) 
@@ -192,8 +184,7 @@ public class Checkout extends HttpServlet {
         return subtotal;
     }
     
-    void printPage(PrintWriter out, HashMap<Integer, Integer> cart, String notice) {
-        double subtotal = 0.00;
+    void printPage(PrintWriter out, HashMap<Integer, Integer> cart, String notice) { // Prints HTML page.
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\'en\'>");
         out.println("<head>");
@@ -217,14 +208,16 @@ public class Checkout extends HttpServlet {
         out.println("<li><a href=\'checkoutdebug\'>Cart/Checkout DEBUG</a></li>");
         out.println("</ul>");
         out.println("</div>");
+        out.println("<h1>Cart/Checkout</h1>");
+        out.println("<p id=\"notice\">" + notice + "</p>");
 
         if (cart == null || cart.isEmpty()) {
             out.println("<p id=\"emptyNotice\">Your cart is currently empty.</p>");
         }
-        out.println("<p id=\"notice\">" + notice + "</p>");
         
         if (cart != null && cart.isEmpty() == false)
         {
+            double subtotal = 0.00;
             out.println("<table>");
             out.println("<tr>");
             out.println("<th>Product ID</th>");
@@ -254,7 +247,7 @@ public class Checkout extends HttpServlet {
             out.println("<tr>");
             // Handle Current Total Cost
             out.println("<td class='cost'>Total Cost</td>");
-            out.println("<td class='cost'>$<span id='totalCost'>" + roundDecimalPlaces(subtotal) + "</span></td>"); // Reason for this: Might have a session-stored shipping method
+            out.println("<td class='cost'>$<span id='totalCost'>" + roundDecimalPlaces(subtotal) + "</span></td>");
             // End Handle Current Total Cost
             out.println("</tr>");
             out.println("</table>");
@@ -306,8 +299,7 @@ public class Checkout extends HttpServlet {
         }
     }
 
-    // Handles AJAX request, "returning" string of "city,state"
-    private void getCityStateFromDB(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void getCityStateFromDB(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { // Handles AJAX request, "returning" string of "city,state"
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         String zip = request.getParameter("zip");
