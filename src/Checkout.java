@@ -165,10 +165,11 @@ public class Checkout extends HttpServlet {
             out.println("<td>" + current.get("friendly_name") + "</td>");
             out.println("<td>" + "<img src=\"" + current.get("image_path") + "\"" + "/>" + "</td>");
             out.println("<td>" + current.get("price") + "</td>");
-            // Handle Quantity.
+            out.println("<td>" + cart.get(product_id) + "</td>");
+            // Handle Action.
             out.println("<td>");
             out.println("<form action=\"checkout\" method=\"post\">");
-            out.println("<input name=\"updateProductQuantity" + product_id + "\" type=\"number\" value=\""+ cart.get(product_id) +"\"/>");
+            out.println("<input name=\"updateProductQuantity" + product_id + "\" id=\"updateProductQuantity" + product_id + "\" type=\"number\" onblur=\"validate_cartQuantity(this)\" onchange=\"validate_cartQuantity(this)\" value=\""+ cart.get(product_id) +"\"/>");
             out.println("<input class=\"updateProductQuantity\" type=\"submit\" value=\"Update Quantity\"/>");
             out.println("</form><br>");
             out.println("<form action=\"checkout\" method=\"post\">");
@@ -176,7 +177,7 @@ public class Checkout extends HttpServlet {
             out.println("<input class=\"removeProduct" + product_id + "\" type=\"submit\" value=\"Remove Product\"/>");
             out.println("</form>");
             out.println("</td>");
-            // End Handle Quantity
+            // End Handle Action
             // While we're here, we might as well get the subtotal for use later.
             subtotal = subtotal + ( ((double) cart.get(product_id)) * Double.parseDouble(current.getRaw("price")));
             out.println("</tr>");
@@ -194,6 +195,7 @@ public class Checkout extends HttpServlet {
         out.println("<script type=\"text/javascript\" src=\"scripts/ajax_cityState.js\" defer></script>");
         out.println("<script type=\"text/javascript\" src=\"scripts/ajax_zipSuggestions.js\" defer></script>");
         out.println("<script type=\"text/javascript\" src=\"scripts/calculatePrices.js\" defer></script>");
+        out.println("<script type=\"text/javascript\" src=\"scripts/validate_cartQuantity.js\" defer></script>");
         out.println("<title>Cart/Checkout</title>");
         out.println("</head>");
         out.println("<body>");
@@ -225,6 +227,7 @@ public class Checkout extends HttpServlet {
             out.println("<th>Image</th>");
             out.println("<th>Price</th>");
             out.println("<th>Quantity</th>");
+            out.println("<th>Actions</th>");
             out.println("</tr>");
 
             subtotal = printCart(out, cart);
