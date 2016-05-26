@@ -196,7 +196,7 @@ public class Checkout extends HttpServlet {
         out.println("<meta charset=\'UTF-8\'>");
         out.println("<link type=\'text/css\' rel=\'stylesheet\' href=\'styles/style.css\'>");
         out.println("<script type=\"text/javascript\" src=\"scripts/validate_orderForm.js\" defer></script>");
-        out.println("<script type=\"text/javascript\" src=\"scripts/ajax_cityState.js\" defer></script>");
+        out.println("<script type=\"text/javascript\" src=\"scripts/ajax_zipcode.js\" defer></script>");
         out.println("<script type=\"text/javascript\" src=\"scripts/ajax_zipSuggestions.js\" defer></script>");
         out.println("<script type=\"text/javascript\" src=\"scripts/calculatePrices.js\" defer></script>");
         out.println("<script type=\"text/javascript\" src=\"scripts/validate_cartQuantity.js\" defer></script>");
@@ -278,7 +278,6 @@ public class Checkout extends HttpServlet {
 
 
             out.println("<br>Zipcode (5 digits):<br>");
-            //out.println("<input type='text' onblur='getCityState(this.value)' onkeyup='getZipSuggestions(this.value)' id='zipcode' name='zipcode'/><br>");
             out.println("<input type='text' id='zipcode' name='zipcode'/><br>");
             out.println("<span id='suggestions' style='border:0px'></span>");
 
@@ -331,7 +330,11 @@ public class Checkout extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         String zip = String.format("%-5s", request.getParameter("zipcode")).replace(' ', '0');
+        zip = zip.equals("00000") ? null : zip;
         System.out.println("\ngetZipSuggestionsFromDB zipcode = " + zip);
+        if (zip == null) {
+            return;
+        }
 
         try {
             String sql = "SELECT Zipcode, ABS( Zipcode - " + zip + ") AS distance FROM ( (SELECT Zipcode FROM `location_data` WHERE Zipcode >= " + zip + " ORDER BY Zipcode LIMIT 5 ) UNION ALL ( SELECT Zipcode FROM `location_data` WHERE Zipcode < " + zip + " ORDER BY Zipcode DESC LIMIT 5)) AS result ORDER BY distance LIMIT 5";
@@ -342,6 +345,7 @@ public class Checkout extends HttpServlet {
             }
             suggestedZipCodes = suggestedZipCodes.substring(0, suggestedZipCodes.length() - 1);
             System.out.println("suggestedZipCodes: " + suggestedZipCodes);
+            out.print(suggestedZipCodes);
         }
         catch (SQLException e) {
             e.printStackTrace();
