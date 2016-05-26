@@ -7,7 +7,6 @@
 function validate_cartQuantity(element)
 {
     var id = element.id;
-    console.log(id);
     var quantityInputBox = document.getElementById(id);
     var quantity = document.getElementById(id).value;
     if (parseInt(quantity) === 0 || parseInt(quantity) < 0)
