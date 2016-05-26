@@ -6,13 +6,15 @@ Filename: src/Checkout.java
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.Map;
+import java.util.HashMap;
 
 // Note: DB code created by Brian Chipman and reused here.
 
@@ -23,24 +25,27 @@ public class Checkout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // doGet is called in a standard <ahref='..> as well as method GET. Will be most likely used to retrieve current cart.
-
-        if (request.getParameter("zip") != null) {
+        PrintWriter out = response.getWriter();
+        
+        if (request.getParameter("zip") != null) 
+        {
             getCityStateFromDB(request, response);
         }
-        else {
-            /* The following code will be replaced with session code once implemented. */
-            ArrayList productList = new ArrayList<DataRow>();
-            productList.add(1);
-            productList.add(2);
+        else 
+        {
+            HttpSession session = request.getSession();
 
-            // Get the information for the products.
-            ArrayList<DataRow> prettyProductList = getProductInfo(productList);
-            PrintWriter out = response.getWriter();
-            printPage(out, prettyProductList, "");
-            prettyProductList = null;
-            // Send the products to JSP for printing.
-            //request.setAttribute("products", prettyProductList); // This will be available as ${message}
-            //request.getRequestDispatcher("/WEB-INF/checkout_test.jsp").forward(request, response); // maybe temporary.
+            if (session.getAttribute("cart") == null)
+            {
+                Map<Integer, Integer> map = new HashMap<Integer, Integer>(20);
+                map.put(1, 1);
+                session.setAttribute("cart", map);
+                printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "Session cart for session " + session.getId() + " was empty, so 1 product added for debugging."); // Cart is empty.
+            }
+            else
+            {
+                printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "");
+            }
         }
     }
 
@@ -49,80 +54,89 @@ public class Checkout extends HttpServlet {
         // doPost only called explicitly in action. Will be most likely used to process a new product.
 
         PrintWriter out = response.getWriter();
-        Enumeration parameters = (Enumeration) request.getParameterNames();
-        ArrayList<String> parameterList = new ArrayList<String>();
-
+        HttpSession session = request.getSession();
+        Map<String, String[]> parameters = request.getParameterMap();
+        
         // Note to self: Might change this entire program control flow to having just a hidden value for submission to treat it like others. Currently temporary.
-        while (parameters.hasMoreElements()) {
-            parameterList.add((String) parameters.nextElement());
+        if(request.getParameterMap().isEmpty())
+        {
+            printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "");
         }
-        if (parameterList.size() == 1) {
-            String current = parameterList.get(0);
-            String action = parameterList.get(0).substring(0, current.length() - 1);
-            if (action.equals("updateProductQuantity")) {
-                // update the new quantity in the session. Will be moved to a helper function later
-                // edge case: might somehow be called when product doesn't exist.
+        else
+        { // NTS: might want to store session.getAttribute("cart") in a variable before any of this, might clean  up control flow.
+            // Do I need to re-setAttribute after modifying cart? Probably not but this might be a bug later.
+            for (String parameter : parameters.keySet())
+            {
+                if (parameter.startsWith("updateProductQuantity"))
+                {
+                    if (session.getAttribute("cart") == null) // || product not in getattribute.
+                    {
+                        Map<Integer, Integer> map = new HashMap<Integer, Integer>(20);
+                        map.put(1, 1);
+                        session.setAttribute("cart", map);
+                        printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product was not found in your shopping cart, which was empty. Quantity update failed.");
+                    }
+                    else
+                    {
+                        Integer product_id = Integer.parseInt(parameter.substring(parameter.length() - 1));
+                        HashMap <Integer, Integer> cart = (HashMap <Integer, Integer>) session.getAttribute("cart");
+                        Integer quantity = cart.get(product_id);
+                        
+                        if (quantity != null)
+                        {
+                            cart.put(product_id, quantity+Integer.parseInt(request.getParameter(parameter)));
+                            printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product quantity was successfully updated.");
+                        }
+                        else
+                        {
+                            printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product was not found in your shopping cart. Quantity update failed.");
+                        }
+                    }
+                }
+                else if (parameter.startsWith("removeProduct"))
+                {
+                    if (session.getAttribute("cart") == null)
+                    {
+                        Map<Integer, Integer> map = new HashMap<Integer, Integer>(20);
+                        map.put(1, 1);
+                        session.setAttribute("cart", map);
+                        printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product was not found in your shopping cart, which was empty. Remove product failed.");
+                    }
+                    else
+                    {
+                        Integer product_id = Integer.parseInt(parameter.substring(parameter.length() - 1));
+                        HashMap <Integer, Integer> cart = (HashMap <Integer, Integer>) session.getAttribute("cart");
 
-                /* The following code will be replaced with session code once implemented. */
-                ArrayList productList = new ArrayList<DataRow>();
-                productList.add(1);
-                productList.add(2);
-                ArrayList<DataRow> prettyProductList = getProductInfo(productList);
-
-                /* Print the page. */
-                printPage(out, prettyProductList, "Notice: Quantity update initiated for product ID " + current.substring(current.length() - 1) + ". New quantity is " + request.getParameter(current) + ". Note that this isn't implemented yet. ");
-                prettyProductList = null;
+                        if (cart.containsKey(product_id) == true)
+                        {
+                            cart.remove(product_id);
+                            printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product was successfully removed from your cart.");
+                        }
+                        else
+                        {
+                            printPage(out, (HashMap<Integer, Integer>) session.getAttribute("cart"), "The product was not found in your shopping cart. Remove product failed.");
+                        }
+                    }
+                }
             }
-            else if (action.equals("addNewProduct")) {
-                // add a new product to the cart. question: quantity allowed or no?
-                // edge case: what happens if something is already in the cart? add to current quantity, or cause error message?
-
-                /* The following code will be replaced with session code once implemented. */
-                ArrayList productList = new ArrayList<DataRow>();
-                productList.add(1);
-                productList.add(2);
-                ArrayList<DataRow> prettyProductList = getProductInfo(productList);
-
-                /* Print the page. */
-                printPage(out, prettyProductList, "Notice: Add product initiated for product ID " + current.substring(current.length() - 1));
-                prettyProductList = null;
-            }
-            else if (action.equals("removeCurrentProduct")) {
-                // remove a current product from the cart. Will be moved to a helper function later
-                // edge case: might somehow be called when product doesn't exist.
-
-                /* The following code will be replaced with session code once implemented. */
-                ArrayList productList = new ArrayList<DataRow>();
-                productList.add(1);
-                productList.add(2);
-                ArrayList<DataRow> prettyProductList = getProductInfo(productList);
-
-                /* Print the page. */
-                printPage(out, prettyProductList, "Notice: Remove product initiated for product ID " + current.substring(current.length() - 1));
-                prettyProductList = null;
-            }
-        }
-        else {
-            // order submission handling. Will be moved to a helper function later
-        }
-        parameterList = null;
+        }   
     }
-
+    
     /* Begin Helper Functions */
-    ArrayList<DataRow> getProductInfo(ArrayList productList) { // Main function that is called to retrieve product information.
-        if (productList.isEmpty()) {
-            return null;
-        }
-        else {
-            ArrayList<DataRow> result = retrieveProductsFromDB(createProductSQLStatement(productList));
-            return result;
-        }
-    }
-
-    String createProductSQLStatement(ArrayList<DataRow> productList) { // Assumes that productList has at least one element.
-        String sql = "SELECT * from products WHERE product_number = " + productList.get(0);
-        for (int i = 1; i != productList.size(); i++) {
-            sql = sql + " OR product_number = " + productList.get(i);
+    String createProductSQLStatement(HashMap<Integer, Integer> cart) { // Assumes that productList has at least one element.
+        int counter = 0;
+        String sql = "SELECT * from products WHERE product_number = ";
+        for (Integer product_id : cart.keySet()) 
+        {
+            if (counter == 0)
+            {
+                sql = sql + product_id;
+                counter = counter + 1;
+            }
+            else
+            {
+                sql = sql + " OR product_number = " + product_id;
+            }
         }
         return sql;
     }
@@ -148,7 +162,38 @@ public class Checkout extends HttpServlet {
         return result;
     }
 
-    void printPage(PrintWriter out, ArrayList<DataRow> prettyProductList, String notice) {
+   double printCart(PrintWriter out, HashMap<Integer, Integer> cart)
+   { // Returns subtotal of all products.
+        double subtotal = 0.00;
+        ArrayList<DataRow> products = retrieveProductsFromDB(createProductSQLStatement(cart));
+        for (int i = 0; i != products.size(); i++) 
+        {
+            DataRow current = products.get(i);
+            out.println("<tr>");
+            out.println("<td>" + current.get("product_number") + "</td>");
+            out.println("<td>" + current.get("friendly_name") + "</td>");
+            out.println("<td>" + "<img src=\"" + current.get("image_path") + "\"" + "/>" + "</td>");
+            out.println("<td>" + current.get("price") + "</td>");
+            // Handle Quantity.
+            out.println("<td>");
+            out.println("<form action=\"checkout\" method=\"post\">");
+            out.println("<input name=\"updateProductQuantity" + current.get("product_number") + "\" type=\"number\" value=\"1\"/>");
+            out.println("<input class=\"updateProductQuantity\" type=\"submit\" value=\"Update Quantity\"/>");
+            out.println("</form><br>");
+            out.println("<form action=\"checkout\" method=\"post\">");
+            out.println("<input name=\"removeProduct" + current.get("product_number") + "\" type=\"hidden\" value=\"" + current.get("product_number") + "\"/>");
+            out.println("<input class=\"removeProduct" + current.get("product_number") + "\" type=\"submit\" value=\"Remove Product\"/>");
+            out.println("</form>");
+            out.println("</td>");
+            // End Handle Quantity
+            // While we're here, we might as well get the subtotal for use later.
+            subtotal = subtotal + (Double.parseDouble("1") * Double.parseDouble(current.getRaw("price")));
+            out.println("</tr>");
+        }
+        return subtotal;
+    }
+    
+    void printPage(PrintWriter out, HashMap<Integer, Integer> cart, String notice) {
         double subtotal = 0.00;
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\'en\'>");
@@ -173,11 +218,13 @@ public class Checkout extends HttpServlet {
         out.println("</ul>");
         out.println("</div>");
 
-        if (prettyProductList == null || prettyProductList.isEmpty()) {
-            out.println("<p id=\"notice\">The cart is currently empty.</p>");
+        if (cart == null || cart.isEmpty()) {
+            out.println("<p id=\"emptyNotice\">Your cart is currently empty.</p>");
         }
-        else {
-            out.println("<p id=\"notice\">" + notice + "</p>");
+        out.println("<p id=\"notice\">" + notice + "</p>");
+        
+        if (cart != null && cart.isEmpty() == false)
+        {
             out.println("<table>");
             out.println("<tr>");
             out.println("<th>Product ID</th>");
@@ -187,30 +234,8 @@ public class Checkout extends HttpServlet {
             out.println("<th>Quantity</th>");
             out.println("</tr>");
 
-            /* Print Product Information Here */
-            for (int i = 0; i != prettyProductList.size(); i++) {
-                DataRow current = prettyProductList.get(i);
-                out.println("<tr>");
-                out.println("<td>" + current.get("product_number") + "</td>");
-                out.println("<td>" + current.get("friendly_name") + "</td>");
-                out.println("<td>" + "<img src=\"" + current.get("image_path") + "\"" + "/>" + "</td>");
-                out.println("<td>" + current.get("price") + "</td>");
-                // Handle Quantity.
-                out.println("<td>");
-                out.println("<form action=\"checkout\" method=\"post\">");
-                out.println("<input name=\"updateProductQuantity" + current.get("product_number") + "\" type=\"number\" value=\"1\"/>");
-                out.println("<input class=\"updateProductQuantity\" type=\"submit\" value=\"Update Quantity\"/>");
-                out.println("</form><br>");
-                out.println("<form action=\"checkout\" method=\"post\">");
-                out.println("<input name=\"removeCurrentProduct" + current.get("product_number") + "\" type=\"hidden\" value=\"" + current.get("product_number") + "\"/>");
-                out.println("<input class=\"removeCurrentProduct" + current.get("product_number") + "\" type=\"submit\" value=\"Remove Product\"/>");
-                out.println("</form>");
-                out.println("</td>");
-                // End Handle Quantity
-                // While we're here, we might as well get the subtotal for use later.
-                subtotal = subtotal + (Double.parseDouble("1") * Double.parseDouble(current.getRaw("price")));
-                out.println("</tr>");
-            }
+            subtotal = printCart(out, cart);
+
             out.println("</table>");
 
             out.println("<br><br>");
@@ -276,9 +301,9 @@ public class Checkout extends HttpServlet {
             out.println("<input type='submit' value='Submit Order'/>");
             out.println("<br>");
             out.println("</form>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        out.println("</body>");
-        out.println("</html>");
     }
 
     // Handles AJAX request, "returning" string of "city,state"
