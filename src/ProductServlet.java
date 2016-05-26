@@ -29,6 +29,7 @@ public class ProductServlet extends HttpServlet {
         out.println("<li><a href=\"shop.php\">Shop</a></li>");
         out.println("<li><a href=\"aboutus.html\">About Us</a></li>");
         out.println("<li><a href=\"contactus.html\">Contact</a></li>");
+        out.println("<li><a href=\'checkoutdebug\'>Cart/Checkout DEBUG</a></li>");
         out.println("</ul>");
         out.println("</div>");
         out.println("<table class=\"info\">");
