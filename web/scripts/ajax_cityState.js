@@ -83,3 +83,27 @@ function getZipFromInputBox() {
     return document.getElementById("zipcode").value;
 }
 
+document.getElementById("zipcode").onkeyup = function () {
+        var request = new XMLHttpRequest();
+    request.open('GET', '/checkout?zip2=' + getZipFromInputBox(), true);
+
+    request.onload = function () {
+        var alertText = "request.onload()\n";
+        if (request.status >= 200 && request.status < 400) {
+            alertText += "request.status: " + request.status + "\n";
+            alertText += "request.responseText: " + request.responseText + "\n";
+            var cityState = request.responseText;
+            var split = cityState.split(',');
+            changeCityState(split[0], split[1]);
+        } else {
+            alertText += "We reached our target server, but it returned an error\n";
+        }
+        alert(alertText);
+    };
+
+    request.onerror = function () {
+        alert("There was a connection error of some sort");
+    };
+
+    request.send();
+};

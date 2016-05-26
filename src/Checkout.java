@@ -20,9 +20,11 @@ public class Checkout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-        if (request.getParameter("zip") != null)
-        {
+        if (request.getParameter("zip") != null) {
             getCityStateFromDB(request, response);
+        }
+        else if (request.getParameter("zip2") != null) {
+            getZipSuggestionFromDB(request, response);
         }
         else
         {
@@ -314,6 +316,31 @@ public class Checkout extends HttpServlet {
             while (dbrs.getResultSet().next()) {
                 out.print(dbrs.getResultSet().getString("City") + "," + dbrs.getResultSet().getString("State"));
             }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getZipSuggestionFromDB(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        //String zip = request.getParameter("zip2");
+        String zip = String.format("%-5s", request.getParameter("zip2")).replace(' ', '0');
+
+        //String zip = request.getParameter("zip2");
+        System.out.println("\ngetZipSuggestionFromDB  zip = " + zip);
+
+        try {
+            String sql = "SELECT Zipcode, ABS( Zipcode - " + zip + ") AS distance FROM ( (SELECT Zipcode FROM `location_data` WHERE Zipcode >= " + zip + " ORDER BY Zipcode LIMIT 5 ) UNION ALL ( SELECT Zipcode FROM `location_data` WHERE Zipcode < " + zip + " ORDER BY Zipcode DESC LIMIT 5)) AS result ORDER BY distance LIMIT 5";
+            DatabaseResultSet dbrs = new DatabaseResultSet(sql);
+            String suggestedZipCodes = "";
+            while(dbrs.getResultSet().next()) {
+                suggestedZipCodes += dbrs.getResultSet().getString("Zipcode") + "|";
+            }
+            suggestedZipCodes = suggestedZipCodes.substring(0, suggestedZipCodes.length() - 1);
+            System.out.println("suggestedZipCodes: " + suggestedZipCodes);
         }
         catch (SQLException e) {
             e.printStackTrace();
