@@ -20,11 +20,13 @@ public class Checkout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-        if (request.getParameter("zip") != null) {
-            getCityStateFromDB(request, response);
-        }
-        else if (request.getParameter("zip2") != null) {
-            getZipSuggestionFromDB(request, response);
+        if (request.getParameter("event") != null) {
+            if (request.getParameter("event").equals("onblur")) {
+                getCityStateFromDB(request, response);
+            }
+            else if (request.getParameter("event").equals("onkeyup")) {
+                getZipSuggestionsFromDB(request, response);
+            }
         }
         else
         {
@@ -307,30 +309,29 @@ public class Checkout extends HttpServlet {
     private void getCityStateFromDB(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { // Handles AJAX request, "returning" string of "city,state"
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        String zip = request.getParameter("zip");
-        System.out.println("zip = " + zip);
+        String zip = request.getParameter("zipcode");
+        System.out.println("\ngetCityStateFromDB zipcode = " + zip);
 
         try {
             String sql = "SELECT City, State FROM location_data WHERE Zipcode=" + zip;
             DatabaseResultSet dbrs = new DatabaseResultSet(sql);
+            String cityState = "";
             while (dbrs.getResultSet().next()) {
-                out.print(dbrs.getResultSet().getString("City") + "," + dbrs.getResultSet().getString("State"));
+                cityState += dbrs.getResultSet().getString("City") + "," + dbrs.getResultSet().getString("State");
             }
+            System.out.println("cityState: " + cityState);
+            out.print(cityState);
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private void getZipSuggestionFromDB(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void getZipSuggestionsFromDB(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-
-        //String zip = request.getParameter("zip2");
-        String zip = String.format("%-5s", request.getParameter("zip2")).replace(' ', '0');
-
-        //String zip = request.getParameter("zip2");
-        System.out.println("\ngetZipSuggestionFromDB  zip = " + zip);
+        String zip = String.format("%-5s", request.getParameter("zipcode")).replace(' ', '0');
+        System.out.println("\ngetZipSuggestionsFromDB zipcode = " + zip);
 
         try {
             String sql = "SELECT Zipcode, ABS( Zipcode - " + zip + ") AS distance FROM ( (SELECT Zipcode FROM `location_data` WHERE Zipcode >= " + zip + " ORDER BY Zipcode LIMIT 5 ) UNION ALL ( SELECT Zipcode FROM `location_data` WHERE Zipcode < " + zip + " ORDER BY Zipcode DESC LIMIT 5)) AS result ORDER BY distance LIMIT 5";

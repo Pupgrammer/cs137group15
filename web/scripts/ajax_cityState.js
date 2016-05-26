@@ -56,7 +56,7 @@ function changeCityState(city, state) {
 
 document.getElementById("zipcode").onblur = function () {
     var request = new XMLHttpRequest();
-    request.open('GET', '/checkout?zip=' + getZipFromInputBox(), true);
+    request.open('GET', '/checkout?event=onblur&zipcode=' + getZipFromInputBox(), true);
 
     request.onload = function () {
         var alertText = "request.onload()\n";
@@ -84,8 +84,8 @@ function getZipFromInputBox() {
 }
 
 document.getElementById("zipcode").onkeyup = function () {
-        var request = new XMLHttpRequest();
-    request.open('GET', '/checkout?zip2=' + getZipFromInputBox(), true);
+    var request = new XMLHttpRequest();
+    request.open('GET', '/checkout?event=onkeyup&zipcode=' + getZipFromInputBox(), true);
 
     request.onload = function () {
         var alertText = "request.onload()\n";
