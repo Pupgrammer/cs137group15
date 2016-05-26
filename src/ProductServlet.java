@@ -86,6 +86,11 @@ public class ProductServlet extends HttpServlet {
                 out.println("<td class=\"info\">OS</td>");
                 out.println("<td class=\"desc\">" + dataRow.get("operating_system") + "</td>");
                 out.println("</tr>");
+                
+                out.println("<form action=\"checkoutdebug\" method=\"post\">");
+                out.println("<input name=\"addProductToCart\" type=\"hidden\" value=\""+request.getParameter("product_number")+"\">");
+                out.println("<input type=\"submit\" value=\"addProductToCart\"/>");
+                out.println("</form>");
             }
         }
 
