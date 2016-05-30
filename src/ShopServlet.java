@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 import java.util.*;
+import javax.servlet.http.HttpSession;
 
 public class ShopServlet extends HttpServlet {
 
@@ -44,7 +45,14 @@ public class ShopServlet extends HttpServlet {
         out.println("<th>Manufacturer</th>");
         out.println("<th>Price</th>");
         out.println("</tr>");
-
+        
+        HttpSession session = request.getSession(true);
+        createProductView(session);
+        printProductView(out, session);
+       
+        
+        
+        
         try {
             String sql = "SELECT * from products";
             DatabaseResultSet dbrs = new DatabaseResultSet(sql);
@@ -62,7 +70,6 @@ public class ShopServlet extends HttpServlet {
                 out.println("title=\"" + dataRow.get("friendly_name") + "\"/>");
                 out.println("</a>");
                 out.println("</td>");
-
                 out.println("<td>" + dataRow.get("model_number") + "</td>");
                 out.println("<td>" + dataRow.get("manufacturer") + "</td>");
                 out.println("<td>" + dataRow.get("price") + "</td>");
@@ -72,10 +79,48 @@ public class ShopServlet extends HttpServlet {
             out.println("</table>");
             out.println("</body>");
             out.println("</html>");
+            
+           
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
+    
+    void createProductView(HttpSession session) {
+        if (session.getAttribute("products") == null) {
+            String[] a = {"0","0","0","0","0"};
+            session.setAttribute("products", a);
+        }
+    }
+    
+    void createProductViewed(HttpSession session) {
+        if (session.getAttribute("products") == null) {
+            String[] a = {"0","0","0","0","0"};
+            session.setAttribute("products", a);
+        }
+    }
+    
+    void printProductView(PrintWriter out, HttpSession session) {
+        out.println("<p> Items previously checked: ");
+        String[] viewed = (String[]) session.getAttribute("products");
+        if (!(viewed[0].equals("0"))) {
+            out.println("<a href=\"product?product_number=" + viewed[0] + "\">" + viewed[0] + "</a>");
+            for (int i = 1; i < viewed.length; i++) {
+                if ((viewed[i].equals("0"))) {
+                    break;
+                }
+                else {
+                    out.println(" , " + "<a href=\"product?product_number=" + "\">" + viewed[i] + "</a>");
+                    out.println("<img src=\"product?product_number=" + viewed[0] + "\"");
+                }
+            }
+        }
+        else {
+            out.println("None");
+        }
+        out.println("</p>");
+    }
+    
+    
 }
