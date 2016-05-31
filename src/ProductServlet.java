@@ -148,12 +148,12 @@ public class ProductServlet extends HttpServlet {
         catch (SQLException e) {
             e.printStackTrace();
         }
-        updateViewedProducts(request,session);
         out.println("<form action=\"checkoutdebug\" method=\"post\">");
         out.println("<input name=\"addProductToCart\" type=\"hidden\" value=\""+request.getParameter("product_number")+"\">");
         out.println("<input type=\"submit\" value=\"addProductToCart\"/>");
         out.println("</form>");
         printProductView(out, session);
+        updateViewedProducts(request,session);
         out.println("</body>");
         out.println("</html>");
 
