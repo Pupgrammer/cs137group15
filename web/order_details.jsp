@@ -6,6 +6,7 @@
 <%@ page import="javax.servlet.jsp.*" %>
 <%@ page import="pkg.ConnectionInfo" %>
 <%@ page import="pkg.DatabaseResultSet" %>
+<%@ page import="pkg.DataRow" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -51,23 +52,36 @@
 <%
     String order_id = request.getParameter("order_id");
 
-//    String customer_info_sql = "SELECT * FROM products WHERE product_number=" + request.getParameter("product_number")  + ";";
-//    String customer_info_sql = "SELECT * FROM products WHERE product_number=1;";
     String customer_info_sql = "SELECT * FROM customer_info WHERE order_id=" + order_id + ";";
     String order_info_sql = "SELECT * FROM order_info WHERE order_id=" + order_id + ";";
+
     List<String> customer_info_fields = Arrays.asList("order_id", "order_time", "first_name", "last_name", "email", "phone_number", "address", "zipcode", "city", "state", "shipping_method", "credit_card");
-    List<String> order_info_fields = Arrays.asList("order_id", "first_name", "last_name", "email", "phone_number", "address", "zipcode", "city", "state", "shipping_method", "credit_card");
 
     try {
-
         DatabaseResultSet dbrs = new DatabaseResultSet(customer_info_sql);
-
         while (dbrs.getResultSet().next()) {
-
             for (String field : customer_info_fields) {
                 out.println("<p><b>" + field + ":</b> " + dbrs.getResultSet().getString(field) + "</p>");
             }
         }
+        dbrs = new DatabaseResultSet(order_info_sql);
+        while (dbrs.getResultSet().next()) {
+            int productID = dbrs.getResultSet().getInt("product_id");
+            out.println("<p><b>" + "product_id" + ":</b> " + productID + "</p>");
+            DatabaseResultSet innerdbrs = new DatabaseResultSet("SELECT * FROM products WHERE product_number=" + productID + ";");
+            while (innerdbrs.getResultSet().next()) {
+                DataRow dataRow = new DataRow(innerdbrs.getResultSet());
+                out.println("<a href=\"product?product_number=" + dataRow.get("product_number") + "\">");
+                out.println("<img src=\"" + dataRow.get("image_path") + "\"");
+                out.println("alt=\"" + dataRow.get("friendly_name") + "\"");
+                out.println("title=\"" + dataRow.get("friendly_name") + "\"/>");
+                out.println("</a>");
+            }
+//
+            out.println("<p><b>" + "quantity" + ":</b> " + dbrs.getResultSet().getInt("quantity") + "</p>");
+            out.println("<p><b>" + "subtotal_cost" + ":</b> " + dbrs.getResultSet().getDouble("subtotal_cost") + "</p>");
+        }
+
     }
     catch (SQLException e) {
         e.printStackTrace();
