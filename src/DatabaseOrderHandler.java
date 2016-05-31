@@ -54,9 +54,9 @@ public class DatabaseOrderHandler {
         }
     }
 
-    public void executeOrderInfoStatement(String order_id, int product_id, int quantity, double total_cost)
+    public void executeOrderInfoStatement(String order_id, int product_id, int quantity, double subtotal_cost)
     {
-        String orderSQL = "INSERT INTO order_info (order_id, product_id, quantity, total_cost) VALUES (?, ?, ?, ?)";
+        String orderSQL = "INSERT INTO order_info (order_id, product_id, quantity, subtotal_cost) VALUES (?, ?, ?, ?)";
         
         try
         {
@@ -67,7 +67,7 @@ public class DatabaseOrderHandler {
             statement.setString(1, order_id);
             statement.setInt(2, product_id);
             statement.setInt(3, quantity);
-            statement.setDouble(4, total_cost);
+            statement.setDouble(4, subtotal_cost);
             statement.executeUpdate();
             
             connection = null;
@@ -78,9 +78,9 @@ public class DatabaseOrderHandler {
         }
     }
     
-    public void executeCustomerInfoStatement(String order_id, String first_name, String last_name, String email, String phone_number, String address, String zipcode, String city, String state, String shipping_method, String credit_card)
+    public void executeCustomerInfoStatement(String order_id, String order_time, String first_name, String last_name, String email, String phone_number, String address, String zipcode, String city, String state, String shipping_method, String credit_card)
     {
-        String customerSQL = "INSERT INTO customer_info (order_id, first_name, last_name, email, phone_number, address, zipcode, city, state, shipping_method, credit_card) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String customerSQL = "INSERT INTO customer_info (order_id, order_time, first_name, last_name, email, phone_number, address, zipcode, city, state, shipping_method, credit_card) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try
         {
@@ -89,16 +89,17 @@ public class DatabaseOrderHandler {
             // Execute SQL query
             PreparedStatement statement = connection.prepareStatement(customerSQL);
             statement.setString(1, order_id);
-            statement.setString(2, first_name);
-            statement.setString(3, last_name);
-            statement.setString(4, email);
-            statement.setString(5, phone_number);
-            statement.setString(6, address);
-            statement.setString(7, zipcode);
-            statement.setString(8, city);
-            statement.setString(9, state);
-            statement.setString(10, shipping_method);
-            statement.setString(11, credit_card);
+            statement.setString(2, order_time);
+            statement.setString(3, first_name);
+            statement.setString(4, last_name);
+            statement.setString(5, email);
+            statement.setString(6, phone_number);
+            statement.setString(7, address);
+            statement.setString(8, zipcode);
+            statement.setString(9, city);
+            statement.setString(10, state);
+            statement.setString(11, shipping_method);
+            statement.setString(12, credit_card);
             statement.executeUpdate();
             
             connection = null;

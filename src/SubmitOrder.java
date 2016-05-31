@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 import java.sql.*;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class SubmitOrder extends HttpServlet 
 {
@@ -24,16 +26,19 @@ public class SubmitOrder extends HttpServlet
         PrintWriter out = response.getWriter(); // Note: When JSP page implemented, this is no longer needed.
         
         String order_id = generateOrderId();
+        SimpleDateFormat order_time_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String order_time = order_time_format.format(new Date());
+        
         DatabaseOrderHandler connection = new DatabaseOrderHandler();
         
         HashMap<String, String> order = organizeOrderInfo(request, request.getParameterNames());
         HashMap<Integer, Integer> cart = (HashMap<Integer, Integer>) request.getSession().getAttribute("cart");
 
 
-        printDebugInformation(out, order_id, order, cart); // Note: When JSP page implemented, this is no longer needed.
+        printDebugInformation(out, order_id, order_time, order, cart); // Note: When JSP page implemented, this is no longer needed.
         
         executeOrderSQLStatement(connection, order_id, cart);
-        executeCustomerSQLStatement(connection, order_id, order);
+        executeCustomerSQLStatement(connection, order_id, order_time, order);
         
         connection.close();
         connection = null; // Dereference - hopefully makes garbage collection faster.
@@ -43,7 +48,7 @@ public class SubmitOrder extends HttpServlet
     
     /* Begin SQL Functions */
         
-    private void executeOrderSQLStatement(DatabaseOrderHandler connection, String session_id, HashMap<Integer, Integer> cart) {
+    private void executeOrderSQLStatement(DatabaseOrderHandler connection, String order_id, HashMap<Integer, Integer> cart) {
         HashMap<Integer, Double> product_costs = getProductCosts(cart); 
         Iterator iterate = cart.entrySet().iterator(); // Begin iteration of items in the cart for order submission.
         while (iterate.hasNext())
@@ -51,12 +56,12 @@ public class SubmitOrder extends HttpServlet
             Map.Entry pair = (Map.Entry) iterate.next(); // Key = Product ID, Value = Quantity of Product ID
             int product_id = (int) pair.getKey();
             int quantity = (int) pair.getValue();
-            connection.executeOrderInfoStatement(session_id, product_id, quantity, product_costs.get(product_id) * (double) quantity);
+            connection.executeOrderInfoStatement(order_id, product_id, quantity, product_costs.get(product_id) * (double) quantity);
         }
     }
     
-    private void executeCustomerSQLStatement(DatabaseOrderHandler connection, String session_id, HashMap<String, String> order)  {
-        connection.executeCustomerInfoStatement(session_id, order.get("firstName"), order.get("lastName"), order.get("email"), order.get("phoneNumber"), order.get("streetAddress"), order.get("zipcode"), order.get("city"), order.get("state"), order.get("shipping"), order.get("creditCard"));
+    private void executeCustomerSQLStatement(DatabaseOrderHandler connection, String order_id, String order_time, HashMap<String, String> order)  {
+        connection.executeCustomerInfoStatement(order_id, order_time, order.get("firstName"), order.get("lastName"), order.get("email"), order.get("phoneNumber"), order.get("streetAddress"), order.get("zipcode"), order.get("city"), order.get("state"), order.get("shipping"), order.get("creditCard"));
     }
     
     /* Begin Helper Functions */
@@ -113,10 +118,10 @@ public class SubmitOrder extends HttpServlet
     }
         
     /* Begin Debug Functions */
-    private void printDebugInformation(PrintWriter out, String order_id, HashMap<String, String> order, HashMap<Integer, Integer> cart)
+    private void printDebugInformation(PrintWriter out, String order_id, String order_time, HashMap<String, String> order, HashMap<Integer, Integer> cart)
     {
-        out.println("Randomly Generated Order-ID: " + order_id);
-        out.println("");
+        out.println("Randomly Generated Order ID: " + order_id);
+        out.println("Order Time: " + order_time);
         for (Map.Entry<String, String> entry : order.entrySet())
         {
             out.println(entry.getKey() + "/" + entry.getValue());
