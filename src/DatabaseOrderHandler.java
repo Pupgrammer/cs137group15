@@ -1,6 +1,7 @@
 import pkg.ConnectionInfo;
 
 import java.sql.*;
+import java.io.PrintWriter;
 
 public class DatabaseOrderHandler {
 
@@ -13,6 +14,14 @@ public class DatabaseOrderHandler {
 
     public void close()
     {
+        try
+        {
+            current.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
         current = null;
     }
 
@@ -47,21 +56,9 @@ public class DatabaseOrderHandler {
         }
     }
 
-    public void executeOrderInfoStatement(String order_id, int product_id, int quantity, double total_cost)
+    public void executeOrderInfoStatement(String order_id, int product_id, int quantity, double subtotal_cost)
     {
-        /* OrderInfo Structure:  CREATE TABLE `order_info`
-            (
-            `order_id` varchar(40) NOT NULL,
-            `product_id` int(5) NOT NULL,
-            `product_name` varchar(40) NOT NULL,
-            `quantity` int(3) NOT NULL,
-            `total_cost` float(20) NOT NULL,
-            PRIMARY KEY (order_id, product_id)
-            ) ENGINE=InnoDB;
-        */
-
-        String orderSQL = "INSERT INTO order_info (order_id, product_id, product_name, quantity, total_cost) VALUES (?, ?, ?, ?, ?);";
-
+        String orderSQL = "INSERT INTO order_info (order_id, product_id, quantity, subtotal_cost) VALUES (?, ?, ?, ?)";
 
         try
         {
@@ -69,12 +66,45 @@ public class DatabaseOrderHandler {
 
             // Execute SQL query
             PreparedStatement statement = connection.prepareStatement(orderSQL);
-            statement.setString(1, "order_id_test");
-            statement.setInt(2, 123);
-            statement.setString(3, "product_name");
-            statement.setInt(4, 1);
-            statement.setFloat(5, new Float(123.00));
+            statement.setString(1, order_id);
+            statement.setInt(2, product_id);
+            statement.setInt(3, quantity);
+            statement.setDouble(4, subtotal_cost);
             statement.executeUpdate();
+
+            connection = null;
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void executeCustomerInfoStatement(String order_id, String order_time, String first_name, String last_name, String email, String phone_number, String address, String zipcode, String city, String state, String shipping_method, String credit_card)
+    {
+        String customerSQL = "INSERT INTO customer_info (order_id, order_time, first_name, last_name, email, phone_number, address, zipcode, city, state, shipping_method, credit_card) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try
+        {
+            Connection connection = handleGetConnection();
+
+            // Execute SQL query
+            PreparedStatement statement = connection.prepareStatement(customerSQL);
+            statement.setString(1, order_id);
+            statement.setString(2, order_time);
+            statement.setString(3, first_name);
+            statement.setString(4, last_name);
+            statement.setString(5, email);
+            statement.setString(6, phone_number);
+            statement.setString(7, address);
+            statement.setString(8, zipcode);
+            statement.setString(9, city);
+            statement.setString(10, state);
+            statement.setString(11, shipping_method);
+            statement.setString(12, credit_card);
+            statement.executeUpdate();
+
+            connection = null;
         }
         catch (SQLException e)
         {

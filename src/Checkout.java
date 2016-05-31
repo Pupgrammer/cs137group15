@@ -75,15 +75,16 @@ public class Checkout extends HttpServlet {
                     {
                         Integer product_id = Integer.parseInt(parameter.substring(parameter.length() - 1));
                         Integer quantity = cart.get(product_id);
+                        Integer new_quantity = Integer.parseInt(request.getParameter(parameter));
 
-                        if (quantity != null)
+                        if (quantity != null && new_quantity > 0)
                         {
-                            cart.put(product_id, Integer.parseInt(request.getParameter(parameter)));
+                            cart.put(product_id, new_quantity);
                             printPage(out, cart, "The quantity for Product ID " + product_id + " was successfully updated.");
                         }
                         else
                         {
-                            printPage(out, cart, "The Product ID " + product_id + " was not found in your shopping cart. Quantity update stopped.");
+                            printPage(out, cart, "The Product ID " + product_id + " was not found in your shopping cart, or a non-valid quantity was provided. Quantity update stopped.");
                         }
                     }
                 }
@@ -242,7 +243,7 @@ public class Checkout extends HttpServlet {
 
             out.println("<br><br>");
 
-            out.println("<table class='cost'>");
+            out.println("<table class='cost' style='margin-left:200px'>");
             out.println("<tr>");
             // Handle Subtotal.
             out.println("<td class='cost'>Subtotal</td>");

@@ -33,6 +33,7 @@ public class DatabaseResultSet {
             statement = connection.createStatement();
             //String sql = "SELECT * FROM products WHERE product_number=" + request.getParameter("product_number") + ";";
             rs = statement.executeQuery(sql);
+            
         }
         catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();

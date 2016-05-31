@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 import java.util.HashMap;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 public class ProductServlet extends HttpServlet {
@@ -17,29 +18,55 @@ public class ProductServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true);
+        ServletContext consession = this.getServletContext();
+        //Creates counter for incrementing number of sessions that viewed pid
+        HashMap<Integer, Integer> counter = (HashMap<Integer, Integer>) consession.getAttribute("counter");
+        //Creates binary counter to check if pid has been added for current session
+        HashMap<Integer, Integer> check_add = (HashMap<Integer, Integer>) session.getAttribute("check_add");
 
-        HashMap<Integer, Integer> counter = (HashMap<Integer, Integer>) session.getAttribute("counter");
 
-            if (counter == null)
+            if (counter == null) //Creates new context and sets to 1 for pid on hashmap if context contains no values
             {
-                counter = createNewCounter(session);
-                out.println("Session counter for" + session.getId() + "was empty so created with empty values");
-                out.println("adding count to " + request.getParameter("product_number"));
-                int p = Integer.parseInt(request.getParameter("product_number"));
-                int count = counter.containsKey(p) ? counter.get(p) : 0;
-                counter.put(p, count + 1);
-                out.println("counter for this is :" + count);
+                counter = createNewCounter(consession);
+                out.println("Initializing view to " + request.getParameter("product_number"));
+
+           //     out.println("counter for this is 1");
+            }
+            //Currently seems to not go to the ELSE statement
+            if(check_add == null){ //Checks if current session has been created and increments count on counter
+            check_add = createNewCounter(session);
+            out.println("Session counter for"  + session.getId() + " was created");
+            int pid = Integer.parseInt(request.getParameter("product_number")); //Grab product number
+            int count = counter.containsKey(pid) ? counter.get(pid) : 0; //Gets value of views for current product number
+            int count_check = check_add.get(pid);
+            if (count_check == 0){ //Checks if current product has been incremented on hashmap; 0 will allow to increment
+                ++count;
+                out.println("\nNumber of current viewers:" + count);
+                counter.put(pid, count);
+                check_add.put(pid, 1); //Sets to 1 so product number will not be incremented in current session
+                consession.setAttribute("counter", counter);
+                session.setAttribute("check_add", check_add);
+                }
             }
             else
             {
                 out.println(" continue adding count to " + request.getParameter("product_number"));
-                int p = Integer.parseInt(request.getParameter("product_number"));
-                int count = counter.containsKey(p) ? counter.get(p) : 0;
-                counter.put(p, count + 1);
-                out.println("counter for this is :" + count);
+                int pid = Integer.parseInt(request.getParameter("product_number")); //Grabs product number
+                int count = counter.containsKey(pid) ? counter.get(pid) : 0; //Gets value of views for current product number
+                int count_check = check_add.get(pid);
+                if (count_check == 0) { //Checks if product number has been incremented on hashmap; 0 will allow to increment
+                    ++count;
+                    counter.put(pid, count);
+                    out.println("Session counter for" + session.getId() + "\n Number of viewers currently:  " +count);
+                    check_add.put(pid, 1); //Sets to 1 so product number will not be incremented in current session
+                    consession.setAttribute("counter", counter);
+                    session.setAttribute("check_add", check_add);
+                }
+                else{
+                    out.println("\n Current Number of viewers: "+ count);
+                    out.println("Skip; already incremented");
+                }
             }
-
-        printProductView(out, session);
 
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"en\">");
@@ -117,14 +144,9 @@ public class ProductServlet extends HttpServlet {
                 out.println("<td class=\"info\">OS</td>");
                 out.println("<td class=\"desc\">" + dataRow.get("operating_system") + "</td>");
                 out.println("</tr>");
+                out.println("</table>");
 
-                updateViewedProducts(request,session);
 
-
-                out.println("<form action=\"checkoutdebug\" method=\"post\">");
-                out.println("<input name=\"addProductToCart\" type=\"hidden\" value=\""+request.getParameter("product_number")+"\">");
-                out.println("<input type=\"submit\" value=\"addProductToCart\"/>");
-                out.println("</form>");
 
 
             }
@@ -133,7 +155,12 @@ public class ProductServlet extends HttpServlet {
         catch (SQLException e) {
             e.printStackTrace();
         }
-
+        out.println("<form action=\"checkoutdebug\" method=\"post\">");
+        out.println("<input name=\"addProductToCart\" type=\"hidden\" value=\""+request.getParameter("product_number")+"\">");
+        out.println("<input type=\"submit\" value=\"addProductToCart\"/>");
+        out.println("</form>");
+        printProductView(out, session);
+        updateViewedProducts(request,session);
         out.println("</body>");
         out.println("</html>");
 
@@ -150,18 +177,33 @@ public class ProductServlet extends HttpServlet {
 
 
 
-    void printProductView(PrintWriter out, HttpSession session) {
-        out.println("<p> Items previously checked: ");
+void printProductView(PrintWriter out, HttpSession session) {
+        out.println("<p> Items previously viewed: ");
+        out.println("<ul class=\"viewed\">");
         String[] viewed = (String[]) session.getAttribute("products");
         if (!(viewed[0].equals("0"))) {
-            out.println("<a href=\"product?product_number=" + viewed[0] + "\">" + viewed[0] + "</a>");
-            for (int i = 1; i < viewed.length; i++) {
+            for (int i = 0; i < viewed.length; i++) {
                 if ((viewed[i].equals("0"))) {
                     break;
                 }
                 else {
-                  //  out.println(" , " + "<a href=\"product?product_number=" + "\">" + viewed[i] + "</a>");
-                 //  out.println("<img src=\"product?product_number=" + viewed[i] + "\"");
+                    String pid = "SELECT image_path FROM products WHERE product_number=" + viewed[i]  + ";";
+                    try {
+                        DatabaseResultSet rspid = new DatabaseResultSet(pid);
+                        while (rspid.getResultSet().next()) {
+                            String id = rspid.getResultSet().getString(1);
+                            out.println("<li class=\"viewed\">");
+                            out.print("<a href=\"product?product_number=" + viewed[i] + "\">");
+                            out.print("<img class=\"small\" src=\"" + id + "\"");
+                            out.print("alt=\"" + id + "\"");
+                            out.print("title=\"" + id + "\"/>");
+                            out.print("</a>");
+                            out.println("</li>");
+                        }
+                    }
+                    catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
            }
         }
@@ -169,9 +211,19 @@ public class ProductServlet extends HttpServlet {
             out.println("None");
         }
         out.println("</p>");
+        out.println("</ul");
 
 
     }
+
+        HashMap<Integer, Integer> createNewCounter(ServletContext consession) { // Creates a new counter map for the session, and returns it.
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>(20);
+        for (int i = 1; i < 10; i++){
+            map.put(i, 0);
+        }
+        consession.setAttribute("counter", map);
+        return map;
+        }
 
         HashMap<Integer, Integer> createNewCounter(HttpSession session) { // Creates a new counter map for the session, and returns it.
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>(20);
@@ -180,6 +232,6 @@ public class ProductServlet extends HttpServlet {
         }
         session.setAttribute("counter", map);
         return map;
-    }
+        }
 
 }
