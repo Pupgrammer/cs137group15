@@ -61,8 +61,6 @@ public class ProductServlet extends HttpServlet {
               
             }
         
-        printProductView(out, session);
-        
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"en\">");
         out.println("<head>");
@@ -139,14 +137,9 @@ public class ProductServlet extends HttpServlet {
                 out.println("<td class=\"info\">OS</td>");
                 out.println("<td class=\"desc\">" + dataRow.get("operating_system") + "</td>");
                 out.println("</tr>");
+                out.println("</table>");
                 
-                updateViewedProducts(request,session);
-               
-                
-                out.println("<form action=\"checkoutdebug\" method=\"post\">");
-                out.println("<input name=\"addProductToCart\" type=\"hidden\" value=\""+request.getParameter("product_number")+"\">");
-                out.println("<input type=\"submit\" value=\"addProductToCart\"/>");
-                out.println("</form>");
+
                 
                 
             }
@@ -155,7 +148,12 @@ public class ProductServlet extends HttpServlet {
         catch (SQLException e) {
             e.printStackTrace();
         }
-
+        updateViewedProducts(request,session);
+        out.println("<form action=\"checkoutdebug\" method=\"post\">");
+        out.println("<input name=\"addProductToCart\" type=\"hidden\" value=\""+request.getParameter("product_number")+"\">");
+        out.println("<input type=\"submit\" value=\"addProductToCart\"/>");
+        out.println("</form>");
+        printProductView(out, session);
         out.println("</body>");
         out.println("</html>");
 
@@ -172,25 +170,41 @@ public class ProductServlet extends HttpServlet {
     
     
     
-    void printProductView(PrintWriter out, HttpSession session) {
-        out.println("<p> Items previously checked: ");
+void printProductView(PrintWriter out, HttpSession session) {
+        out.println("<p> Items previously viewed: ");
+        out.println("<ul class=\"viewed\">");
         String[] viewed = (String[]) session.getAttribute("products");
         if (!(viewed[0].equals("0"))) {
-            out.println("<a href=\"product?product_number=" + viewed[0] + "\">" + viewed[0] + "</a>");
-            for (int i = 1; i < viewed.length; i++) {
+            for (int i = 0; i < viewed.length; i++) {
                 if ((viewed[i].equals("0"))) {
                     break;
                 }
                 else {
-                  //  out.println(" , " + "<a href=\"product?product_number=" + "\">" + viewed[i] + "</a>");
-                 //  out.println("<img src=\"product?product_number=" + viewed[i] + "\"");
-                } 
+                    String pid = "SELECT image_path FROM products WHERE product_number=" + viewed[i]  + ";";
+                    try {
+                        DatabaseResultSet rspid = new DatabaseResultSet(pid);
+                        while (rspid.getResultSet().next()) {
+                            String id = rspid.getResultSet().getString(1);
+                            out.println("<li class=\"viewed\">");
+                            out.print("<a href=\"product?product_number=" + viewed[i] + "\">");
+                            out.print("<img class=\"small\" src=\"" + id + "\"");
+                            out.print("alt=\"" + id + "\"");
+                            out.print("title=\"" + id + "\"/>");
+                            out.print("</a>");
+                            out.println("</li>");
+                        }
+                    }
+                    catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
            }
         }
         else {
             out.println("None");
         }
         out.println("</p>");
+        out.println("</ul");
         
       
     }
