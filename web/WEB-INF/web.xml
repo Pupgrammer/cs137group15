@@ -51,4 +51,13 @@
         <url-pattern>/order</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+        <servlet-name>PreviouslyViewed</servlet-name>
+        <servlet-class>PreviouslyViewed</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>PreviouslyViewed</servlet-name>
+        <url-pattern>/PreviouslyViewed</url-pattern>
+    </servlet-mapping>
 </web-app>
