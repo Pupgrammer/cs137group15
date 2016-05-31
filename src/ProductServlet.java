@@ -28,14 +28,11 @@ public class ProductServlet extends HttpServlet {
             {
                 counter = createNewCounter(consession);
                 out.println("Initializing view to " + request.getParameter("product_number"));
-                int pid = Integer.parseInt(request.getParameter("product_number"));
-                //int count = counter.containsKey(pid) ? counter.get(pid) : 0;
-                counter.put(pid, 1);
-                consession.setAttribute("counter",counter);
-                out.println("counter for this is 1");
+           
+           //     out.println("counter for this is 1");
             }
             //Currently seems to not go to the ELSE statement
-            else if(check_add == null){ //Checks if current session has been created and increments count on counter
+            if(check_add == null){ //Checks if current session has been created and increments count on counter
             check_add = createNewCounter(session);
             out.println("Session counter for"  + session.getId() + " was created");
             int pid = Integer.parseInt(request.getParameter("product_number")); //Grab product number
@@ -43,7 +40,7 @@ public class ProductServlet extends HttpServlet {
             int count_check = check_add.get(pid);
             if (count_check == 0){ //Checks if current product has been incremented on hashmap; 0 will allow to increment
                 ++count;
-                out.println("counter for this is :" + count);
+                out.println("\nNumber of current viewers:" + count);
                 counter.put(pid, count);
                 check_add.put(pid, 1); //Sets to 1 so product number will not be incremented in current session
                 consession.setAttribute("counter", counter);
@@ -59,14 +56,15 @@ public class ProductServlet extends HttpServlet {
                 if (count_check == 0) { //Checks if product number has been incremented on hashmap; 0 will allow to increment
                     ++count;
                     counter.put(pid, count);
-                    out.println("Session counter for" + session.getId() + "is " +count);
+                    out.println("Session counter for" + session.getId() + "\n Number of viewers currently:  " +count);
                     check_add.put(pid, 1); //Sets to 1 so product number will not be incremented in current session
                     consession.setAttribute("counter", counter);
                     session.setAttribute("check_add", check_add);
                 }
-                else
+                else{
+                    out.println("\n Current Number of viewers: "+ count);
                     out.println("Skip; already incremented");
-              
+                }
             }
         
         out.println("<!DOCTYPE html>");
