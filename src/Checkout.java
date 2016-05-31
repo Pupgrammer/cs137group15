@@ -4,6 +4,8 @@ Main Author: Thomas Tai Nguyen
 Filename: src/Checkout.java
 */
 
+import pkg.DatabaseResultSet;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;

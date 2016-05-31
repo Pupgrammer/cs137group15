@@ -1,3 +1,7 @@
+package pkg;
+
+import pkg.ConnectionInfo;
+
 import java.sql.*;
 
 public class DatabaseResultSet {

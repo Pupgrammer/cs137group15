@@ -4,6 +4,8 @@ Main Author: Thomas Tai Nguyen
 Filename: src/SubmitOrder.java
 */
 
+import pkg.DatabaseResultSet;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -17,10 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.*;
 
-public class SubmitOrder extends HttpServlet 
+public class SubmitOrder extends HttpServlet
 {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         HashMap<String, String> order = organizeOrderInfo(request, request.getParameterNames());
@@ -30,7 +32,7 @@ public class SubmitOrder extends HttpServlet
         printDebugInformation(out, order, cart);
         executeOrderSQLStatement(session.getId(), order, cart);
     }
-    
+
     HashMap<String, String> organizeOrderInfo(HttpServletRequest request, Enumeration<String> parameterNames) {
         HashMap<String, String> result = new HashMap<String, String>();
         while (parameterNames.hasMoreElements())
@@ -40,8 +42,8 @@ public class SubmitOrder extends HttpServlet
         }
         return result;
     }
-    
-    private void executeOrderSQLStatement(String session_id, HashMap<String, String> order, HashMap<Integer, Integer> cart) 
+
+    private void executeOrderSQLStatement(String session_id, HashMap<String, String> order, HashMap<Integer, Integer> cart)
     { // Assumes that cart has at least one element and order is not empty.
         HashMap<Integer, Double> product_costs = getProductCosts(cart);
         DatabaseOrderHandler connection = new DatabaseOrderHandler();
@@ -53,7 +55,7 @@ public class SubmitOrder extends HttpServlet
         }
 
     }
-    
+
     private HashMap<Integer, Double> getProductCosts(HashMap<Integer, Integer> cart)
     {
         HashMap<Integer, Double> product_costs = new HashMap<Integer, Double>();
@@ -66,13 +68,13 @@ public class SubmitOrder extends HttpServlet
                 product_costs.put(result.getInt("product_id"), result.getDouble("price"));
             }
         }
-        catch (SQLException e ) 
+        catch (SQLException e )
         {
             e.printStackTrace();
         }
         return product_costs;
     }
-    
+
     String createProductSQLStatement(HashMap<Integer, Integer> cart) {
         int counter = 0;
         String sql = "SELECT product_number AS product_id, price from products WHERE product_number = ";
@@ -96,11 +98,11 @@ public class SubmitOrder extends HttpServlet
         {
             out.println(entry.getKey() + "/" + entry.getValue());
         }
-        
+
         for (Map.Entry<Integer, Integer> entry : cart.entrySet())
         {
             out.println(entry.getKey() + "/" + entry.getValue());
-        } 
+        }
     }
-    
+
 }

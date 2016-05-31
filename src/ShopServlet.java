@@ -1,12 +1,12 @@
+import pkg.DatabaseResultSet;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
-import java.util.*;
 import javax.servlet.http.HttpSession;
 
 public class ShopServlet extends HttpServlet {
@@ -45,14 +45,14 @@ public class ShopServlet extends HttpServlet {
         out.println("<th>Manufacturer</th>");
         out.println("<th>Price</th>");
         out.println("</tr>");
-        
+
         HttpSession session = request.getSession(true);
         createProductView(session);
         printProductView(out, session);
-       
-        
-        
-        
+
+
+
+
         try {
             String sql = "SELECT * from products";
             DatabaseResultSet dbrs = new DatabaseResultSet(sql);
@@ -79,28 +79,28 @@ public class ShopServlet extends HttpServlet {
             out.println("</table>");
             out.println("</body>");
             out.println("</html>");
-            
-           
+
+
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
+
     void createProductView(HttpSession session) {
         if (session.getAttribute("products") == null) {
             String[] a = {"0","0","0","0","0"};
             session.setAttribute("products", a);
         }
     }
-    
+
     void createProductViewed(HttpSession session) {
         if (session.getAttribute("products") == null) {
             String[] a = {"0","0","0","0","0"};
             session.setAttribute("products", a);
         }
     }
-    
+
     void printProductView(PrintWriter out, HttpSession session) {
         out.println("<p> Items previously checked: ");
         String[] viewed = (String[]) session.getAttribute("products");
@@ -121,6 +121,6 @@ public class ShopServlet extends HttpServlet {
         }
         out.println("</p>");
     }
-    
-    
+
+
 }
