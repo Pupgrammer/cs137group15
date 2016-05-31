@@ -12,6 +12,14 @@ public class DatabaseOrderHandler {
     
     public void close()
     {
+        try
+        {
+            current.close();   
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();  
+        }
         current = null;
     }
     
@@ -48,17 +56,6 @@ public class DatabaseOrderHandler {
 
     public void executeOrderInfoStatement(String order_id, int product_id, int quantity, double total_cost)
     {
-        /* OrderInfo Structure:  CREATE TABLE `order_info`
-            (
-            `order_id` varchar(40) NOT NULL,
-            `product_id` int(5) NOT NULL,
-            `product_name` varchar(40) NOT NULL,
-            `quantity` int(3) NOT NULL,
-            `total_cost` float(20) NOT NULL,
-            PRIMARY KEY (order_id, product_id)
-            ) ENGINE=InnoDB;
-        */
-        
         String orderSQL = "INSERT INTO order_info (order_id, product_id, quantity, total_cost) VALUES (?, ?, ?, ?)";
         
         try
@@ -72,6 +69,39 @@ public class DatabaseOrderHandler {
             statement.setInt(3, quantity);
             statement.setDouble(4, total_cost);
             statement.executeUpdate();
+            
+            connection = null;
+        }            
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void executeCustomerInfoStatement(String order_id, String first_name, String last_name, String email, String phone_number, String address, String zipcode, String city, String state, String shipping_method, String credit_card)
+    {
+        String customerSQL = "INSERT INTO customer_info (order_id, first_name, last_name, email, phone_number, address, zipcode, city, state, shipping_method, credit_card) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        try
+        {
+            Connection connection = handleGetConnection();
+
+            // Execute SQL query
+            PreparedStatement statement = connection.prepareStatement(customerSQL);
+            statement.setString(1, order_id);
+            statement.setString(2, first_name);
+            statement.setString(3, last_name);
+            statement.setString(4, email);
+            statement.setString(5, phone_number);
+            statement.setString(6, address);
+            statement.setString(7, zipcode);
+            statement.setString(8, city);
+            statement.setString(9, state);
+            statement.setString(10, shipping_method);
+            statement.setString(11, credit_card);
+            statement.executeUpdate();
+            
+            connection = null;
         }            
         catch (SQLException e) 
         {
