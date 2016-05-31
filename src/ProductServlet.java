@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.sql.*;
 import java.util.Map;
 import java.util.HashMap;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 public class ProductServlet extends HttpServlet {
@@ -16,13 +17,14 @@ public class ProductServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true); 
+        ServletContext consession = this.getServletContext();
         
-        HashMap<Integer, Integer> counter = (HashMap<Integer, Integer>) session.getAttribute("counter");
+        HashMap<Integer, Integer> counter = (HashMap<Integer, Integer>) consession.getAttribute("counter");
 
             if (counter == null)
             {
-                counter = createNewCounter(session);
-                out.println("Session counter for" + session.getId() + "was empty so created with empty values");
+                counter = createNewCounter(consession);
+             //   out.println("Session counter for" + consession.getId() + "was empty so created with empty values");
                 out.println("adding count to " + request.getParameter("product_number"));
                 int p = Integer.parseInt(request.getParameter("product_number"));
                 int count = counter.containsKey(p) ? counter.get(p) : 0;
@@ -172,12 +174,12 @@ public class ProductServlet extends HttpServlet {
       
     }
     
-        HashMap<Integer, Integer> createNewCounter(HttpSession session) { // Creates a new counter map for the session, and returns it.
+        HashMap<Integer, Integer> createNewCounter(ServletContext consession) { // Creates a new counter map for the session, and returns it.
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>(20);
         for (int i = 1; i < 10; i++){
             map.put(i, 0);
         }
-        session.setAttribute("counter", map);
+        consession.setAttribute("counter", map);
         return map;
     }
 
