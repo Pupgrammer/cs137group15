@@ -130,10 +130,17 @@ function validate_shippingAddress()
     {
         alert("Please do not leave your street address, zipcode, city, or state blank.");
         error = 1;
+        console.log("Error found.");
     }
     else
     {
         document.orderForm.zipcode.style.backgroundColor = "";
+    }
+    
+    if (checkSymbolInText(city, state))
+    {
+        alert("Please only enter alphabetical characters for your city and state.");
+        error = 1;
     }
 
     if (error === 1)
