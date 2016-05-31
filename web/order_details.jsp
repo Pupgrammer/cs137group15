@@ -51,15 +51,22 @@
 <%
     String order_id = request.getParameter("order_id");
 
-    String sql = "SELECT * FROM products WHERE product_number=" + request.getParameter("product_number")  + ";";
-//    String sql = "SELECT * FROM products WHERE product_number=1;";
-//    String sql = "SELECT * FROM customer_info WHERE order_id=" + order_id + ";";
+//    String customer_info_sql = "SELECT * FROM products WHERE product_number=" + request.getParameter("product_number")  + ";";
+//    String customer_info_sql = "SELECT * FROM products WHERE product_number=1;";
+    String customer_info_sql = "SELECT * FROM customer_info WHERE order_id=" + order_id + ";";
+    String order_info_sql = "SELECT * FROM order_info WHERE order_id=" + order_id + ";";
+    List<String> customer_info_fields = Arrays.asList("order_id", "order_time", "first_name", "last_name", "email", "phone_number", "address", "zipcode", "city", "state", "shipping_method", "credit_card");
+    List<String> order_info_fields = Arrays.asList("order_id", "first_name", "last_name", "email", "phone_number", "address", "zipcode", "city", "state", "shipping_method", "credit_card");
 
     try {
 
-        DatabaseResultSet dbrs = new DatabaseResultSet(sql);
+        DatabaseResultSet dbrs = new DatabaseResultSet(customer_info_sql);
+
         while (dbrs.getResultSet().next()) {
-            %><p><%out.println(dbrs.getResultSet().getString("model_name"));%></p><%
+
+            for (String field : customer_info_fields) {
+                out.println("<p><b>" + field + ":</b> " + dbrs.getResultSet().getString(field) + "</p>");
+            }
         }
     }
     catch (SQLException e) {
