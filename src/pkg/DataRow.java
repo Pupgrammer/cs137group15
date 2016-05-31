@@ -40,6 +40,12 @@ public class DataRow {
 
         map.put("screen_size", map.get("screen_size") + "&quot;");
 
+       map.put("friendly_name_short",
+                map.get("manufacturer") + " " +
+                map.get("model_name") + " " +
+                map.get("screen_size") + " " +
+                "Laptop");
+
         map.put("friendly_name",
                 map.get("manufacturer") + " " +
                 map.get("model_name") + " " +
