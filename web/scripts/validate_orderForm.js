@@ -7,6 +7,8 @@
 // I'm following the example Slide 79 on Lecture 1. Even though it's programmatically sloppy. - Thomas
 // If anyone else knows how to check for negative integer, please let me know (right now, I'm doing document.orderForm.input.value[0] === "-" which is a bit crude.)
 
+var alertText = [];
+
 /* Helper Functions */
 
 function checkSymbolInText()
@@ -66,7 +68,7 @@ function validate_creditCard()
     if (!parseInt(document.orderForm.creditCard.value) > 0 || document.orderForm.creditCard.value[0] === "-" || getLengthOfNumber(document.orderForm.creditCard.value) !== 16)
     {
         document.orderForm.creditCard.style.backgroundColor = "yellow";
-        alert("Please enter a valid, 16-digit credit card number.");
+        alertText.push("Please enter a valid, 16-digit credit card number.");
         return 1;
     }
     document.orderForm.creditCard.style.backgroundColor = "";
@@ -78,13 +80,13 @@ function validate_quantity()
     if (!parseInt(document.orderForm.quantity.value) > 0 || document.orderForm.quantity.value[0] === "-")
     {
         document.orderForm.quantity.style.backgroundColor = "yellow";
-        alert("Please enter a valid quantity (greater than 0).");
+        alertText.push("Please enter a valid quantity (greater than 0).");
         return 1;
     }
     else if (parseInt(document.orderForm.quantity.value) > 1000)
     {
         document.orderForm.quantity.style.backgroundColor = "yellow";
-        alert("For orders greater than 1000 quantity, please message us directly (Sales/Order department) via Contact Us for bulk pricing.");
+        alertText.push("For orders greater than 1000 quantity, please message us directly (Sales/Order department) via Contact Us for bulk pricing.");
         return 1;
     }
     document.orderForm.quantity.style.backgroundColor = "";
@@ -98,7 +100,7 @@ function validate_phoneNumber()
     if (!(document.orderForm.phoneNumber.value.match(regex)))
     {
         document.orderForm.phoneNumber.style.backgroundColor = "yellow";
-        alert("Please enter a 10-digit phone number in xxx-xxx-xxxx format.");
+        alertText.push("Please enter a 10-digit phone number in xxx-xxx-xxxx format.");
         return 1;
     }
     document.orderForm.phoneNumber.style.backgroundColor = "";
@@ -112,7 +114,7 @@ function validate_email()
     if (!(document.orderForm.email.value.match(regex)))
     {
         document.orderForm.email.style.backgroundColor = "yellow";
-        alert("Please enter a valid email address in x@y.z format.");
+        alertText.push("Please enter a valid email address in x@y.z format.");
         return 1;
     }
     document.orderForm.email.style.backgroundColor = "";
@@ -128,7 +130,7 @@ function validate_shippingAddress()
 
     if (checkEmptyText(streetAddress, city, state, zipcode))
     {
-        alert("Please do not leave your street address, zipcode, city, or state blank.");
+        alertText.push("Please do not leave your street address, zipcode, city, or state blank.");
         error = 1;
         console.log("Error found.");
     }
@@ -136,10 +138,10 @@ function validate_shippingAddress()
     {
         document.orderForm.zipcode.style.backgroundColor = "";
     }
-    
+
     if (checkSymbolInText(city, state))
     {
-        alert("Please only enter alphabetical characters for your city and state.");
+        alertText.push("Please only enter alphabetical characters for your city and state.");
         error = 1;
     }
 
@@ -159,12 +161,12 @@ function validate_checkEmptyText()
 
     if (checkEmptyText(firstName, lastName))
     {
-        alert("Please do not leave your personal information fields blank.");
+        alertText.push("Please do not leave your personal information fields blank.");
         return 1;
     }
     else if (checkSymbolInText(firstName, lastName))
     {
-        alert("Please only use A-Z alphabet in your name.");
+        alertText.push("Please only use A-Z alphabet in your name.");
         return 1;
     }
     else return 0;
@@ -177,7 +179,7 @@ function validate_shippingMethod()
     if (shippingMethod === "default")
     {
         document.orderForm.shipping.style.backgroundColor = "yellow";
-        alert("Please select a valid shipping method.");
+        alertText.push("Please select a valid shipping method.");
         return 1;
     }
     else
@@ -195,5 +197,8 @@ function validate()
     {
         return true;
     }
-    else return false;
+    else {
+        alert(alertText.join("\n"));
+        return false;
+    }
 }
