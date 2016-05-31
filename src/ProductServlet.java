@@ -152,7 +152,6 @@ public class ProductServlet extends HttpServlet {
         out.println("<input name=\"addProductToCart\" type=\"hidden\" value=\""+request.getParameter("product_number")+"\">");
         out.println("<input type=\"submit\" value=\"addProductToCart\"/>");
         out.println("</form>");
-        printProductView(out, session);
         updateViewedProducts(request,session);
         out.println("</body>");
         out.println("</html>");
@@ -203,7 +202,7 @@ public class ProductServlet extends HttpServlet {
             }
         doGet(request, response);
     }
-    private void updateViewedProducts(HttpServletRequest request, HttpSession session) {
+    private void updateViewedProducts(HttpServletRequest request, HttpSession session) { //Updates session attribute to include product id viewed
         String[] viewed = (String[]) session.getAttribute("products");
         for (int i = viewed.length-2; i >= 0; i--) {
             viewed[i+1] = viewed[i];
@@ -212,48 +211,7 @@ public class ProductServlet extends HttpServlet {
         session.setAttribute("products",viewed);
     }
 
-
-
-void printProductView(PrintWriter out, HttpSession session) {
-        out.println("<p> Items previously viewed: ");
-        out.println("<ul class=\"viewed\">");
-        String[] viewed = (String[]) session.getAttribute("products");
-        if (!(viewed[0].equals("0"))) {
-            for (int i = 0; i < viewed.length; i++) {
-                if ((viewed[i].equals("0"))) {
-                    break;
-                }
-                else {
-                    String pid = "SELECT image_path FROM products WHERE product_number=" + viewed[i]  + ";";
-                    try {
-                        DatabaseResultSet rspid = new DatabaseResultSet(pid);
-                        while (rspid.getResultSet().next()) {
-                            String id = rspid.getResultSet().getString(1);
-                            out.println("<li class=\"viewed\">");
-                            out.print("<a href=\"product?product_number=" + viewed[i] + "\">");
-                            out.print("<img class=\"small\" src=\"" + id + "\"");
-                            out.print("alt=\"" + id + "\"");
-                            out.print("title=\"" + id + "\"/>");
-                            out.print("</a>");
-                            out.println("</li>");
-                        }
-                    }
-                    catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-           }
-        }
-        else {
-            out.println("None");
-        }
-        out.println("</p>");
-        out.println("</ul");
-
-
-    }
-
-        HashMap<Integer, Integer> createNewCounter(ServletContext consession) { // Creates a new counter map for the session, and returns it.
+    HashMap<Integer, Integer> createNewCounter(ServletContext consession) { // Creates a new counter map for the session, and returns it.
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>(20);
         for (int i = 1; i < 10; i++){
             map.put(i, 0);
@@ -262,7 +220,7 @@ void printProductView(PrintWriter out, HttpSession session) {
         return map;
         }
 
-        HashMap<Integer, Integer> createNewCounter(HttpSession session) { // Creates a new counter map for the session, and returns it.
+    HashMap<Integer, Integer> createNewCounter(HttpSession session) { // Creates a new counter map for the session, and returns it.
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>(20);
         for (int i = 1; i < 10; i++){
             map.put(i, 0);
