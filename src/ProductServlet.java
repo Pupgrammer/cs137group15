@@ -198,11 +198,11 @@ public class ProductServlet extends HttpServlet {
                           //  out.println("A cart map existed for your session. The product did not exist in your cart, it was added with a quantity of 1. Session ID: " + session.getId());
                         }
                     }
-                    
-                    
+
+
                 }
             }
-       response.sendRedirect("checkout");  
+       response.sendRedirect("checkout");
     }
     private void updateViewedProducts(HttpServletRequest request, HttpSession session) {
         String[] viewed = (String[]) session.getAttribute("products");
@@ -213,25 +213,23 @@ public class ProductServlet extends HttpServlet {
         session.setAttribute("products",viewed);
     }
 
-
-
-        HashMap<Integer, Integer> createNewCounter(ServletContext consession) { // Creates a new counter map for the session, and returns it.
+    private HashMap<Integer, Integer> createNewCounter(ServletContext consession) { // Creates a new counter map for the session, and returns it.
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>(20);
-        for (int i = 1; i < 10; i++){
+        for (int i = 1; i < 11; i++) {
             map.put(i, 0);
         }
         consession.setAttribute("counter", map);
         return map;
-        }
+    }
 
-        HashMap<Integer, Integer> createNewCounter(HttpSession session) { // Creates a new counter map for the session, and returns it.
+    private HashMap<Integer, Integer> createNewCounter(HttpSession session) { // Creates a new counter map for the session, and returns it.
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>(20);
-        for (int i = 1; i < 10; i++){
+        for (int i = 1; i < 11; i++) {
             map.put(i, 0);
         }
         session.setAttribute("counter", map);
         return map;
-        }
+    }
 
 }
 
