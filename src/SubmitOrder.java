@@ -36,12 +36,12 @@ public class SubmitOrder extends HttpServlet
         executeCustomerSQLStatement(connection, order_id, order);
         
         connection.close();
+        connection = null; // Dereference - hopefully makes garbage collection faster.
+        order = null; // Dereference - hopefully makes garbage collection faster.
+        request.getSession().removeAttribute("cart"); // Clears the cart.
     }
     
     /* Begin SQL Functions */
-    private void executeCustomerSQLStatement(DatabaseOrderHandler connection, String session_id, HashMap<String, String> order)  {
-        connection.executeCustomerInfoStatement(session_id, order.get("firstName"), order.get("lastName"), order.get("email"), order.get("phoneNumber"), order.get("streetAddress"), order.get("zipcode"), order.get("city"), order.get("state"), order.get("shipping"), order.get("creditCard"));
-    }
         
     private void executeOrderSQLStatement(DatabaseOrderHandler connection, String session_id, HashMap<Integer, Integer> cart) {
         HashMap<Integer, Double> product_costs = getProductCosts(cart); 
@@ -55,8 +55,12 @@ public class SubmitOrder extends HttpServlet
         }
     }
     
+    private void executeCustomerSQLStatement(DatabaseOrderHandler connection, String session_id, HashMap<String, String> order)  {
+        connection.executeCustomerInfoStatement(session_id, order.get("firstName"), order.get("lastName"), order.get("email"), order.get("phoneNumber"), order.get("streetAddress"), order.get("zipcode"), order.get("city"), order.get("state"), order.get("shipping"), order.get("creditCard"));
+    }
+    
     /* Begin Helper Functions */
-    HashMap<String, String> organizeOrderInfo(HttpServletRequest request, Enumeration<String> parameterNames) { // Organizes request parameters for ease of use.
+    private HashMap<String, String> organizeOrderInfo(HttpServletRequest request, Enumeration<String> parameterNames) { // Organizes request parameters for ease of use.
         HashMap<String, String> result = new HashMap<String, String>();
         while (parameterNames.hasMoreElements())
         {
@@ -84,7 +88,7 @@ public class SubmitOrder extends HttpServlet
         return product_costs;
     }
     
-    String createProductSQLStatement(HashMap<Integer, Integer> cart) { // Creates product price retrieveal SQL statement.
+    private String createProductSQLStatement(HashMap<Integer, Integer> cart) { // Creates product price retrieveal SQL statement.
         int counter = 0;
         String sql = "SELECT product_number AS product_id, price from products WHERE product_number = ";
         for (Integer product_id : cart.keySet())
@@ -102,14 +106,14 @@ public class SubmitOrder extends HttpServlet
         return sql;
     }
     
-    String generateOrderId()
+    private String generateOrderId()
     {
         String uuid = UUID.randomUUID().toString();
         return uuid;
     }
         
     /* Begin Debug Functions */
-    void printDebugInformation(PrintWriter out, String order_id, HashMap<String, String> order, HashMap<Integer, Integer> cart)
+    private void printDebugInformation(PrintWriter out, String order_id, HashMap<String, String> order, HashMap<Integer, Integer> cart)
     {
         out.println("Randomly Generated Order-ID: " + order_id);
         out.println("");
