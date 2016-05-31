@@ -1,14 +1,8 @@
-<%@ page import="java.io.*"%>
-<%@ page import="java.util.*"%>
-<%@ page import="java.sql.*"%>
-<%@ page import="javax.servlet.http.*" %>
-<%@ page import="javax.servlet.*" %>
-<%@ page import="javax.servlet.jsp.*" %>
-<%@ page import="pkg.ConnectionInfo" %>
-<%@ page import="pkg.DatabaseResultSet" %>
-<%@ page import="pkg.DataRow" %>
-<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="pkg.DataRow"%>
+<%@ page import="pkg.DatabaseResultSet"%>
+<%@ page import="java.sql.SQLException"%>
 <%@ page import="java.util.regex.Matcher" %>
+<%@ page import="java.util.regex.Pattern" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
