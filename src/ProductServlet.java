@@ -179,7 +179,7 @@ public class ProductServlet extends HttpServlet {
                         Map<Integer, Integer> cart = new HashMap<Integer, Integer>(20);
                         cart.put(Integer.parseInt(request.getParameter(parameter)), 1);
                         session.setAttribute("cart", cart);
-                        out.println("No cart map existed for your session, so one was created and the product was added. Session ID: " + session.getId());
+                       // out.println("No cart map existed for your session, so one was created and the product was added. Session ID: " + session.getId());
                     }
                     else
                     {
@@ -190,19 +190,21 @@ public class ProductServlet extends HttpServlet {
                         {
                             cart.put(product_id, cart.get(product_id)+1);
                             session.setAttribute("cart", cart);
-                            out.println("A cart map existed for your session. The product already existed in your cart, so the quantity was increased by one. Session ID: " + session.getId());
+                           // out.println("A cart map existed for your session. The product already existed in your cart, so the quantity was increased by one. Session ID: " + session.getId());
                         }
                         else
                         {
                             cart.put(product_id, 1);
-                            out.println("A cart map existed for your session. The product did not exist in your cart, it was added with a quantity of 1. Session ID: " + session.getId());
+                          //  out.println("A cart map existed for your session. The product did not exist in your cart, it was added with a quantity of 1. Session ID: " + session.getId());
                         }
                     }
+                    
+                    
                 }
             }
-        doGet(request, response);
+       response.sendRedirect("checkout");  
     }
-    private void updateViewedProducts(HttpServletRequest request, HttpSession session) { //Updates session attribute to include product id viewed
+    private void updateViewedProducts(HttpServletRequest request, HttpSession session) {
         String[] viewed = (String[]) session.getAttribute("products");
         for (int i = viewed.length-2; i >= 0; i--) {
             viewed[i+1] = viewed[i];
@@ -211,7 +213,9 @@ public class ProductServlet extends HttpServlet {
         session.setAttribute("products",viewed);
     }
 
-    HashMap<Integer, Integer> createNewCounter(ServletContext consession) { // Creates a new counter map for the session, and returns it.
+
+
+        HashMap<Integer, Integer> createNewCounter(ServletContext consession) { // Creates a new counter map for the session, and returns it.
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>(20);
         for (int i = 1; i < 10; i++){
             map.put(i, 0);
@@ -220,7 +224,7 @@ public class ProductServlet extends HttpServlet {
         return map;
         }
 
-    HashMap<Integer, Integer> createNewCounter(HttpSession session) { // Creates a new counter map for the session, and returns it.
+        HashMap<Integer, Integer> createNewCounter(HttpSession session) { // Creates a new counter map for the session, and returns it.
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>(20);
         for (int i = 1; i < 10; i++){
             map.put(i, 0);
