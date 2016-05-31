@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.io.PrintWriter;
 
 public class DatabaseOrderHandler {
 
@@ -58,8 +59,7 @@ public class DatabaseOrderHandler {
             ) ENGINE=InnoDB;
         */
         
-        String orderSQL = "INSERT INTO order_info (order_id, product_id, product_name, quantity, total_cost) VALUES (?, ?, ?, ?, ?);";
-
+        String orderSQL = "INSERT INTO order_info (order_id, product_id, quantity, total_cost) VALUES (?, ?, ?, ?)";
         
         try
         {
@@ -67,11 +67,10 @@ public class DatabaseOrderHandler {
 
             // Execute SQL query
             PreparedStatement statement = connection.prepareStatement(orderSQL);
-            statement.setString(1, "order_id_test");
-            statement.setInt(2, 123);
-            statement.setString(3, "product_name");
-            statement.setInt(4, 1);
-            statement.setFloat(5, new Float(123.00));
+            statement.setString(1, order_id);
+            statement.setInt(2, product_id);
+            statement.setInt(3, quantity);
+            statement.setDouble(4, total_cost);
             statement.executeUpdate();
         }            
         catch (SQLException e) 

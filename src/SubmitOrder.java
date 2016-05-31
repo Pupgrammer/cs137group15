@@ -23,12 +23,16 @@ public class SubmitOrder extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
+        DatabaseOrderHandler connection = new DatabaseOrderHandler();
+        
         HashMap<String, String> order = organizeOrderInfo(request, request.getParameterNames());
         HashMap<Integer, Integer> cart = (HashMap<Integer, Integer>) request.getSession().getAttribute("cart");
 
 
         printDebugInformation(out, order, cart);
-        executeOrderSQLStatement(session.getId(), order, cart);
+        executeOrderSQLStatement(connection, session.getId(), cart);
+        executeCustomerSQLStatement(connection, session.getId(), order);
+        connection.close();
     }
     
     HashMap<String, String> organizeOrderInfo(HttpServletRequest request, Enumeration<String> parameterNames) {
@@ -40,18 +44,24 @@ public class SubmitOrder extends HttpServlet
         }
         return result;
     }
-    
-    private void executeOrderSQLStatement(String session_id, HashMap<String, String> order, HashMap<Integer, Integer> cart) 
+
+        private void executeCustomerSQLStatement(DatabaseOrderHandler connection, String session_id, HashMap<String, String> order) 
+    {
+        //
+    }
+        
+    private void executeOrderSQLStatement(DatabaseOrderHandler connection, String session_id, HashMap<Integer, Integer> cart) 
     { // Assumes that cart has at least one element and order is not empty.
         HashMap<Integer, Double> product_costs = getProductCosts(cart);
-        DatabaseOrderHandler connection = new DatabaseOrderHandler();
         Iterator iterate = cart.entrySet().iterator();
         while (iterate.hasNext())
         {
             Map.Entry pair = (Map.Entry) iterate.next(); // Key = Product ID, Value = Quantity of Product ID
-            connection.executeOrderInfoStatement(session_id, (int) pair.getKey(), (int) pair.getValue(), product_costs.get(pair.getKey()) * (double) pair.getValue());
+            int product_id = (int) pair.getKey();
+            int quantity = (int) pair.getValue();
+            connection.executeOrderInfoStatement(session_id, product_id, quantity, product_costs.get(product_id) * (double) quantity);
         }
-
+        connection.close();
     }
     
     private HashMap<Integer, Double> getProductCosts(HashMap<Integer, Integer> cart)
