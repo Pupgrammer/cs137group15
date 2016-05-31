@@ -38,8 +38,8 @@ public class ProductServlet extends HttpServlet {
             check_add = createNewCounter(session);
             out.println("Session counter for"  + session.getId() + "was created");
             int pid = Integer.parseInt(request.getParameter("product_number"));
-            int count = counter.containsKey(pid) ? counter.get(pid) : 0;
-            count++;
+            int count = check_add.get(pid);//counter.containsKey(pid) ? counter.get(pid) : 0;
+            ++count;
             out.println("counter for this is :" + count);
             counter.put(pid, count);
             check_add.put(pid, 1);
@@ -48,8 +48,8 @@ public class ProductServlet extends HttpServlet {
             {
                 out.println(" continue adding count to " + request.getParameter("product_number"));
                 int pid = Integer.parseInt(request.getParameter("product_number"));
-                int count = counter.containsKey(pid) ? counter.get(pid) : 0;
-                count++;
+                int count = counter.get(pid);//counter.containsKey(pid) ? counter.get(pid) : 0;
+                ++count;
                 int count_check = check_add.get(pid);
                 if (count_check == 0) {
                     counter.put(pid, count);
