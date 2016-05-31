@@ -30,7 +30,6 @@ public class DatabaseResultSet {
             //String sql = "SELECT * FROM products WHERE product_number=" + request.getParameter("product_number") + ";";
             rs = statement.executeQuery(sql);
             
-            connection.close(); // Added by Thomas Nguyen on 5/30/2016 - properly release JDBC resources.
         }
         catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
