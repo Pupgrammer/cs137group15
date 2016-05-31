@@ -240,7 +240,7 @@ public class Checkout extends HttpServlet {
 
             out.println("<br><br>");
 
-            out.println("<table class='cost'>");
+            out.println("<table class='cost' style='margin-left:200px'>");
             out.println("<tr>");
             // Handle Subtotal.
             out.println("<td class='cost'>Subtotal</td>");
