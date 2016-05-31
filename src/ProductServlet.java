@@ -17,6 +17,7 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("doGet");
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true);
@@ -147,7 +148,7 @@ public class ProductServlet extends HttpServlet {
         catch (SQLException e) {
             e.printStackTrace();
         }
-        out.println("<form action=\"checkout\" method=\"post\">");
+        out.println("<form action=\"product\" method=\"post\">");
         out.println("<input name=\"addProductToCart\" type=\"hidden\" value=\""+request.getParameter("product_number")+"\">");
         out.println("<input type=\"submit\" value=\"addProductToCart\"/>");
         out.println("</form>");
@@ -157,16 +158,17 @@ public class ProductServlet extends HttpServlet {
         out.println("</html>");
 
     }
-    
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        doGet(request, response);
+        System.out.println("doPost");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         Map<String, String[]> parameters = request.getParameterMap();
         if(request.getParameterMap().isEmpty())
         {
+            System.out.println("empty parameters");
             out.println("empty parameters");
         }
         for (String parameter : parameters.keySet())
