@@ -35,7 +35,7 @@ public class ProductServlet extends HttpServlet {
                 out.println("counter for this is 1");
             }
             //Currently seems to not go to the ELSE statement
-            if(check_add == null){ //Checks if current session has been created and increments count on counter
+            else if(check_add == null){ //Checks if current session has been created and increments count on counter
             check_add = createNewCounter(session);
             out.println("Session counter for"  + session.getId() + " was created");
             int pid = Integer.parseInt(request.getParameter("product_number")); //Grab product number
@@ -47,6 +47,7 @@ public class ProductServlet extends HttpServlet {
                 counter.put(pid, count);
                 check_add.put(pid, 1); //Sets to 1 so product number will not be incremented in current session
                 consession.setAttribute("counter", counter);
+                session.setAttribute("check_add", check_add);
                 }
             }
             else
@@ -60,6 +61,7 @@ public class ProductServlet extends HttpServlet {
                     counter.put(pid, count);
                     out.println("Session counter for" + session.getId() + "is " +count);
                     check_add.put(pid, 1); //Sets to 1 so product number will not be incremented in current session
+                    consession.setAttribute("counter", counter);
                     session.setAttribute("check_add", check_add);
                 }
                 else
