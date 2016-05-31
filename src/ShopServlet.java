@@ -47,11 +47,7 @@ public class ShopServlet extends HttpServlet {
         out.println("</tr>");
         
         HttpSession session = request.getSession(true);
-        createProductView(session);
-        printProductView(out, session);
-       
-        
-        
+        createProductView(session);      
         
         try {
             String sql = "SELECT * from products";
@@ -77,6 +73,7 @@ public class ShopServlet extends HttpServlet {
             }
 
             out.println("</table>");
+            printProductView(out, session);
             out.println("</body>");
             out.println("</html>");
             
@@ -101,26 +98,40 @@ public class ShopServlet extends HttpServlet {
         }
     }
     
-    void printProductView(PrintWriter out, HttpSession session) {
-        out.println("<p> Items previously checked: ");
+void printProductView(PrintWriter out, HttpSession session) {
+        out.println("<p> Items previously viewed: ");
+        out.println("<ul class=\"viewed\">");
         String[] viewed = (String[]) session.getAttribute("products");
         if (!(viewed[0].equals("0"))) {
-            out.println("<a href=\"product?product_number=" + viewed[0] + "\">" + viewed[0] + "</a>");
-            for (int i = 1; i < viewed.length; i++) {
+            for (int i = 0; i < viewed.length; i++) {
                 if ((viewed[i].equals("0"))) {
                     break;
                 }
                 else {
-                    out.println(" , " + "<a href=\"product?product_number=" + "\">" + viewed[i] + "</a>");
-                    out.println("<img src=\"product?product_number=" + viewed[0] + "\"");
+                    String pid = "SELECT image_path FROM products WHERE product_number=" + viewed[i]  + ";";
+                    try {
+                        DatabaseResultSet rspid = new DatabaseResultSet(pid);
+                        while (rspid.getResultSet().next()) {
+                            String id = rspid.getResultSet().getString(1);
+                            out.println("<li class=\"viewed\">");
+                            out.print("<a href=\"product?product_number=" + viewed[i] + "\">");
+                            out.print("<img class=\"small\" src=\"" + id + "\"");
+                            out.print("alt=\"" + id + "\"");
+                            out.print("title=\"" + id + "\"/>");
+                            out.print("</a>");
+                            out.println("</li>");
+                        }
+                    }
+                    catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
+           }
         }
         else {
             out.println("None");
         }
         out.println("</p>");
+        out.println("</ul");
     }
-    
-    
 }
