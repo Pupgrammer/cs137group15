@@ -1,19 +1,21 @@
+import pkg.ConnectionInfo;
+
 import java.sql.*;
 
 public class DatabaseOrderHandler {
 
     Connection current;
-    
-    public DatabaseOrderHandler() 
+
+    public DatabaseOrderHandler()
     {
         current = null;
     }
-    
+
     public void close()
     {
         current = null;
     }
-    
+
     private Connection handleGetConnection()
     {
         if (current != null)
@@ -39,7 +41,7 @@ public class DatabaseOrderHandler {
             }
             catch (SQLException | ClassNotFoundException e)
             {
-                e.printStackTrace();  
+                e.printStackTrace();
             }
             return current;
         }
@@ -57,10 +59,10 @@ public class DatabaseOrderHandler {
             PRIMARY KEY (order_id, product_id)
             ) ENGINE=InnoDB;
         */
-        
+
         String orderSQL = "INSERT INTO order_info (order_id, product_id, product_name, quantity, total_cost) VALUES (?, ?, ?, ?, ?);";
 
-        
+
         try
         {
             Connection connection = handleGetConnection();
@@ -73,8 +75,8 @@ public class DatabaseOrderHandler {
             statement.setInt(4, 1);
             statement.setFloat(5, new Float(123.00));
             statement.executeUpdate();
-        }            
-        catch (SQLException e) 
+        }
+        catch (SQLException e)
         {
             e.printStackTrace();
         }
