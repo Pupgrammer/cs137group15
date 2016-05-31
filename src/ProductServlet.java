@@ -18,26 +18,47 @@ public class ProductServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true); 
         ServletContext consession = this.getServletContext();
-        
+        //Creates counter for incrementing number of sessions that viewed pid
         HashMap<Integer, Integer> counter = (HashMap<Integer, Integer>) consession.getAttribute("counter");
-
-            if (counter == null)
+        //Creates binary counter to check if pid has been added for current session
+        HashMap<Integer, Integer> check_add = (HashMap<Integer, Integer>) session.getAttribute("check_add");
+        
+        
+            if (counter == null) //Creates new context and sets to 1 for pid on hashmap
             {
                 counter = createNewCounter(consession);
-             //   out.println("Session counter for" + consession.getId() + "was empty so created with empty values");
                 out.println("adding count to " + request.getParameter("product_number"));
-                int p = Integer.parseInt(request.getParameter("product_number"));
-                int count = counter.containsKey(p) ? counter.get(p) : 0;
-                counter.put(p, count + 1);
-                out.println("counter for this is :" + count);
+                int pid = Integer.parseInt(request.getParameter("product_number"));
+                //int count = counter.containsKey(pid) ? counter.get(pid) : 0;
+                counter.put(pid, 1);
+                
+                out.println("counter for this is :" + 1);
+            }
+            if(check_add == null){ //Checks if current session has been created and increments for pid on hashmap
+            check_add = createNewCounter(session);
+            out.println("Session counter for"  + session.getId() + "was created");
+            int pid = Integer.parseInt(request.getParameter("product_number"));
+            int count = counter.containsKey(pid) ? counter.get(pid) : 0;
+            count++;
+            out.println("counter for this is :" + count);
+            counter.put(pid, count);
+            check_add.put(pid, 1);
             }
             else
             {
                 out.println(" continue adding count to " + request.getParameter("product_number"));
-                int p = Integer.parseInt(request.getParameter("product_number"));
-                int count = counter.containsKey(p) ? counter.get(p) : 0;
-                counter.put(p, count + 1);
-                out.println("counter for this is :" + count);
+                int pid = Integer.parseInt(request.getParameter("product_number"));
+                int count = counter.containsKey(pid) ? counter.get(pid) : 0;
+                count++;
+                int count_check = check_add.get(pid);
+                if (count_check == 0) {
+                    counter.put(pid, count);
+                    out.println("Session counter for" + session.getId() + "is " +count);
+                    check_add.put(pid, 1);
+                }
+                else
+                    out.println("Skip; already incremented");
+              
             }
         
         printProductView(out, session);
@@ -181,6 +202,15 @@ public class ProductServlet extends HttpServlet {
         }
         consession.setAttribute("counter", map);
         return map;
-    }
+        }
+        
+        HashMap<Integer, Integer> createNewCounter(HttpSession session) { // Creates a new counter map for the session, and returns it.
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>(20);
+        for (int i = 1; i < 10; i++){
+            map.put(i, 0);
+        }
+        session.setAttribute("counter", map);
+        return map;
+        }
 
 }
