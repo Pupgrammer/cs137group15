@@ -53,8 +53,17 @@ ul {
     font-family: "Arial", Serif;
 }
 
+ul.viewed {
+    background-color: gainsboro;
+    margin-left: 200px;
+}
+
 li {
     float: left;
+}
+
+li.viewed {
+    display: in-line;
 }
 
 li a {
@@ -151,6 +160,11 @@ img {
     width: 200px;
     height: 200px;
     display: block;
+}
+
+img.small {
+    width: 150px;
+    height: 150px;
 }
 
 img.logo {
