@@ -18,7 +18,7 @@ public class ProductServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true); 
         ServletContext consession = this.getServletContext();
-        //Creates counter for incrementing number of sessions that viewed pid for current context
+        //Creates counter for incrementing number of sessions that viewed pid
         HashMap<Integer, Integer> counter = (HashMap<Integer, Integer>) consession.getAttribute("counter");
         //Creates binary counter to check if pid has been added for current session
         HashMap<Integer, Integer> check_add = (HashMap<Integer, Integer>) session.getAttribute("check_add");
@@ -31,6 +31,7 @@ public class ProductServlet extends HttpServlet {
                 int pid = Integer.parseInt(request.getParameter("product_number"));
                 //int count = counter.containsKey(pid) ? counter.get(pid) : 0;
                 counter.put(pid, 1);
+                consession.setAttribute("counter",counter);
                 out.println("counter for this is 1");
             }
             //Currently seems to not go to the ELSE statement
@@ -45,6 +46,7 @@ public class ProductServlet extends HttpServlet {
                 out.println("counter for this is :" + count);
                 counter.put(pid, count);
                 check_add.put(pid, 1); //Sets to 1 so product number will not be incremented in current session
+                consession.setAttribute("counter", counter);
                 }
             }
             else
@@ -58,6 +60,7 @@ public class ProductServlet extends HttpServlet {
                     counter.put(pid, count);
                     out.println("Session counter for" + session.getId() + "is " +count);
                     check_add.put(pid, 1); //Sets to 1 so product number will not be incremented in current session
+                    session.setAttribute("check_add", check_add);
                 }
                 else
                     out.println("Skip; already incremented");
