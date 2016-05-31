@@ -18,43 +18,46 @@ public class ProductServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true); 
         ServletContext consession = this.getServletContext();
-        //Creates counter for incrementing number of sessions that viewed pid
+        //Creates counter for incrementing number of sessions that viewed pid for current context
         HashMap<Integer, Integer> counter = (HashMap<Integer, Integer>) consession.getAttribute("counter");
         //Creates binary counter to check if pid has been added for current session
         HashMap<Integer, Integer> check_add = (HashMap<Integer, Integer>) session.getAttribute("check_add");
         
         
-            if (counter == null) //Creates new context and sets to 1 for pid on hashmap
+            if (counter == null) //Creates new context and sets to 1 for pid on hashmap if context contains no values
             {
                 counter = createNewCounter(consession);
-                out.println("adding count to " + request.getParameter("product_number"));
+                out.println("Initializing view to " + request.getParameter("product_number"));
                 int pid = Integer.parseInt(request.getParameter("product_number"));
                 //int count = counter.containsKey(pid) ? counter.get(pid) : 0;
                 counter.put(pid, 1);
-                
-                out.println("counter for this is :" + 1);
+                out.println("counter for this is 1");
             }
-            if(check_add == null){ //Checks if current session has been created and increments for pid on hashmap
+            //Currently seems to not go to the ELSE statement
+            if(check_add == null){ //Checks if current session has been created and increments count on counter
             check_add = createNewCounter(session);
-            out.println("Session counter for"  + session.getId() + "was created");
-            int pid = Integer.parseInt(request.getParameter("product_number"));
-            int count = check_add.get(pid);//counter.containsKey(pid) ? counter.get(pid) : 0;
-            ++count;
-            out.println("counter for this is :" + count);
-            counter.put(pid, count);
-            check_add.put(pid, 1);
+            out.println("Session counter for"  + session.getId() + " was created");
+            int pid = Integer.parseInt(request.getParameter("product_number")); //Grab product number
+            int count = counter.containsKey(pid) ? counter.get(pid) : 0; //Gets value of views for current product number
+            int count_check = check_add.get(pid);
+            if (count_check == 0){ //Checks if current product has been incremented on hashmap; 0 will allow to increment
+                ++count;
+                out.println("counter for this is :" + count);
+                counter.put(pid, count);
+                check_add.put(pid, 1); //Sets to 1 so product number will not be incremented in current session
+                }
             }
             else
             {
                 out.println(" continue adding count to " + request.getParameter("product_number"));
-                int pid = Integer.parseInt(request.getParameter("product_number"));
-                int count = counter.get(pid);//counter.containsKey(pid) ? counter.get(pid) : 0;
-                ++count;
-                int count_check = check_add.get(pid);
-                if (count_check == 0) {
+                int pid = Integer.parseInt(request.getParameter("product_number")); //Grabs product number
+                int count = counter.containsKey(pid) ? counter.get(pid) : 0; //Gets value of views for current product number
+                int count_check = check_add.get(pid); 
+                if (count_check == 0) { //Checks if product number has been incremented on hashmap; 0 will allow to increment
+                    ++count;
                     counter.put(pid, count);
                     out.println("Session counter for" + session.getId() + "is " +count);
-                    check_add.put(pid, 1);
+                    check_add.put(pid, 1); //Sets to 1 so product number will not be incremented in current session
                 }
                 else
                     out.println("Skip; already incremented");
