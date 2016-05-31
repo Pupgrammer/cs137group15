@@ -259,7 +259,7 @@ public class Checkout extends HttpServlet {
             out.println("</tr>");
             out.println("</table>");
 
-            out.println("<form action='' class='orderForm' name='orderForm' onSubmit='return (validate())' method='POST'>");
+            out.println("<form action='order' class='orderForm' name='orderForm' onSubmit='return (validate())' method='POST'>");
             out.println("<br><br>");
             out.println("<br>First Name:<br>");
             out.println("<input type='text' name='firstName'/>");
