@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 import javax.servlet.http.HttpSession;
+import javax.servlet.RequestDispatcher;
+
 
 public class ShopServlet extends HttpServlet {
 
@@ -48,7 +50,6 @@ public class ShopServlet extends HttpServlet {
         out.println("</tr>");
 
         HttpSession session = request.getSession(true);
-        createProductView(session);
 
         try {
             String sql = "SELECT * from products";
@@ -74,7 +75,7 @@ public class ShopServlet extends HttpServlet {
             }
 
             out.println("</table>");
-            printProductView(out, session);
+            showPreviouslyViewed(request,response);
             out.println("</body>");
             out.println("</html>");
 
@@ -84,55 +85,12 @@ public class ShopServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
-    void createProductView(HttpSession session) {
-        if (session.getAttribute("products") == null) {
-            String[] a = {"0","0","0","0","0"};
-            session.setAttribute("products", a);
+    
+    private void showPreviouslyViewed (HttpServletRequest request, HttpServletResponse response) {
+        try {
+            RequestDispatcher rd = request.getRequestDispatcher("PreviouslyViewed");
+            rd.include(request, response);
         }
-    }
-
-    void createProductViewed(HttpSession session) {
-        if (session.getAttribute("products") == null) {
-            String[] a = {"0","0","0","0","0"};
-            session.setAttribute("products", a);
-        }
-    }
-
-void printProductView(PrintWriter out, HttpSession session) {
-        out.println("<p> Items previously viewed: ");
-        out.println("<ul class=\"viewed\">");
-        String[] viewed = (String[]) session.getAttribute("products");
-        if (!(viewed[0].equals("0"))) {
-            for (int i = 0; i < viewed.length; i++) {
-                if ((viewed[i].equals("0"))) {
-                    break;
-                }
-                else {
-                    String pid = "SELECT image_path FROM products WHERE product_number=" + viewed[i]  + ";";
-                    try {
-                        DatabaseResultSet rspid = new DatabaseResultSet(pid);
-                        while (rspid.getResultSet().next()) {
-                            String id = rspid.getResultSet().getString(1);
-                            out.println("<li class=\"viewed\">");
-                            out.print("<a href=\"product?product_number=" + viewed[i] + "\">");
-                            out.print("<img class=\"small\" src=\"" + id + "\"");
-                            out.print("alt=\"" + id + "\"");
-                            out.print("title=\"" + id + "\"/>");
-                            out.print("</a>");
-                            out.println("</li>");
-                        }
-                    }
-                    catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-           }
-        }
-        else {
-            out.println("None");
-        }
-        out.println("</p>");
-        out.println("</ul");
+        catch (ServletException | IOException i){}
     }
 }
