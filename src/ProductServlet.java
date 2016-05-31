@@ -1,3 +1,4 @@
+import pkg.DataRow;
 import pkg.DatabaseResultSet;
 
 import javax.servlet.ServletException;

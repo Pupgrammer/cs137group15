@@ -4,6 +4,7 @@ Main Author: Thomas Tai Nguyen
 Filename: src/Checkout.java
 */
 
+import pkg.DataRow;
 import pkg.DatabaseResultSet;
 
 import javax.servlet.ServletException;
@@ -138,7 +139,7 @@ public class Checkout extends HttpServlet {
         return sql;
     }
 
-    ArrayList<DataRow> retrieveProductsFromDB(String sql) { // Retrieves product information from DB and stores it into a ArrayList<DataRow>
+    ArrayList<DataRow> retrieveProductsFromDB(String sql) { // Retrieves product information from DB and stores it into a ArrayList<pkg.DataRow>
         ArrayList<DataRow> result = new ArrayList<DataRow>();
         try {
             DatabaseResultSet dbrs = new DatabaseResultSet(sql);
