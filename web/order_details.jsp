@@ -37,8 +37,8 @@
 <%
     String order_id = request.getParameter("order_id");
 
-    String customer_info_sql = "SELECT * FROM customer_info WHERE order_id=" + order_id + ";";
-    String order_info_sql = "SELECT * FROM order_info WHERE order_id=" + order_id + ";";
+    String customer_info_sql = "SELECT * FROM customer_info WHERE order_id=\"" + order_id + "\";";
+    String order_info_sql = "SELECT * FROM order_info WHERE order_id=\"" + order_id + "\";";
 
     DatabaseResultSet dbrs;
     try {
