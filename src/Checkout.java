@@ -174,10 +174,21 @@ public class Checkout extends HttpServlet {
 
             out.println("<tr>");
             out.println("<td>" + product_id + "</td>");
-            out.println("<td>" + current.get("friendly_name") + "</td>");
-            out.println("<td>" + "<img src=\"" + current.get("image_path") + "\"" + "/>" + "</td>");
+            out.println("<td>" + current.get("friendly_name_short") + "</td>");
+
+            out.println("<td class=\"img\">");
+            out.println("<a href=\"product?product_number=" + current.get("product_number") + "\">");
+            out.println("<img src=\"" + current.get("image_path") + "\"");
+            out.println("alt=\"" + current.get("friendly_name") + "\"");
+            out.println("title=\"" + current.get("friendly_name") + "\"/>");
+            out.println("</a>");
+            out.println("</td>");
+
             out.println("<td>" + current.get("price") + "</td>");
             out.println("<td>" + cart.get(product_id) + "</td>");
+
+            //out.println("<td>" + "$" + String.format("%.2f", dbrs.getResultSet().getDouble("subtotal_cost")) + "</td>");
+
             // Handle Action.
             out.println("<td>");
             out.println("<form action=\"checkout\" method=\"post\">");
