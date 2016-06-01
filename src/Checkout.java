@@ -21,6 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Checkout extends HttpServlet {
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
@@ -64,7 +65,7 @@ public class Checkout extends HttpServlet {
             printPage(out, cart, "");
         }
         else
-        { // Do I need to re-setAttribute after modifying cart? Probably not but this might be a bug later.
+        {
             for (String parameter : parameters.keySet())
             {
                 Pattern p = Pattern.compile("[^\\d]"); // not a digit
@@ -124,7 +125,7 @@ public class Checkout extends HttpServlet {
         return map;
     }
 
-    String createProductSQLStatement(HashMap<Integer, Integer> cart) { // Assumes that productList has at least one element.
+    String createProductSQLStatement(HashMap<Integer, Integer> cart) { // This function assumes that cart has at least one element.
         int counter = 0;
         String sql = "SELECT * from products WHERE product_number = ";
         for (Integer product_id : cart.keySet())
@@ -170,10 +171,11 @@ public class Checkout extends HttpServlet {
         {
             DataRow current = products.get(i);
             Integer product_id = Integer.parseInt(current.get("product_number"));
+            double product_subtotal =  ((double) cart.get(product_id)) * Double.parseDouble(current.get("raw_price"));
 
             out.println("<tr>");
             out.println("<td>" + product_id + "</td>");
-            out.println("<td>" + current.get("friendly_name_short") + "</td>");
+            out.println("<td>" + current.get("friendly_name_short") + "<br>(Price: " + current.get("price") + ")" + "</td>");
 
             out.println("<td class=\"img\">");
             out.println("<a href=\"product?product_number=" + current.get("product_number") + "\">");
@@ -183,9 +185,10 @@ public class Checkout extends HttpServlet {
             out.println("</a>");
             out.println("</td>");
 
-            out.println("<td>" + current.get("price") + "</td>");
+            //out.println("<td>" + current.get("price") + "</td>");
             out.println("<td>" + cart.get(product_id) + "</td>");
-
+            out.println("<td>" + "$" + roundDecimalPlaces(product_subtotal) + "</td>"); //Subtotal of curent product.
+            
             //out.println("<td>" + "$" + String.format("%.2f", dbrs.getResultSet().getDouble("subtotal_cost")) + "</td>");
 
             // Handle Action.
@@ -201,7 +204,7 @@ public class Checkout extends HttpServlet {
             out.println("</td>");
             // End Handle Action
             // While we're here, we might as well get the subtotal for use later.
-            subtotal = subtotal + ( ((double) cart.get(product_id)) * Double.parseDouble(current.get("raw_price")));
+            subtotal = subtotal + product_subtotal;
             out.println("</tr>");
         }
         return subtotal;
@@ -245,8 +248,9 @@ public class Checkout extends HttpServlet {
             out.println("<th>Product ID</th>");
             out.println("<th>Name</th>");
             out.println("<th>Image</th>");
-            out.println("<th>Price</th>");
+            //out.println("<th>Price</th>");
             out.println("<th>Quantity</th>");
+            out.println("<th>Subtotal</th>");
             out.println("<th>Actions</th>");
             out.println("</tr>");
 
