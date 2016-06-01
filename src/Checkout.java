@@ -18,6 +18,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Checkout extends HttpServlet {
     @Override
@@ -65,6 +67,9 @@ public class Checkout extends HttpServlet {
         { // Do I need to re-setAttribute after modifying cart? Probably not but this might be a bug later.
             for (String parameter : parameters.keySet())
             {
+                Pattern p = Pattern.compile("[^\\d]"); // not a digit
+                Matcher m = p.matcher(parameter);
+                Integer product_id = Integer.parseInt(m.replaceAll(""));
                 if (parameter.startsWith("updateProductQuantity"))
                 {
                     if (cart == null)
@@ -74,7 +79,6 @@ public class Checkout extends HttpServlet {
                     }
                     else
                     {
-                        Integer product_id = Integer.parseInt(parameter.substring(parameter.length() - 1));
                         Integer quantity = cart.get(product_id);
                         Integer new_quantity = Integer.parseInt(request.getParameter(parameter));
 
@@ -91,7 +95,6 @@ public class Checkout extends HttpServlet {
                 }
                 else if (parameter.startsWith("removeProduct"))
                 {
-                    Integer product_id = Integer.parseInt(parameter.substring(parameter.length() - 1));
                     if (cart == null)
                     {
                         cart = createNewCart(session);
