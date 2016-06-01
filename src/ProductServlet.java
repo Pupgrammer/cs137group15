@@ -27,40 +27,46 @@ public class ProductServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true);
         ServletContext consession = this.getServletContext();
-        //Creates counter for incrementing number of sessions that viewed pid
+        
+        // Creates counter for incrementing number of sessions that viewed pid
         HashMap<Integer, Integer> counter = (HashMap<Integer, Integer>) consession.getAttribute("counter");
-        //Creates binary counter to check if pid has been added for current session
+        // Creates binary counter to check if pid has been added for current session
         HashMap<Integer, Integer> check_add = (HashMap<Integer, Integer>) session.getAttribute("check_add");
+        
         int pid = Integer.parseInt(request.getParameter("product_number")); //Grab product number
 
-            if (counter == null) //Creates new context and sets to 1 for pid on hashmap if context contains no values
-            {
-                counter = createNewCounter(consession);
-            }
-            if(check_add == null){ //Checks if current session has been created and increments count on counter
+        if (counter == null) //Creates new context and sets to 1 for pid on hashmap if context contains no values
+        {
+            counter = createNewCounter(consession);
+        }
+        if(check_add == null) // Checks if current session has been created and increments count on counter
+        { 
             check_add = createNewCounter(session);
-            int count = counter.containsKey(pid) ? counter.get(pid) : 0; //Gets value of views for current product number
+            int count = counter.containsKey(pid) ? counter.get(pid) : 0; // Gets value of views for current product number
             int count_check = check_add.get(pid);
-            if (count_check == 0){ //Checks if current product has been incremented on hashmap; 0 will allow to increment
+            
+            if (count_check == 0)
+            { // Checks if current product has been incremented on hashmap; 0 will allow to increment
                 ++count;
                 counter.put(pid, count);
-                check_add.put(pid, 1); //Sets to 1 so product number will not be incremented in current session
+                check_add.put(pid, 1); // Sets to 1 so product number will not be incremented in current session
                 consession.setAttribute("counter", counter);
                 session.setAttribute("check_add", check_add);
-                }
             }
-            else
-            {
-                int count = counter.containsKey(pid) ? counter.get(pid) : 0; //Gets value of views for current product number
-                int count_check = check_add.get(pid);
-                if (count_check == 0) { //Checks if product number has been incremented on hashmap; 0 will allow to increment
-                    ++count;
-                    counter.put(pid, count);
-                    check_add.put(pid, 1); //Sets to 1 so product number will not be incremented in current session
-                    consession.setAttribute("counter", counter);
-                    session.setAttribute("check_add", check_add);
-                }
+        }
+        else
+        {
+            int count = counter.containsKey(pid) ? counter.get(pid) : 0; // Gets value of views for current product number
+            int count_check = check_add.get(pid);
+            if (count_check == 0) // Checks if product number has been incremented on hashmap; 0 will allow to increment
+            { 
+                ++count;
+                counter.put(pid, count);
+                check_add.put(pid, 1); // Sets to 1 so product number will not be incremented in current session
+                consession.setAttribute("counter", counter);
+                session.setAttribute("check_add", check_add);
             }
+        }
 
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"en\">");
@@ -81,9 +87,6 @@ public class ProductServlet extends HttpServlet {
         out.println("</ul>");
         out.println("</div>");
         out.println("<table class=\"info\">");
-
-
-
 
         try {
             String sql = "SELECT * FROM products WHERE product_number=" + request.getParameter("product_number")  + ";";
@@ -142,10 +145,6 @@ public class ProductServlet extends HttpServlet {
                 int count = counter.containsKey(pid) ? counter.get(pid) : 0;
                 out.println("<td class=\"desc\">" + count + "</td>");
                 out.println("</table>");
-
-
-
-
             }
         }
 
