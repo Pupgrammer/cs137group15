@@ -124,53 +124,43 @@
             
             out.println("<h3 style='margin-left:200px; text-decoration: underline'>Contact Information</h3>");
             out.println("<table class='cost' style='margin-left:200px'>");
-            
             out.println("<tr>");
             out.println("<td class='cost'>First Name: </td>");
             out.println("<td class='cost'>" + dbrs.getResultSet().getString("first_name") + "</td>");
             out.println("</tr>");
-
             out.println("<tr>");
             out.println("<td class='cost'>Last Name: </td>");
             out.println("<td class='cost'>" + dbrs.getResultSet().getString("last_name") + "</td>");
             out.println("</tr>");
-            
             out.println("<tr>");
             out.println("<td class='cost'>E-mail: </td>");
             out.println("<td class='cost'>" + dbrs.getResultSet().getString("email") + "</td>");
-            out.println("</tr>");
-            
+            out.println("</tr>");         
             out.println("<tr>");
             out.println("<td class='cost'>Phone Number: </td>");
             out.println("<td class='cost'>" + dbrs.getResultSet().getString("phone_number") + "</td>");
             out.println("</tr>");
-            out.println("</table>");
-            
+            out.println("</table>");          
             out.println("<h3 style='margin-left:200px; text-decoration: underline'>Shipping Information</h3>");
             out.println("<table class='cost' style='margin-left:200px'>");
             out.println("<tr>");
             out.println("<td class='cost'>Address: </td>");
             out.println("<td class='cost'>" + dbrs.getResultSet().getString("address") + "</td>");
-            out.println("</tr>");
-            
+            out.println("</tr>");         
             out.println("<tr>");
             out.println("<td class='cost'>City: </td>");
             out.println("<td class='cost'>" + dbrs.getResultSet().getString("city") + "</td>");
-            out.println("</tr>");
-            
+            out.println("</tr>");         
             out.println("<tr>");
             out.println("<td class='cost'>State: </td>");
             out.println("<td class='cost'>" + dbrs.getResultSet().getString("state") + "</td>");
-            out.println("</tr>");
-            
+            out.println("</tr>");           
             out.println("<tr>");
             out.println("<td class='cost'>Zipcode: </td>");
             out.println("<td class='cost'>" + dbrs.getResultSet().getString("zipcode") + "</td>");
             out.println("</tr>");
             out.println("</table>");
-            
-            
-            
+                  
             out.println("<h3 style='margin-left:200px; text-decoration: underline'>Payment Information</h3>");
             out.println("<table class='cost' style='margin-left:200px'>");
             out.println("<tr>");
@@ -185,6 +175,7 @@
             out.println("<td class='cost'>" + cc + "</td>");
             out.println("</tr>");
             out.println("</table>");
+            
             out.println("<br>");
             out.println("<h3 style='margin-left:200px'>Have any questions about your order? Contact us <a href=\"./contactus.html\">here.</a></h3>");
         }
