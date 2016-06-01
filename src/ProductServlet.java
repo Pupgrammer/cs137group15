@@ -159,53 +159,8 @@ public class ProductServlet extends HttpServlet {
         updateViewedProducts(request,session);
         out.println("</body>");
         out.println("</html>");
-
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
-        System.out.println("doPost");
-        PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
-        Map<String, String[]> parameters = request.getParameterMap();
-        if(request.getParameterMap().isEmpty())
-        {
-            System.out.println("empty parameters");
-            out.println("empty parameters");
-        }
-        for (String parameter : parameters.keySet())
-            {
-                if (parameter.startsWith("addProductToCart"))
-                {
-                    if (session.getAttribute("cart") == null)
-                    {
-                        Map<Integer, Integer> cart = new HashMap<Integer, Integer>(20);
-                        cart.put(Integer.parseInt(request.getParameter(parameter)), 1);
-                        session.setAttribute("cart", cart);
-                       // out.println("No cart map existed for your session, so one was created and the product was added. Session ID: " + session.getId());
-                    }
-                    else
-                    {
-                        Integer product_id = Integer.parseInt(request.getParameter(parameter));
-                        HashMap <Integer, Integer> cart = (HashMap <Integer, Integer>) session.getAttribute("cart");
-
-                        if (cart.containsKey(product_id) == true)
-                        {
-                            cart.put(product_id, cart.get(product_id)+1);
-                            session.setAttribute("cart", cart);
-                           // out.println("A cart map existed for your session. The product already existed in your cart, so the quantity was increased by one. Session ID: " + session.getId());
-                        }
-                        else
-                        {
-                            cart.put(product_id, 1);
-                          //  out.println("A cart map existed for your session. The product did not exist in your cart, it was added with a quantity of 1. Session ID: " + session.getId());
-                        }
-                    }
-                }
-            }
-       response.sendRedirect("checkout");
-    }
     private void updateViewedProducts(HttpServletRequest request, HttpSession session) {
         String[] viewed = (String[]) session.getAttribute("products");
         String product_id = request.getParameter("product_number");
