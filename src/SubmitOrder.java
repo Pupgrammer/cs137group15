@@ -37,7 +37,7 @@ public class SubmitOrder extends HttpServlet
         HashMap<Integer, Integer> cart = (HashMap<Integer, Integer>) request.getSession().getAttribute("cart");
 
 
-        printDebugInformation(out, order_id, order_time, order, cart); // Note: When JSP page implemented, this is no longer needed.
+        //printDebugInformation(out, order_id, order_time, order, cart); // Note: When JSP page implemented, this is no longer needed.
 
         executeOrderSQLStatement(connection, order_id, cart);
         executeCustomerSQLStatement(connection, order_id, order_time, order);
@@ -46,6 +46,7 @@ public class SubmitOrder extends HttpServlet
         connection = null; // Dereference - hopefully makes garbage collection faster.
         order = null; // Dereference - hopefully makes garbage collection faster.
         request.getSession().removeAttribute("cart"); // Clears the cart.
+        response.sendRedirect("order_details.jsp?order_id=" + order_id);
     }
 
     /* Begin SQL Functions */
