@@ -148,7 +148,7 @@ public class ProductServlet extends HttpServlet {
         catch (SQLException e) {
             e.printStackTrace();
         }
-        out.println("<form action=\"product\" method=\"post\">");
+        out.println("<form action=\"product\" method=\"post\"> style='margin-left:200px'");
         out.println("<input name=\"addProductToCart\" type=\"hidden\" value=\""+request.getParameter("product_number")+"\">");
         out.println("<input type=\"submit\" value=\"addProductToCart\"/>");
         out.println("</form>");
@@ -206,11 +206,23 @@ public class ProductServlet extends HttpServlet {
     }
     private void updateViewedProducts(HttpServletRequest request, HttpSession session) {
         String[] viewed = (String[]) session.getAttribute("products");
-        for (int i = viewed.length-2; i >= 0; i--) {
-            viewed[i+1] = viewed[i];
-        }
-        viewed[0] = request.getParameter("product_number");
+        String product_id = request.getParameter("product_number");
+        if (checkDuplicates(viewed,product_id).equals("1")) {
+            for (int i = viewed.length-2; i >= 0; i--) {
+                viewed[i+1] = viewed[i];
+            }
+        viewed[0] = product_id;
         session.setAttribute("products",viewed);
+        }
+    }
+    
+    private String checkDuplicates(String[] view, String s) {
+        for (int i = 0; i < view.length; i++) {
+            if (s.equals(view[i])) {
+                return "0";
+            }
+        }
+        return "1";
     }
 
     private HashMap<Integer, Integer> createNewCounter(ServletContext consession) { // Creates a new counter map for the session, and returns it.
