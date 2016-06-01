@@ -21,6 +21,11 @@
         <url-pattern>/shop</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>ShopServlet</servlet-name>
+        <url-pattern></url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>ProductServlet</servlet-name>
         <servlet-class>ProductServlet</servlet-class>
@@ -30,7 +35,7 @@
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
     </servlet-mapping>
-    
+
     <servlet>
         <servlet-name>CheckoutDebug</servlet-name>
         <servlet-class>CheckoutDebug</servlet-class>
@@ -50,12 +55,12 @@
         <servlet-name>order</servlet-name>
         <url-pattern>/order</url-pattern>
     </servlet-mapping>
-    
+
     <servlet>
         <servlet-name>PreviouslyViewed</servlet-name>
         <servlet-class>PreviouslyViewed</servlet-class>
     </servlet>
-    
+
     <servlet-mapping>
         <servlet-name>PreviouslyViewed</servlet-name>
         <url-pattern>/PreviouslyViewed</url-pattern>

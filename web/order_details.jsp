@@ -17,12 +17,10 @@
 <img class='logo' src='images/logo.png' alt='Logo'/>
 <div class='container'>
     <ul>
-        <li><a class='active' href='index.html'>Home</a></li>
-        <li><a href='shop'>Shop</a></li>
-        <li><a href='aboutus.html'>About Us</a></li>
-        <li><a href='contactus.html'>Contact</a></li>
+        <li><a href='shop'>Home/Shop</a></li>
         <li><a href='checkout'>Cart/Checkout</a></li>
-        <li><a href='checkoutdebug'>Cart/Checkout DEBUG</a></li>
+        <li><a href='contactus.html'>Contact</a></li>
+        <li><a href='aboutus.html'>About Us</a></li>
     </ul>
 </div>
 <h1>Order Details</h1>

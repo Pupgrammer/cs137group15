@@ -30,12 +30,10 @@ public class ShopServlet extends HttpServlet {
         out.println("<img class=\"logo\" src=\"images/logo.png\" alt=\"Logo\"/>");
         out.println("<div class=\"container\">");
         out.println("<ul>");
-        out.println("<li><a class=\"active\" href=\"index.html\">Home</a></li>");
-        out.println("<li><a href=\"shop\">Shop</a></li>");
-        out.println("<li><a href=\"aboutus.html\">About Us</a></li>");
-        out.println("<li><a href=\"contactus.html\">Contact</a></li>");
+        out.println("<li><a href=\"shop\">Home/Shop</a></li>");
         out.println("<li><a href=\"checkout\">Cart/Checkout</a></li>");
-        out.println("<li><a href=\'checkoutdebug\'>Cart/Checkout DEBUG</a></li>");
+        out.println("<li><a href=\"contactus.html\">Contact</a></li>");
+        out.println("<li><a href=\"aboutus.html\">About Us</a></li>");
         out.println("</ul>");
         out.println("</div>");
         out.println("<p>Interested in a product? Click on the product image for more details and to order it!</p>");
@@ -85,7 +83,7 @@ public class ShopServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-    
+
     private void showPreviouslyViewed (HttpServletRequest request, HttpServletResponse response) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher("PreviouslyViewed");

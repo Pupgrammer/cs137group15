@@ -69,11 +69,10 @@ public class ProductServlet extends HttpServlet {
         out.println("<img class=\"logo\" src=\"images/logo.png\" alt=\"Logo\"/>");
         out.println("<div class=\"container\">");
         out.println("<ul>");
-        out.println("<li><a class=\"active\" href=\"index.html\">Home</a></li>");
-        out.println("<li><a href=\"shop\">Shop</a></li>");
-        out.println("<li><a href=\"aboutus.html\">About Us</a></li>");
-        out.println("<li><a href=\"contactus.html\">Contact</a></li>");
+        out.println("<li><a href=\"shop\">Home/Shop</a></li>");
         out.println("<li><a href=\'checkout\'>Cart/Checkout</a></li>");
+        out.println("<li><a href=\"contactus.html\">Contact</a></li>");
+        out.println("<li><a href=\"aboutus.html\">About Us</a></li>");
         out.println("</ul>");
         out.println("</div>");
         out.println("<table class=\"info\">");
@@ -215,7 +214,7 @@ public class ProductServlet extends HttpServlet {
         session.setAttribute("products",viewed);
         }
     }
-    
+
     private String checkDuplicates(String[] view, String s) {
         for (int i = 0; i < view.length; i++) {
             if (s.equals(view[i])) {

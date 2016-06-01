@@ -20,22 +20,22 @@ import javax.servlet.http.HttpServletResponse;
  * @author Tai
  */
 
-public class CheckoutDebug extends HttpServlet 
+public class CheckoutDebug extends HttpServlet
 {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         HttpSession session = request.getSession();
         printPage(response.getWriter(), "Your Session ID is " + session.getId());
     }
-    
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         Map<String, String[]> parameters = request.getParameterMap();
-        
+
         if(request.getParameterMap().isEmpty())
         {
             printPage(response.getWriter(), "Your Session ID is " + session.getId());
@@ -110,10 +110,10 @@ public class CheckoutDebug extends HttpServlet
                 }
             }
         }
-        
+
     }
 
-    void printPage(PrintWriter out, String notice) 
+    void printPage(PrintWriter out, String notice)
     {
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\'en\'>");
@@ -126,12 +126,10 @@ public class CheckoutDebug extends HttpServlet
         out.println("<img class=\'logo\' src=\'images/logo.png\' alt=\'Logo\'/>");
         out.println("<div class=\'container\'>");
         out.println("<ul>");
-        out.println("<li><a class=\'active\' href=\'index.html\'>Home</a></li>");
-        out.println("<li><a href=\'shop\'>Shop</a></li>");
-        out.println("<li><a href=\'aboutus.html\'>About Us</a></li>");
-        out.println("<li><a href=\'contactus.html\'>Contact</a></li>");
+        out.println("<li><a href=\'shop\'>Home/Shop</a></li>");
         out.println("<li><a href=\'checkout\'>Cart/Checkout</a></li>");
-        out.println("<li><a href=\'checkoutdebug\'>Cart/Checkout DEBUG</a></li>");
+        out.println("<li><a href=\'contactus.html\'>Contact</a></li>");
+        out.println("<li><a href=\'aboutus.html\'>About Us</a></li>");
         out.println("</ul>");
         out.println("</div>");
         out.println("<div style=\"text-align: center\">");
