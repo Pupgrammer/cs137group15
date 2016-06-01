@@ -26,10 +26,10 @@ public class ProductServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true);
-        ServletContext consession = this.getServletContext();
+        ServletContext context = this.getServletContext();
         
         // Creates counter for incrementing number of sessions that viewed pid
-        HashMap<Integer, Integer> counter = (HashMap<Integer, Integer>) consession.getAttribute("counter");
+        HashMap<Integer, Integer> counter = (HashMap<Integer, Integer>) context.getAttribute("counter");
         // Creates binary counter to check if pid has been added for current session
         HashMap<Integer, Integer> check_add = (HashMap<Integer, Integer>) session.getAttribute("check_add");
         
@@ -37,7 +37,7 @@ public class ProductServlet extends HttpServlet {
 
         if (counter == null) //Creates new context and sets to 1 for pid on hashmap if context contains no values
         {
-            counter = createNewCounter(consession);
+            counter = createNewCounter(context);
         }
         if(check_add == null) // Checks if current session has been created and increments count on counter
         { 
@@ -50,7 +50,7 @@ public class ProductServlet extends HttpServlet {
                 ++count;
                 counter.put(pid, count);
                 check_add.put(pid, 1); // Sets to 1 so product number will not be incremented in current session
-                consession.setAttribute("counter", counter);
+                context.setAttribute("counter", counter);
                 session.setAttribute("check_add", check_add);
             }
         }
@@ -63,7 +63,7 @@ public class ProductServlet extends HttpServlet {
                 ++count;
                 counter.put(pid, count);
                 check_add.put(pid, 1); // Sets to 1 so product number will not be incremented in current session
-                consession.setAttribute("counter", counter);
+                context.setAttribute("counter", counter);
                 session.setAttribute("check_add", check_add);
             }
         }
@@ -181,12 +181,12 @@ public class ProductServlet extends HttpServlet {
         return "1";
     }
 
-    private HashMap<Integer, Integer> createNewCounter(ServletContext consession) { // Creates a new counter map for the session, and returns it.
+    private HashMap<Integer, Integer> createNewCounter(ServletContext context) { // Creates a new counter map for the session, and returns it.
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>(20);
         for (int i = 1; i < 11; i++) {
             map.put(i, 0);
         }
-        consession.setAttribute("counter", map);
+        context.setAttribute("counter", map);
         return map;
     }
 
@@ -195,7 +195,7 @@ public class ProductServlet extends HttpServlet {
         for (int i = 1; i < 11; i++) {
             map.put(i, 0);
         }
-        session.setAttribute("counter", map);
+        session.setAttribute("check_add", map);
         return map;
     }
 
