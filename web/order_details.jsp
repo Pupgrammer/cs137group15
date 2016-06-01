@@ -24,12 +24,12 @@
     </ul>
 </div>
 <h1>Order Details</h1>
+<p>Thank you for your purchase! Your order has been submitted.</p>
 <table>
     <tr>
         <th>Product ID</th>
         <th>Name</th>
         <th>Image</th>
-        <th>Price</th>
         <th>Quantity</th>
         <th>Subtotal</th>
     </tr>
@@ -52,7 +52,7 @@
                 DataRow dataRow = new DataRow(innerdbrs.getResultSet());
                 out.println("<tr class=\"info\">");
                 out.println("<td>" + dataRow.get("product_number") + "</td>");
-                out.println("<td>" + dataRow.get("friendly_name_short") + "</td>");
+                out.println("<td>" + dataRow.get("friendly_name_short") + "<br>(Price: " + dataRow.get("price") + ")" +"</td>");
 
                 out.println("<td class=\"img\">" );
                 out.println("<a href=\"product?product_number=" + dataRow.get("product_number") + "\">");
@@ -62,7 +62,7 @@
                 out.println("</a>");
                 out.println("</td>");
 
-                out.println("<td>" + dataRow.get("price") + "</td>");
+                //out.println("<td>" + dataRow.get("price") + "</td>");
             }
 
             out.println("<td>" + dbrs.getResultSet().getInt("quantity")+ "</td>");
@@ -88,7 +88,7 @@
             totalCost += dbrs.getResultSet().getDouble("cost");
             String shipping_cost = ( (Double) dbrs.getResultSet().getDouble("cost")).toString();
             out.println("<td></td>");
-            out.println("<td></td>");
+            //out.println("<td></td>");
             out.println("<td>" + "$" + String.format("%.2f", Double.parseDouble(shipping_cost)) + "</td>");
         }
         out.println("</tr>");
@@ -99,7 +99,7 @@
         out.println("<td>Total</td>");
         out.println("<td></td>");
         out.println("<td></td>");
-        out.println("<td></td>");
+        //out.println("<td></td>");
         out.println("<td>" + "$" + String.format("%.2f", totalCost) + "</td>");
         out.println("</tr>");
 
