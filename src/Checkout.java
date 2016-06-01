@@ -6,7 +6,6 @@ Filename: src/Checkout.java
 
 import pkg.DataRow;
 import pkg.DatabaseResultSet;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;

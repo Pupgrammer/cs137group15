@@ -1,3 +1,10 @@
+/*
+CS137 Spring 2016 | Group 15
+Main Author: Thomas Tai Nguyen
+Filename: src/CheckoutDebug.java
+*/
+
+// NOTE: This servlet class and its references in web.xml should be removed prior to submission and deployment.
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,17 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Tai
- */
 
 public class CheckoutDebug extends HttpServlet
 {

@@ -1,3 +1,9 @@
+/*
+CS137 Spring 2016 | Group 15
+Main Author: Brian Chipman
+Filename: src/pkg/DataRow.java
+*/
+
 package pkg;
 
 import java.sql.ResultSet;

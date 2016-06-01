@@ -1,7 +1,12 @@
+/*
+CS137 Spring 2016 | Group 15
+Main Author: Brian Chipman
+Filename: src/pkg/DatabaseResultSet.java
+*/
+
 package pkg;
 
 import pkg.ConnectionInfo;
-
 import java.sql.*;
 
 public class DatabaseResultSet {

@@ -5,7 +5,6 @@ Filename: src/SubmitOrder.java
 */
 
 import pkg.DatabaseResultSet;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;

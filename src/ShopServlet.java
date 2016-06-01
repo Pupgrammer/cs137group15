@@ -1,6 +1,11 @@
+/*
+CS137 Spring 2016 | Group 15
+Main Author: Brian Chipman / (Alex Lin & Bryan Nham)
+Filename: src/ShopServlet.java
+*/
+
 import pkg.DataRow;
 import pkg.DatabaseResultSet;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +15,6 @@ import java.io.PrintWriter;
 import java.sql.*;
 import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
-
 
 public class ShopServlet extends HttpServlet {
 

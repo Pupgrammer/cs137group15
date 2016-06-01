@@ -1,7 +1,11 @@
-import pkg.ConnectionInfo;
+/*
+CS137 Spring 2016 | Group 15
+Main Author: Thomas Tai Nguyen
+Filename: src/DatabaseOrderHandler.java
+*/
 
+import pkg.ConnectionInfo;
 import java.sql.*;
-import java.io.PrintWriter;
 
 public class DatabaseOrderHandler {
 

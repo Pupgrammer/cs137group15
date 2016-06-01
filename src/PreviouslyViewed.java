@@ -1,3 +1,9 @@
+/*
+CS137 Spring 2016 | Group 15
+Main Author: Bryan Nham/Alex Lin
+Filename: src/PreviouslyViewed.java
+*/
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
