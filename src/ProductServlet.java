@@ -104,6 +104,10 @@ public class ProductServlet extends HttpServlet {
                 out.println("width=200/></td>");
                 out.println("</tr>");
                 out.println("<tr class=\"info\">");
+                out.println("<td class=\"info\">Number of Viewers</td>");
+                int count = counter.containsKey(pid) ? counter.get(pid) : 0;
+                out.println("<td class=\"desc\">" + count + "</td>");
+                out.println("<tr class=\"info\">");
                 out.println("<td class=\"info\">Model No.</td>");
                 out.println("<td class=\"desc\">" + dataRow.get("model_number") + "</td>");
                 out.println("</tr>");
@@ -140,10 +144,6 @@ public class ProductServlet extends HttpServlet {
                 out.println("<td class=\"info\">OS</td>");
                 out.println("<td class=\"desc\">" + dataRow.get("operating_system") + "</td>");
                 out.println("</tr>");
-                out.println("<tr class=\"info\">");
-                out.println("<td class=\"info\">Number of Viewers</td>");
-                int count = counter.containsKey(pid) ? counter.get(pid) : 0;
-                out.println("<td class=\"desc\">" + count + "</td>");
                 out.println("</table>");
             }
         }
