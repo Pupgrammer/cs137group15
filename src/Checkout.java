@@ -114,6 +114,31 @@ public class Checkout extends HttpServlet {
                         }
                     }
                 }
+                else if (parameter.startsWith("addProductToCart"))
+                {
+                    if (session.getAttribute("cart") == null)
+                    {
+                        cart = createNewCart(session);
+                        cart.put(product_id, 1);
+                        printPage(out, cart, "Product ID " + product_id + " was successfully added to your cart.");
+                       // out.println("No cart map existed for your session, so one was created and the product was added. Session ID: " + session.getId());
+                    }
+                    else
+                    {
+                        if (cart.containsKey(product_id) == true)
+                        {
+                            cart.put(product_id, cart.get(product_id)+1);
+                            printPage(out, cart, "Product ID " + product_id + " was already in your cart, so instead the quantity was increased by one.");
+                           // out.println("A cart map existed for your session. The product already existed in your cart, so the quantity was increased by one. Session ID: " + session.getId());
+                        }
+                        else
+                        {
+                            cart.put(product_id, 1);
+                            printPage(out, cart, "Product ID " + product_id + " was successfully added to your cart.");
+                          //  out.println("A cart map existed for your session. The product did not exist in your cart, it was added with a quantity of 1. Session ID: " + session.getId());
+                        }
+                    }
+                }
             }
         }
     }
@@ -237,7 +262,7 @@ public class Checkout extends HttpServlet {
         out.println("<p id=\"notice\">" + notice + "</p>");
 
         if (cart == null || cart.isEmpty()) {
-            out.println("<p id=\"emptyNotice\">Your cart is currently empty.</p>");
+            out.println("<p id=\"emptyNotice\">Your cart is currently empty. Want to order something? Add a product to your cart!</p>");
         }
 
         if (cart != null && cart.isEmpty() == false)

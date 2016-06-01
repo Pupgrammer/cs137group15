@@ -152,8 +152,8 @@ public class ProductServlet extends HttpServlet {
         catch (SQLException e) {
             e.printStackTrace();
         }
-        out.println("<form action=\"product\" method=\"post\" style='margin-left:200px'>");
-        out.println("<input name=\"addProductToCart\" type=\"hidden\" value=\""+request.getParameter("product_number")+"\">");
+        out.println("<form action=\"checkout\" method=\"post\" style='margin-left:200px'>");
+        out.println("<input name=\"addProductToCart" + request.getParameter("product_number") + "\" type=\"hidden\" value=\""  + request.getParameter("product_number") + "\">");
         out.println("<input type=\"submit\" value=\"Add Product to Cart\"/>");
         out.println("</form>");
         updateViewedProducts(request,session);
@@ -202,8 +202,6 @@ public class ProductServlet extends HttpServlet {
                           //  out.println("A cart map existed for your session. The product did not exist in your cart, it was added with a quantity of 1. Session ID: " + session.getId());
                         }
                     }
-
-
                 }
             }
        response.sendRedirect("checkout");
