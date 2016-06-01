@@ -42,13 +42,8 @@ public class Checkout extends HttpServlet {
             if (cart == null)
             {
                 cart = createNewCart(session);
-                //printPage(out, cart, "[DEBUG MESSAGE] Session cart for session " + session.getId() + " was empty, so a cart map was created with empty values."); // Cart is empty.
-                printPage(out, cart, "");
             }
-            else
-            {
-                printPage(out, cart, "");
-            }
+            printPage(out, cart, "");
         }
     }
 
@@ -121,7 +116,6 @@ public class Checkout extends HttpServlet {
                         cart = createNewCart(session);
                         cart.put(product_id, 1);
                         printPage(out, cart, "Product ID " + product_id + " was successfully added to your cart.");
-                       // out.println("No cart map existed for your session, so one was created and the product was added. Session ID: " + session.getId());
                     }
                     else
                     {
@@ -129,13 +123,11 @@ public class Checkout extends HttpServlet {
                         {
                             cart.put(product_id, cart.get(product_id)+1);
                             printPage(out, cart, "Product ID " + product_id + " was already in your cart, so instead the quantity was increased by one.");
-                           // out.println("A cart map existed for your session. The product already existed in your cart, so the quantity was increased by one. Session ID: " + session.getId());
                         }
                         else
                         {
                             cart.put(product_id, 1);
                             printPage(out, cart, "Product ID " + product_id + " was successfully added to your cart.");
-                          //  out.println("A cart map existed for your session. The product did not exist in your cart, it was added with a quantity of 1. Session ID: " + session.getId());
                         }
                     }
                 }
@@ -227,8 +219,6 @@ public class Checkout extends HttpServlet {
             out.println("<input class=\"removeProduct" + product_id + "\" type=\"submit\" value=\"Remove Product\"/>");
             out.println("</form>");
             out.println("</td>");
-            // End Handle Action
-            // While we're here, we might as well get the subtotal for use later.
             subtotal = subtotal + product_subtotal;
             out.println("</tr>");
         }
