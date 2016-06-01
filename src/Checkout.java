@@ -42,7 +42,8 @@ public class Checkout extends HttpServlet {
             if (cart == null)
             {
                 cart = createNewCart(session);
-                printPage(out, cart, "[DEBUG MESSAGE] Session cart for session " + session.getId() + " was empty, so a cart map was created with empty values."); // Cart is empty.
+                //printPage(out, cart, "[DEBUG MESSAGE] Session cart for session " + session.getId() + " was empty, so a cart map was created with empty values."); // Cart is empty.
+                printPage(out, cart, "");
             }
             else
             {
