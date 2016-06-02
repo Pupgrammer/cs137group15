@@ -6,22 +6,23 @@ Filename: src/Checkout.java
 
 import pkg.DataRow;
 import pkg.DatabaseResultSet;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Checkout extends HttpServlet {
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
@@ -98,7 +99,7 @@ public class Checkout extends HttpServlet {
                     }
                     else
                     {
-                        if (cart.containsKey(product_id) == true)
+                        if (cart.containsKey(product_id))
                         {
                             cart.remove(product_id);
                             printPage(out, cart, "Product ID " + product_id + " was successfully removed from your cart.");
@@ -119,7 +120,7 @@ public class Checkout extends HttpServlet {
                     }
                     else
                     {
-                        if (cart.containsKey(product_id) == true)
+                        if (cart.containsKey(product_id))
                         {
                             cart.put(product_id, cart.get(product_id)+1);
                             printPage(out, cart, "Product ID " + product_id + " was already in your cart, so instead the quantity was increased by one.");
@@ -181,7 +182,7 @@ public class Checkout extends HttpServlet {
         return result;
     }
 
-   double printCart(PrintWriter out, HashMap<Integer, Integer> cart) { // Returns subtotal of all products.
+    double printCart(PrintWriter out, HashMap<Integer, Integer> cart) { // Returns subtotal of all products.
         double subtotal = 0.00;
         ArrayList<DataRow> products = retrieveProductsFromDB(createProductSQLStatement(cart));
         for (int i = 0; i != products.size(); i++)
@@ -194,29 +195,29 @@ public class Checkout extends HttpServlet {
             out.println("<td>" + product_id + "</td>");
             out.println("<td>" + current.get("friendly_name_short") + "<br>(Price: " + current.get("price") + ")" + "</td>");
 
-            out.println("<td class=\"img\">");
-            out.println("<a href=\"product?product_number=" + current.get("product_number") + "\">");
-            out.println("<img src=\"" + current.get("image_path") + "\"");
-            out.println("alt=\"" + current.get("friendly_name") + "\"");
-            out.println("title=\"" + current.get("friendly_name") + "\"/>");
+            out.println("<td class='img'>");
+            out.println("<a href='product?product_number=" + current.get("product_number") + "'>");
+            out.println("<img src='" + current.get("image_path") + "'");
+            out.println("alt='" + current.get("friendly_name") + "'");
+            out.println("title='" + current.get("friendly_name") + "'/>");
             out.println("</a>");
             out.println("</td>");
 
             //out.println("<td>" + current.get("price") + "</td>");
             out.println("<td>" + cart.get(product_id) + "</td>");
             out.println("<td>" + "$" + roundDecimalPlaces(product_subtotal) + "</td>"); //Subtotal of curent product.
-            
+
             //out.println("<td>" + "$" + String.format("%.2f", dbrs.getResultSet().getDouble("subtotal_cost")) + "</td>");
 
             // Handle Action.
             out.println("<td>");
-            out.println("<form action=\"checkout\" method=\"post\">");
-            out.println("<input name=\"updateProductQuantity" + product_id + "\" id=\"updateProductQuantity" + product_id + "\" type=\"number\" onblur=\"validate_cartQuantity(this)\" onchange=\"validate_cartQuantity(this)\" value=\""+ cart.get(product_id) +"\"/>");
-            out.println("<input class=\"updateProductQuantity\" type=\"submit\" value=\"Update Quantity\"/>");
+            out.println("<form action='checkout' method='post'>");
+            out.println("<input name='updateProductQuantity" + product_id + "' id='updateProductQuantity" + product_id + "' type='number' onblur='validate_cartQuantity(this)' onchange='validate_cartQuantity(this)' value='"+ cart.get(product_id) +"'/>");
+            out.println("<input class='updateProductQuantity' type='submit' value='Update Quantity'/>");
             out.println("</form><br>");
-            out.println("<form action=\"checkout\" method=\"post\">");
-            out.println("<input name=\"removeProduct" + product_id + "\" type=\"hidden\" value=\"" + current.get("product_number") + "\"/>");
-            out.println("<input class=\"removeProduct" + product_id + "\" type=\"submit\" value=\"Remove Product\"/>");
+            out.println("<form action='checkout' method='post'>");
+            out.println("<input name='removeProduct" + product_id + "' type='hidden' value='" + current.get("product_number") + "'/>");
+            out.println("<input class='removeProduct" + product_id + "' type='submit' value='Remove Product'/>");
             out.println("</form>");
             out.println("</td>");
             subtotal = subtotal + product_subtotal;
@@ -227,32 +228,32 @@ public class Checkout extends HttpServlet {
 
     void printPage(PrintWriter out, HashMap<Integer, Integer> cart, String notice) { // Prints HTML page.
         out.println("<!DOCTYPE html>");
-        out.println("<html lang=\'en\'>");
+        out.println("<html lang='en'>");
         out.println("<head>");
-        out.println("<meta charset=\'UTF-8\'>");
-        out.println("<link type=\'text/css\' rel=\'stylesheet\' href=\'styles/style.css\'>");
-        out.println("<script type=\"text/javascript\" src=\"scripts/validate_orderForm.js\" defer></script>");
-        out.println("<script type=\"text/javascript\" src=\"scripts/ajax_zipcode.js\" defer></script>");
-        out.println("<script type=\"text/javascript\" src=\"scripts/ajax_zipSuggestions.js\" defer></script>");
-        out.println("<script type=\"text/javascript\" src=\"scripts/calculatePrices.js\" defer></script>");
-        out.println("<script type=\"text/javascript\" src=\"scripts/validate_cartQuantity.js\" defer></script>");
+        out.println("<meta charset='UTF-8'>");
+        out.println("<link type='text/css' rel='stylesheet' href='styles/style.css'>");
+        out.println("<script type='text/javascript' src='scripts/validate_orderForm.js' defer></script>");
+        out.println("<script type='text/javascript' src='scripts/ajax_zipcode.js' defer></script>");
+        out.println("<script type='text/javascript' src='scripts/ajax_zipSuggestions.js' defer></script>");
+        out.println("<script type='text/javascript' src='scripts/calculatePrices.js' defer></script>");
+        out.println("<script type='text/javascript' src='scripts/validate_cartQuantity.js' defer></script>");
         out.println("<title>Cart/Checkout</title>");
         out.println("</head>");
         out.println("<body>");
-        out.println("<img class=\'logo\' src=\'images/logo.png\' alt=\'Logo\'/>");
-        out.println("<div class=\'container\'>");
+        out.println("<img class='logo' src='images/logo.png' alt='Logo'/>");
+        out.println("<div class='container'>");
         out.println("<ul>");
-        out.println("<li><a href=\'shop\'>Home/Shop</a></li>");
-        out.println("<li><a href=\'checkout\'>Cart/Checkout</a></li>");
-        out.println("<li><a href=\'contactus.html\'>Contact</a></li>");
-        out.println("<li><a href=\'aboutus.html\'>About Us</a></li>");
+        out.println("<li><a href='shop'>Home/Shop</a></li>");
+        out.println("<li><a href='checkout'>Cart/Checkout</a></li>");
+        out.println("<li><a href='contactus.html'>Contact</a></li>");
+        out.println("<li><a href='aboutus.html'>About Us</a></li>");
         out.println("</ul>");
         out.println("</div>");
         out.println("<h1>Cart/Checkout</h1>");
-        out.println("<p id=\"notice\">" + notice + "</p>");
+        out.println("<p id='notice'>" + notice + "</p>");
 
         if (cart == null || cart.isEmpty()) {
-            out.println("<p id=\"emptyNotice\">Your cart is currently empty. Want to order something? Add a product to your cart!</p>");
+            out.println("<p id='emptyNotice'>Your cart is currently empty. Want to order something? Add a product to your cart!</p>");
         }
 
         if (cart != null && cart.isEmpty() == false)

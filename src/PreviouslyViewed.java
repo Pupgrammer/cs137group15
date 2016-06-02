@@ -4,15 +4,16 @@ Main Author: Bryan Nham/Alex Lin
 Filename: src/PreviouslyViewed.java
 */
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
+import pkg.DatabaseResultSet;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import pkg.DatabaseResultSet;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
 
 public class PreviouslyViewed extends HttpServlet {
 
@@ -37,18 +38,18 @@ public class PreviouslyViewed extends HttpServlet {
         out.println("<ul class=\"viewed\">");
         String[] viewed = (String[]) session.getAttribute("products");
         if (!(viewed[0].equals("0"))) {
-            for (int i = 0; i < viewed.length; i++) {
-                if ((viewed[i].equals("0"))) {
+            for (String aViewed : viewed) {
+                if ((aViewed.equals("0"))) {
                     break;
                 }
                 else {
-                    String pid = "SELECT image_path FROM products WHERE product_number=" + viewed[i]  + ";";
+                    String pid = "SELECT image_path FROM products WHERE product_number=" + aViewed + ";";
                     try {
                         DatabaseResultSet rspid = new DatabaseResultSet(pid);
                         while (rspid.getResultSet().next()) {
                             String id = rspid.getResultSet().getString(1);
                             out.println("<li class=\"viewed\">");
-                            out.print("<a href=\"product?product_number=" + viewed[i] + "\">");
+                            out.print("<a href=\"product?product_number=" + aViewed + "\">");
                             out.print("<img class=\"small\" src=\"" + id + "\"");
                             out.print("alt=\"" + id + "\"");
                             out.print("title=\"" + id + "\"/>");
@@ -60,7 +61,7 @@ public class PreviouslyViewed extends HttpServlet {
                         e.printStackTrace();
                     }
                 }
-           }
+            }
         }
         else {
             out.println("None");
@@ -68,7 +69,7 @@ public class PreviouslyViewed extends HttpServlet {
         out.println("</p>");
         out.println("</ul");
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
