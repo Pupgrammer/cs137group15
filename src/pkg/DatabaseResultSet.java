@@ -6,8 +6,8 @@ Filename: src/pkg/DatabaseResultSet.java
 
 package pkg;
 
-import pkg.ConnectionInfo;
 import java.sql.*;
+
 
 public class DatabaseResultSet {
 
@@ -24,8 +24,8 @@ public class DatabaseResultSet {
         final String USER = ConnectionInfo.USER_NAME;
         final String PASS = ConnectionInfo.PASSWORD;
 
-        Statement statement = null;
-        Connection connection = null;
+        Statement statement;
+        Connection connection;
 
         try {
             // Register JDBC driver
@@ -36,24 +36,13 @@ public class DatabaseResultSet {
 
             // Execute SQL query
             statement = connection.createStatement();
-            //String sql = "SELECT * FROM products WHERE product_number=" + request.getParameter("product_number") + ";";
             rs = statement.executeQuery(sql);
-            
+
         }
         catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
-
-    //public boolean next() {
-    //    try {
-    //        return rs.next();
-    //    }
-    //    catch (SQLException e) {
-    //        e.printStackTrace();
-    //    }
-    //    return false;
-    //}
 
     public ResultSet getResultSet() {
         return rs;
