@@ -192,6 +192,7 @@ function validate_shippingMethod()
 /* Main Function */
 function validate()
 {
+    alertText = [];
     var error = 0 + validate_checkEmptyText() + validate_email() + validate_phoneNumber() + validate_shippingAddress() + validate_shippingMethod() + validate_creditCard();
     if (error === 0)
     {
