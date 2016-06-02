@@ -14,7 +14,7 @@
 
 
 <body>
-<img class='logo' src='images/logo.png' alt='Logo'/>
+<img class='logo' src='images/logo.png' alt='Logo' title='Logo' />
 <div class='container'>
     <ul>
         <li><a href='shop'>Home/Shop</a></li>

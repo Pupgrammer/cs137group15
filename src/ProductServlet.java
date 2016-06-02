@@ -76,7 +76,7 @@ public class ProductServlet extends HttpServlet {
         out.println("</head>");
 
         out.println("<body>");
-        out.println("<img class='logo' src='images/logo.png' alt='Logo'/>");
+        out.println("<img class='logo' src='images/logo.png' alt='Logo' title='Logo' />");
         out.println("<div class='container'>");
         out.println("<ul>");
         out.println("<li><a href='shop'>Home/Shop</a></li>");
