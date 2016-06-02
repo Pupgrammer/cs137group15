@@ -1,6 +1,6 @@
 /* body style */
 
-body { 
+body {
     background-color: gainsboro;
     margin: 0px;
 }
@@ -23,21 +23,29 @@ div.pictures {
     border: 3px solid black;
     text-align: center;
     padding: 10px;
+    font-weight: bold;
+    font-family: "Arial", serif;
+}
+
+div.pictures img {
+    display: block;
+    margin: 0 auto;
+    padding: 5px;
 }
 
 h1 {
     text-align: center;
-    font-family: "Arial", Serif;
+    font-family: "Arial", serif;
 }
 
 p {
     margin-left: 200px;
     text-align: left;
-    font-family: "Arial", Serif;
+    font-family: "Arial", serif;
 }
 
 center {
-    font-family: "Arial", Serif;
+    font-family: "Arial", serif;
     font-weight: bold;
 }
 
@@ -51,7 +59,7 @@ ul {
     padding: 0;
     overflow: hidden;
     background-color: #333;
-    font-family: "Arial", Serif;
+    font-family: "Arial", serif;
 }
 
 ul.viewed {
@@ -64,7 +72,7 @@ li {
 }
 
 li.viewed {
-    display: in-line;
+    display: inline;
 }
 
 li a {
@@ -108,7 +116,7 @@ td.cost {
 td, th {
     padding: 15px;
     text-align: center;
-    font-family: "Arial", Serif;
+    font-family: "Arial", serif;
 }
 
 table.info {
@@ -137,10 +145,11 @@ td.info {
 td.img {
     padding: 5px 5px;
     width: 50px;
+    height: 200px;
     margin: auto;
     border-bottom: 2px solid black;
     background-color: white;
-    vertical-align: bottom;
+    vertical-align: middle;
 }
 
 
@@ -159,7 +168,6 @@ td.desc {
 
 img {
     width: 200px;
-    height: 200px;
     display: block;
 }
 
@@ -200,7 +208,7 @@ img.thumbnail:hover {
 /* form style */
 
 form {
-    font-family: "Arial", Serif;
+    font-family: "Arial", serif;
 }
 
 form.orderForm {
@@ -218,7 +226,7 @@ select {
 input[type=submit] {
     display: inline-block;
     padding: 12px 15px;
-    font-family: "Arial", Serif;
+    font-family: "Arial", serif;
     font-size: 20px;
     text-align: center;
     cursor: pointer;
