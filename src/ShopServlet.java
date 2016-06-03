@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+
 public class ShopServlet extends HttpServlet {
 
     @Override
@@ -92,6 +93,8 @@ public class ShopServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("PreviouslyViewed");
             rd.include(request, response);
         }
-        catch (ServletException | IOException i){}
+        catch (ServletException | IOException e){
+            e.printStackTrace();
+        }
     }
 }

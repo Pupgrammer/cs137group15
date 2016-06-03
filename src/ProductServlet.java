@@ -18,6 +18,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+
 public class ProductServlet extends HttpServlet {
 
     @Override
