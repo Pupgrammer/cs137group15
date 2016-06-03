@@ -60,7 +60,7 @@ public class ShopServlet extends HttpServlet {
 
             while (dbrs.getResultSet().next()) {
                 DataRow dataRow = new DataRow(dbrs.getResultSet());
-                out.println("<tr class='info'>");
+                out.println("<tr class='shopinfo'>");
                 out.println("<td>" + dataRow.get("product_number") + "</td>");
                 out.println("<td>" + dataRow.get("model_name") + "</td>");
 

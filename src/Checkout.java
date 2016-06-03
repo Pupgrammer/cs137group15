@@ -192,7 +192,7 @@ public class Checkout extends HttpServlet {
             Integer product_id = Integer.parseInt(current.get("product_number"));
             double product_subtotal =  ((double) cart.get(product_id)) * Double.parseDouble(current.get("raw_price"));
 
-            out.println("<tr>");
+            out.println("<tr class='shopinfo'>");
             out.println("<td>" + product_id + "</td>");
             out.println("<td>" + current.get("friendly_name_short") + "<br>(Price: " + current.get("price") + ")" + "</td>");
 

@@ -109,13 +109,18 @@ public class ProductServlet extends HttpServlet {
                 out.println("<td class='img' colspan='2'><img src='./" + dataRow.get("image_path") + "' class='thumbnail'");
                 out.println("alt='" + dataRow.get("friendly_name") + "'");
                 out.println("title='" + dataRow.get("friendly_name") + "'");
-                out.println("width=200/></td>");
+                out.println("</td>");
                 out.println("</tr>");
-                out.println("<tr class='info'>");
-                out.println("<td class='info'>Number of Viewers</td>");
+
                 int count = counter.containsKey(pid) ? counter.get(pid) : 0;
-                out.println("<td class='desc'>" + count + "</td>");
-                out.println("<tr class='info'>");
+                out.println("<tr class='numviewersinfo'>");
+                if (count == 1) {
+                    out.println("<td class='numviewersinfo' colspan='2'>There is currently " + count + " person viewing this item</td>");
+                } else {
+                    out.println("<td class='numviewersinfo' colspan='2'>There are currently " + count + " people viewing this item</td>");
+                }
+                out.println("</tr>");
+
                 out.println("<td class='info'>Model No.</td>");
                 out.println("<td class='desc'>" + dataRow.get("model_number") + "</td>");
                 out.println("</tr>");
