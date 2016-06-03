@@ -47,7 +47,7 @@ try {
         DatabaseResultSet innerdbrs = new DatabaseResultSet("SELECT * FROM products WHERE product_number=" + productID + ";");
         while (innerdbrs.getResultSet().next()) {
             DataRow dataRow = new DataRow(innerdbrs.getResultSet()); %>
-            <tr class="info">
+            <tr class="shopinfo">
             <td><%=dataRow.get("product_number")%></td>
             <td><%=dataRow.get("friendly_name_short")%><br>(Price: <%=dataRow.get("price")%>)</td>
             <td class="img">
@@ -66,7 +66,7 @@ try {
     } %>
 
     <% // Shipping %>
-    <tr class="info">
+    <tr class="shopinfo">
     <td></td>
 
     <%
@@ -86,7 +86,7 @@ try {
         <td>$<%=String.format("%.2f", Double.parseDouble(shipping_cost))%></td>
     <% } %>
     </tr>
-    <tr class="info">
+    <tr class="shopinfo">
         <td></td>
         <td>Total</td>
         <td></td>
