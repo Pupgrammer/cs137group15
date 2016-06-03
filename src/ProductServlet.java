@@ -34,7 +34,15 @@ public class ProductServlet extends HttpServlet {
         HashMap<Integer, Integer> check_add = (HashMap<Integer, Integer>) session.getAttribute("check_add");
 
         int pid = Integer.parseInt(request.getParameter("product_number")); //Grab product number
-
+        if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+             // Session is expired
+            for(int i = 1; i <10; i++){
+                if(check_add.get(pid) == 1){ //Checks which product has been incremented and deducts
+                int count = counter.containsKey(pid) ? counter.get(pid) : 0;
+                counter.put(pid, (count-1));
+                }
+            }
+        }
         if (counter == null) //Creates new context and sets to 1 for pid on hashmap if context contains no values
         {
             counter = createNewCounter(context);
