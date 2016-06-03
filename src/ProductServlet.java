@@ -159,6 +159,7 @@ public class ProductServlet extends HttpServlet {
                 out.println("</tr>");
                 out.println("</table>");
             }
+            dbrs.closeDatabaseConnection();
         }
 
         catch (SQLException e) {
@@ -202,6 +203,7 @@ public class ProductServlet extends HttpServlet {
                 int product_number = dbrs.getResultSet().getInt("product_number");
                 map.put(product_number, 0);
             }
+            dbrs.closeDatabaseConnection();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -218,6 +220,7 @@ public class ProductServlet extends HttpServlet {
                 int product_number = dbrs.getResultSet().getInt("product_number");
                 map.put(product_number, 0);
             }
+            dbrs.closeDatabaseConnection();
         }
         catch (SQLException e) {
             e.printStackTrace();

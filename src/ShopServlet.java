@@ -76,6 +76,7 @@ public class ShopServlet extends HttpServlet {
                 out.println("<td>" + dataRow.get("price") + "</td>");
                 out.println("</tr>");
             }
+            dbrs.closeDatabaseConnection();
 
             out.println("</table>");
             showPreviouslyViewed(request,response);

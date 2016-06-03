@@ -63,7 +63,8 @@ try {
         </tr>
     <%
     totalCost += dbrs.getResultSet().getDouble("subtotal_cost");
-    } %>
+    }
+    dbrs.closeDatabaseConnection(); %>
 
     <% // Shipping %>
     <tr class="shopinfo">
@@ -76,7 +77,8 @@ try {
     while (dbrs.getResultSet().next()) {
         shippingMethod = dbrs.getResultSet().getString("shipping_method"); %>
         <td><%=shippingMethod%> Shipping</td>
-    <% } %>
+    <% }
+    dbrs.closeDatabaseConnection(); %>
     <td></td>
     <% dbrs = new DatabaseResultSet("SELECT * FROM shipping_cost WHERE method=\"" + shippingMethod + "\";");
     while (dbrs.getResultSet().next()) {
@@ -84,7 +86,8 @@ try {
         String shipping_cost = ( (Double) dbrs.getResultSet().getDouble("cost")).toString(); %>
         <td></td>
         <td>$<%=String.format("%.2f", Double.parseDouble(shipping_cost))%></td>
-    <% } %>
+    <% }
+    dbrs.closeDatabaseConnection(); %>
     </tr>
     <tr class="shopinfo">
         <td></td>
@@ -174,6 +177,7 @@ try {
         <h3 style='margin-left:200px'>Have any questions about your order? Contact us <a href='contactus.html'>here.</a></h3>
     <%
     }
+    dbrs.closeDatabaseConnection();
 }
 catch (SQLException e) {
     e.printStackTrace();

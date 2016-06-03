@@ -12,6 +12,7 @@ import java.sql.*;
 public class DatabaseResultSet {
 
     ResultSet rs;
+    Connection connection;
 
     public DatabaseResultSet(String sql) {
 
@@ -25,7 +26,6 @@ public class DatabaseResultSet {
         final String PASS = ConnectionInfo.PASSWORD;
 
         Statement statement;
-        Connection connection;
 
         try {
             // Register JDBC driver
@@ -46,5 +46,14 @@ public class DatabaseResultSet {
 
     public ResultSet getResultSet() {
         return rs;
+    }
+
+    public void closeDatabaseConnection() {
+        try {
+            connection.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

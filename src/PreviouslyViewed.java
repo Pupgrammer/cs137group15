@@ -57,6 +57,7 @@ public class PreviouslyViewed extends HttpServlet {
                             out.print("</a>");
                             out.println("</li>");
                         }
+                        rspid.closeDatabaseConnection();
                     }
                     catch (SQLException e) {
                         e.printStackTrace();

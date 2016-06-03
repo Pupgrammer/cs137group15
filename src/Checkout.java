@@ -355,6 +355,7 @@ public class Checkout extends HttpServlet {
             while (dbrs.getResultSet().next()) {
                 cityState += dbrs.getResultSet().getString("City") + "," + dbrs.getResultSet().getString("State");
             }
+            dbrs.closeDatabaseConnection();
             System.out.println("cityState: " + cityState);
             out.print(cityState);
         }
@@ -380,6 +381,7 @@ public class Checkout extends HttpServlet {
             while(dbrs.getResultSet().next()) {
                 suggestedZipCodes += dbrs.getResultSet().getString("Zipcode") + "|";
             }
+            dbrs.closeDatabaseConnection();
             suggestedZipCodes = suggestedZipCodes.substring(0, suggestedZipCodes.length() - 1);
             System.out.println("suggestedZipCodes: " + suggestedZipCodes);
             out.print(suggestedZipCodes);
