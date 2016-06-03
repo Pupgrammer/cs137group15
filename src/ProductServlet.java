@@ -180,19 +180,33 @@ public class ProductServlet extends HttpServlet {
         return "1";
     }
 
-    private HashMap<Integer, Integer> createNewCounter(ServletContext context) { // Creates a new counter map for the session, and returns it.
-        HashMap<Integer, Integer> map = new HashMap<>(20);
-        for (int i = 1; i < 11; i++) {
-            map.put(i, 0);
+    private HashMap<Integer, Integer> createNewCounter(ServletContext context) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        try {
+            DatabaseResultSet dbrs = new DatabaseResultSet("SELECT * FROM products;");
+            while (dbrs.getResultSet().next()) {
+                int product_number = dbrs.getResultSet().getInt("product_number");
+                map.put(product_number, 0);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
         }
         context.setAttribute("counter", map);
         return map;
     }
 
-    private HashMap<Integer, Integer> createNewCounter(HttpSession session) { // Creates a new counter map for the session, and returns it.
-        HashMap<Integer, Integer> map = new HashMap<>(20);
-        for (int i = 1; i < 11; i++) {
-            map.put(i, 0);
+    private HashMap<Integer, Integer> createNewCounter(HttpSession session) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        try {
+            DatabaseResultSet dbrs = new DatabaseResultSet("SELECT * FROM products;");
+            while (dbrs.getResultSet().next()) {
+                int product_number = dbrs.getResultSet().getInt("product_number");
+                map.put(product_number, 0);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
         }
         session.setAttribute("check_add", map);
         return map;
