@@ -44,6 +44,7 @@ public class ShopServlet extends HttpServlet {
         out.println("<h1> Welcome to Malekware Laptops! </h1>");
         out.println("<p>Now open for sale! Please feel free to contact us regarding available laptops or bulk orders. Orders ship with FREE SHIPPING the next business day through USPS ground. One/two day priority shipping is available at an additional cost.</p>");
         out.println("<p>Interested in a product? Click on the product image for more details and to order it!</p>");
+        showPreviouslyViewed(request,response);
         out.println("<table style='margin-left:190px'>");
         out.println("<tr>");
         out.println("<th>#</th>");
@@ -79,7 +80,6 @@ public class ShopServlet extends HttpServlet {
             dbrs.closeDatabaseConnection();
 
             out.println("</table>");
-            showPreviouslyViewed(request,response);
             out.println("</body>");
             out.println("</html>");
 

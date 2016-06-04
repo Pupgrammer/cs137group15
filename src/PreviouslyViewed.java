@@ -34,10 +34,10 @@ public class PreviouslyViewed extends HttpServlet {
     }
 
     void printProductView(PrintWriter out, HttpSession session) {
-        out.println("<p> Items previously viewed: ");
-        out.println("<ul class=\"viewed\">");
         String[] viewed = (String[]) session.getAttribute("previously_viewed_products");
         if (!(viewed[0].equals("0"))) {
+            out.println("<p> Items previously viewed: ");
+            out.println("<ul class=\"viewed\">");
             for (String aViewed : viewed) {
                 if ((aViewed.equals("0"))) {
                     break;
@@ -63,12 +63,9 @@ public class PreviouslyViewed extends HttpServlet {
                     }
                 }
             }
+            out.println("</p>");
+            out.println("</ul>");
         }
-        else {
-            out.println("None");
-        }
-        out.println("</p>");
-        out.println("</ul>");
     }
 
     @Override
