@@ -28,16 +28,16 @@ public class PreviouslyViewed extends HttpServlet {
     }
 
     private void createProductView(HttpSession session) {
-        if (session.getAttribute("products") == null) {
+        if (session.getAttribute("previously_viewed_products") == null) {
             String[] a = {"0","0","0","0","0"};
-            session.setAttribute("products", a);
+            session.setAttribute("previously_viewed_products", a);
         }
     }
 
     void printProductView(PrintWriter out, HttpSession session) {
         out.println("<p> Items previously viewed: ");
         out.println("<ul class=\"viewed\">");
-        String[] viewed = (String[]) session.getAttribute("products");
+        String[] viewed = (String[]) session.getAttribute("previously_viewed_products");
         if (!(viewed[0].equals("0"))) {
             for (String aViewed : viewed) {
                 if ((aViewed.equals("0"))) {

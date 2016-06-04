@@ -175,14 +175,14 @@ public class ProductServlet extends HttpServlet {
     }
 
     private void updateViewedProducts(HttpServletRequest request, HttpSession session) {
-        String[] viewed = (String[]) session.getAttribute("products");
+        String[] viewed = (String[]) session.getAttribute("previously_viewed_products");
         String product_id = request.getParameter("product_number");
         if (checkDuplicates(viewed,product_id).equals("1")) {
             for (int i = viewed.length-2; i >= 0; i--) {
                 viewed[i+1] = viewed[i];
             }
         viewed[0] = product_id;
-        session.setAttribute("products",viewed);
+        session.setAttribute("previously_viewed_products",viewed);
         }
     }
 
