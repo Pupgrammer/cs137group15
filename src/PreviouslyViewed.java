@@ -22,9 +22,8 @@ public class PreviouslyViewed extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         createProductView(session);
-        try (PrintWriter out = response.getWriter()) {
-            printProductView(out,session);
-        }
+        PrintWriter out = response.getWriter();
+        printProductView(out,session);
     }
 
     private void createProductView(HttpSession session) {
@@ -69,7 +68,7 @@ public class PreviouslyViewed extends HttpServlet {
             out.println("None");
         }
         out.println("</p>");
-        out.println("</ul");
+        out.println("</ul>");
     }
 
     @Override
