@@ -106,7 +106,7 @@ public class ProductServlet extends HttpServlet {
                 out.println("<th class='info' colspan='2'>" + dataRow.get("friendly_name") + "</th>");
                 out.println("</tr>");
                 out.println("<tr>");
-                out.println("<td class='img' colspan='2'><img src='./" + dataRow.get("image_path") + "' class='thumbnail'");
+                out.println("<td class='img' colspan='2'><img src='" + dataRow.get("image_path") + "' class='thumbnail'");
                 out.println("alt='" + dataRow.get("friendly_name") + "'");
                 out.println("title='" + dataRow.get("friendly_name") + "'");
                 out.println("</td>");
