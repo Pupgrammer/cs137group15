@@ -24,6 +24,7 @@ import java.util.Map;
 public class ProductServlet extends HttpServlet {
 
     List<String> debugOutput;
+    int numViewers;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -55,6 +56,15 @@ public class ProductServlet extends HttpServlet {
 
         // Set context attribute so it can be retrieved by other sessions.
         context.setAttribute("currently_viewed_product_map", currentlyViewedProductMap);
+
+        // Determine how many people are viewing current product
+        // Need to properly deal with concurrency
+        numViewers = 0;
+        for(Map.Entry<String, Integer> entry : currentlyViewedProductMap.entrySet()) {
+            if (entry.getValue() == productNumber) {
+                numViewers++;
+            }
+        }
 
         // Output current session ID and entire map for debug purposes.
         debugOutput.add("<br><br>Current session ID: " + sessionId);
@@ -102,7 +112,8 @@ public class ProductServlet extends HttpServlet {
                 out.println("</td>");
                 out.println("</tr>");
 
-                int count = 0;
+                //int count = 0;
+                int count = numViewers;
                 out.println("<tr class='numviewersinfo'>");
                 if (count == 0) {
                     out.println("<td class='numviewersinfo' colspan='2'>Number of people viewing product feature is currently disabled.</td>");
