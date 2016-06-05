@@ -7,7 +7,6 @@ Filename: src/ProductServlet.java
 import pkg.DataRow;
 import pkg.DatabaseResultSet;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.HashMap;
 
 
 public class ProductServlet extends HttpServlet {
@@ -27,54 +25,6 @@ public class ProductServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true);
-        ServletContext context = this.getServletContext();
-
-        // Creates counter for incrementing number of sessions that viewed pid
-        HashMap<Integer, Integer> counter = (HashMap<Integer, Integer>) context.getAttribute("counter");
-        // Creates binary counter to check if pid has been added for current session
-        HashMap<Integer, Integer> check_add = (HashMap<Integer, Integer>) session.getAttribute("check_add");
-
-        int pid = Integer.parseInt(request.getParameter("product_number")); //Grab product number
-        if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
-             // Session is expired
-            for(int i = 1; i <10; i++){
-                if(check_add.get(pid) == 1){ //Checks which product has been incremented and deducts
-                int count = counter.containsKey(pid) ? counter.get(pid) : 0;
-                counter.put(pid, (count-1));
-                }
-            }
-        }
-        if (counter == null) //Creates new context and sets to 1 for pid on hashmap if context contains no values
-        {
-            counter = createNewCounter(context);
-        }
-        if(check_add == null) // Checks if current session has been created and increments count on counter
-        {
-            check_add = createNewCounter(session);
-            int count = counter.containsKey(pid) ? counter.get(pid) : 0; // Gets value of views for current product number
-            int count_check = check_add.get(pid);
-            if (count_check == 0)
-            { // Checks if current product has been incremented on hashmap; 0 will allow to increment
-                ++count;
-                counter.put(pid, count);
-                check_add.put(pid, 1); // Sets to 1 so product number will not be incremented in current session
-                context.setAttribute("counter", counter);
-                session.setAttribute("check_add", check_add);
-            }
-        }
-        else
-        {
-            int count = counter.containsKey(pid) ? counter.get(pid) : 0; // Gets value of views for current product number
-            int count_check = check_add.get(pid);
-            if (count_check == 0) // Checks if product number has been incremented on hashmap; 0 will allow to increment
-            {
-                ++count;
-                counter.put(pid, count);
-                check_add.put(pid, 1); // Sets to 1 so product number will not be incremented in current session
-                context.setAttribute("counter", counter);
-                session.setAttribute("check_add", check_add);
-            }
-        }
 
         out.println("<!DOCTYPE html>");
         out.println("<html lang='en'>");
@@ -112,9 +62,11 @@ public class ProductServlet extends HttpServlet {
                 out.println("</td>");
                 out.println("</tr>");
 
-                int count = counter.containsKey(pid) ? counter.get(pid) : 0;
+                int count = 0;
                 out.println("<tr class='numviewersinfo'>");
-                if (count == 1) {
+                if (count == 0) {
+                    out.println("<td class='numviewersinfo' colspan='2'>Number of people viewing product feature is currently disabled.</td>");
+                } else if (count == 1) {
                     out.println("<td class='numviewersinfo' colspan='2'>There is currently " + count + " person viewing this item</td>");
                 } else {
                     out.println("<td class='numviewersinfo' colspan='2'>There are currently " + count + " people viewing this item</td>");
@@ -193,40 +145,6 @@ public class ProductServlet extends HttpServlet {
             }
         }
         return "1";
-    }
-
-    private HashMap<Integer, Integer> createNewCounter(ServletContext context) {
-        HashMap<Integer, Integer> map = new HashMap<>();
-        try {
-            DatabaseResultSet dbrs = new DatabaseResultSet("SELECT * FROM products;");
-            while (dbrs.getResultSet().next()) {
-                int product_number = dbrs.getResultSet().getInt("product_number");
-                map.put(product_number, 0);
-            }
-            dbrs.closeDatabaseConnection();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        context.setAttribute("counter", map);
-        return map;
-    }
-
-    private HashMap<Integer, Integer> createNewCounter(HttpSession session) {
-        HashMap<Integer, Integer> map = new HashMap<>();
-        try {
-            DatabaseResultSet dbrs = new DatabaseResultSet("SELECT * FROM products;");
-            while (dbrs.getResultSet().next()) {
-                int product_number = dbrs.getResultSet().getInt("product_number");
-                map.put(product_number, 0);
-            }
-            dbrs.closeDatabaseConnection();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        session.setAttribute("check_add", map);
-        return map;
     }
 
 }
