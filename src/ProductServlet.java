@@ -7,6 +7,7 @@ Filename: src/ProductServlet.java
 import pkg.DataRow;
 import pkg.DatabaseResultSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProductServlet extends HttpServlet {
 
@@ -24,9 +26,37 @@ public class ProductServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true);
-
         printPage(request, out);
         updateViewedProducts(request, session);
+        handleServletContextStuff_TESTING(request, out);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void handleServletContextStuff_TESTING(HttpServletRequest request, PrintWriter out) {
+        // Variable declarations / assignments
+        String sessionId = request.getRequestedSessionId();
+        int productNumber = Integer.parseInt(request.getParameter("product_number"));
+        ServletContext context = getServletContext();
+        HashMap<String, Integer> currentlyViewedProductMap = (HashMap<String, Integer>) context.getAttribute("currently_viewed_product_map");
+
+        // Create new map if none yet exists within context
+        if (currentlyViewedProductMap == null) {
+            currentlyViewedProductMap = new HashMap<>();
+        }
+
+        // Add (sessionId, productNumber) to map; if key already exists, old productNumber will be updated.
+        currentlyViewedProductMap.put(sessionId, productNumber);
+
+        // Set context attribute so it can be retrieved by other sessions.
+        context.setAttribute("currently_viewed_product_map", currentlyViewedProductMap);
+
+        // Output current session ID and entire map for debug purposes.
+        out.println("<br><br>Current session ID: " + sessionId);
+        out.println("<br><br>currently_viewed_product_map:");
+        for(Map.Entry<String, Integer> entry : currentlyViewedProductMap.entrySet()) {
+            out.println("<br>&nbsp&nbsp&nbsp&nbsp" + entry.getKey() + ":&nbsp&nbsp&nbsp&nbsp" + entry.getValue());
+        }
+
     }
 
     private void printPage(HttpServletRequest request, PrintWriter out) {
