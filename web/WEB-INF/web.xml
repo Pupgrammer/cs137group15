@@ -37,13 +37,13 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>CheckoutDebug</servlet-name>
-        <servlet-class>CheckoutDebug</servlet-class>
+        <servlet-name>ErrorPage</servlet-name>
+        <servlet-class>ErrorPage</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>CheckoutDebug</servlet-name>
-        <url-pattern>/checkoutdebug</url-pattern>
+        <servlet-name>ErrorPage</servlet-name>
+        <url-pattern>/error</url-pattern>
     </servlet-mapping>
 
     <servlet>

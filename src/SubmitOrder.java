@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-
 public class SubmitOrder extends HttpServlet
 {
     @Override
@@ -25,25 +24,37 @@ public class SubmitOrder extends HttpServlet
         SimpleDateFormat order_time_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String order_time = order_time_format.format(new Date());
         
-
         HashMap<String, String> order = organizeOrderInfo(request, request.getParameterNames());
         HashMap<Integer, Integer> cart = (HashMap<Integer, Integer>) request.getSession().getAttribute("cart");
         
-        // Begin Server-side Input Validation Code
-        InputOrderHandler validation = new InputOrderHandler(order);
-                
-        // Begin Database Code
+        if (cart == null) // Cart was empty. Sometimes happens when someone attempts to refresh at the right spot.
+        {
+            request.setAttribute("error_message", "Your cart is empty. (Did you try to re-submit an order that already was submitted?)<br><br>Your order was not processed. Please try again.");
+            request.getRequestDispatcher("./error").forward(request,response);
+        }
         
-        DatabaseOrderHandler connection = new DatabaseOrderHandler();
-                
-        executeOrderSQLStatement(connection, order_id, cart);
-        executeCustomerSQLStatement(connection, order_id, order_time, order);
+        InputOrderHandler validation = new InputOrderHandler(order);
+        if (!validation.validate()) // Server-side input validation has failed.
+        {
+            request.setAttribute("error_message", validation.getErrorMessage());
+            request.getRequestDispatcher("./error").forward(request,response);
+        }
+        else
+        {            
+            // Begin Database Code
 
-        connection.close();
-        connection = null; // Dereference - hopefully makes garbage collection faster.
-        order = null; // Dereference - hopefully makes garbage collection faster.
-        request.getSession().removeAttribute("cart"); // Clears the cart.
-        response.sendRedirect("order_details.jsp?order_id=" + order_id);
+            DatabaseOrderHandler connection = new DatabaseOrderHandler();
+
+            executeOrderSQLStatement(connection, order_id, cart);
+            executeCustomerSQLStatement(connection, order_id, order_time, order);
+
+            connection.close();
+            connection = null; // Dereference - hopefully makes garbage collection faster.
+            order = null; // Dereference - hopefully makes garbage collection faster.
+            validation = null; // Dereference - hopefully makes garbage collection faster.
+            request.getSession().removeAttribute("cart"); // Clears the cart.
+            response.sendRedirect("order_details.jsp?order_id=" + order_id);
+        }
     }
 
     /* Begin SQL Functions */
@@ -70,7 +81,7 @@ public class SubmitOrder extends HttpServlet
         while (parameterNames.hasMoreElements())
         {
             String parameter = parameterNames.nextElement();
-            result.put(parameter, request.getParameterValues(parameter)[0]);
+            result.put(parameter, request.getParameterValues(parameter)[0].trim());
         }
         return result;
     }
