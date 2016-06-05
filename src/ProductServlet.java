@@ -21,11 +21,15 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("doGet");
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true);
 
+        printPage(request, out);
+        updateViewedProducts(request, session);
+    }
+
+    private void printPage(HttpServletRequest request, PrintWriter out) {
         out.println("<!DOCTYPE html>");
         out.println("<html lang='en'>");
         out.println("<head>");
@@ -121,7 +125,6 @@ public class ProductServlet extends HttpServlet {
         out.println("<input name='addProductToCart" + request.getParameter("product_number") + "' type='hidden' value='" + request.getParameter("product_number") + "'>");
         out.println("<input type='submit' value='Add Product to Cart'/>");
         out.println("</form>");
-        updateViewedProducts(request,session);
         out.println("</body>");
         out.println("</html>");
     }
