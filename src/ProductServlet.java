@@ -16,19 +16,25 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ProductServlet extends HttpServlet {
+
+    List<String> debugOutput;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true);
+
+        debugOutput = new ArrayList<>();
+        handleServletContextStuff_TESTING(request, out);
         printPage(request, out);
         updateViewedProducts(request, session);
-        handleServletContextStuff_TESTING(request, out);
     }
 
     @SuppressWarnings("unchecked")
@@ -51,10 +57,10 @@ public class ProductServlet extends HttpServlet {
         context.setAttribute("currently_viewed_product_map", currentlyViewedProductMap);
 
         // Output current session ID and entire map for debug purposes.
-        out.println("<br><br>Current session ID: " + sessionId);
-        out.println("<br><br>currently_viewed_product_map:");
+        debugOutput.add("<br><br>Current session ID: " + sessionId);
+        debugOutput.add("<br><br>currently_viewed_product_map:");
         for(Map.Entry<String, Integer> entry : currentlyViewedProductMap.entrySet()) {
-            out.println("<br>&nbsp&nbsp&nbsp&nbsp" + entry.getKey() + ":&nbsp&nbsp&nbsp&nbsp" + entry.getValue());
+            debugOutput.add("<br>&nbsp&nbsp&nbsp&nbsp" + entry.getKey() + ":&nbsp&nbsp&nbsp&nbsp" + entry.getValue());
         }
 
     }
@@ -155,6 +161,11 @@ public class ProductServlet extends HttpServlet {
         out.println("<input name='addProductToCart" + request.getParameter("product_number") + "' type='hidden' value='" + request.getParameter("product_number") + "'>");
         out.println("<input type='submit' value='Add Product to Cart'/>");
         out.println("</form>");
+
+        for(String debugLine : debugOutput) {
+            out.println(debugLine);
+        }
+
         out.println("</body>");
         out.println("</html>");
     }
