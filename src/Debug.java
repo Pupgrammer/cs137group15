@@ -1,7 +1,7 @@
 /*
 CS137 Spring 2016 | Group 15
 Main Author: Thomas Tai Nguyen
-Filename: src/CheckoutDebug.java
+Filename: src/Debug.java
 */
 
 // NOTE: This servlet class and its references in web.xml should be removed prior to submission and deployment.
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class CheckoutDebug extends HttpServlet
+public class Debug extends HttpServlet
 {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

@@ -1,66 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-
     <servlet>
         <servlet-name>Checkout</servlet-name>
         <servlet-class>Checkout</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>Checkout</servlet-name>
         <url-pattern>/checkout</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>ShopServlet</servlet-name>
         <servlet-class>ShopServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>ShopServlet</servlet-name>
         <url-pattern>/shop</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
         <servlet-name>ShopServlet</servlet-name>
-        <url-pattern></url-pattern>
+        <url-pattern/>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>ProductServlet</servlet-name>
         <servlet-class>ProductServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>ErrorPage</servlet-name>
         <servlet-class>ErrorPage</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>ErrorPage</servlet-name>
         <url-pattern>/error</url-pattern>
     </servlet-mapping>
-
+    <servlet>
+        <servlet-name>Debug</servlet-name>
+        <servlet-class>Debug</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Debug</servlet-name>
+        <url-pattern>/debug</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>order</servlet-name>
         <servlet-class>SubmitOrder</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>order</servlet-name>
         <url-pattern>/order</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>PreviouslyViewed</servlet-name>
         <servlet-class>PreviouslyViewed</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>PreviouslyViewed</servlet-name>
         <url-pattern>/PreviouslyViewed</url-pattern>
