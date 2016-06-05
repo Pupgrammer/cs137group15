@@ -1,11 +1,9 @@
 /*
 CS137 Spring 2016 | Group 15
 Main Author: Thomas Tai Nguyen
-Filename: src/DatabaseOrderHandler.java
+Filename: src/InputOrderHandler.java
 */
 
-import pkg.ConnectionInfo;
-import java.sql.*;
 import java.util.HashMap;
 
 
