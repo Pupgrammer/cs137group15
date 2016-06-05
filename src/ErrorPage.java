@@ -17,11 +17,12 @@ public class ErrorPage extends HttpServlet {
         printPage((String) request.getAttribute("error_message"), response.getWriter());
     }
     
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         printPage((String) request.getAttribute("error_message"), response.getWriter());
     }
     
-    private void printPage(String debug_message, PrintWriter out) {
+    private void printPage(String error_message, PrintWriter out) {
         out.println("<!DOCTYPE html>");
         out.println("<html lang='en'>");
         out.println("<head>");
@@ -41,9 +42,9 @@ public class ErrorPage extends HttpServlet {
         out.println("</ul>");
         out.println("</div>");
         out.println("<h3>Error :(</h3>");
-        if (!debug_message.equals(""))
+        if ((error_message != null) && (!error_message.equals("")))
         {
-            out.println("<p>" + debug_message + "</p>");
+            out.println("<p>" + error_message + "</p>");
         }
         out.println("<h3 style='margin-left:200px;'>Click <a href='./'>here</a> to return to the homepage.</h3>");
         out.println("</body>");
