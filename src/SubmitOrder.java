@@ -24,12 +24,18 @@ public class SubmitOrder extends HttpServlet
         String order_id = generateOrderId();
         SimpleDateFormat order_time_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String order_time = order_time_format.format(new Date());
-
-        DatabaseOrderHandler connection = new DatabaseOrderHandler();
+        
 
         HashMap<String, String> order = organizeOrderInfo(request, request.getParameterNames());
         HashMap<Integer, Integer> cart = (HashMap<Integer, Integer>) request.getSession().getAttribute("cart");
-
+        
+        // Begin Server-side Input Validation Code
+        InputOrderHandler validation = new InputOrderHandler(order);
+                
+        // Begin Database Code
+        
+        DatabaseOrderHandler connection = new DatabaseOrderHandler();
+                
         executeOrderSQLStatement(connection, order_id, cart);
         executeCustomerSQLStatement(connection, order_id, order_time, order);
 
