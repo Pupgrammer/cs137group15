@@ -36,7 +36,7 @@ public class PreviouslyViewed extends HttpServlet {
     void printProductView(PrintWriter out, HttpSession session) {
         String[] viewed = (String[]) session.getAttribute("previously_viewed_products");
         if (!(viewed[0].equals("0"))) {
-            out.println("<p> Items previously viewed: ");
+            out.println("<p id='prev_viewed'> Items previously viewed: ");
             out.println("<ul class=\"viewed\">");
             for (String aViewed : viewed) {
                 if ((aViewed.equals("0"))) {

@@ -154,6 +154,14 @@ tr.numviewersinfo {
     padding: 15px;
 }
 
+#prev_viewed {
+    color: dodgerblue;
+    font-style: italic;
+    padding-top: 15px;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
 td.img {
     padding: 5px 5px;
     width: 50px;
