@@ -58,7 +58,7 @@ public class ProductServlet extends HttpServlet {
             try {
                 long timeDiff = timeNow - aSession.getLastAccessedTime();
                 String debugString = "<br>" + aSession.getId() + ":&nbsp&nbsp&nbsp&nbsplast access time: " + aSession.getLastAccessedTime() + "&nbsp&nbsp&nbsp&nbsptime diff: " + timeDiff;
-                if (timeDiff > 5000 && session != aSession) {
+                if (timeDiff > 300000 && session != aSession) {
                     sessionsToRemove.add(aSession);
                     debugString += " (destroying soon)";
                 }
