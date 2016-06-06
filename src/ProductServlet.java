@@ -55,18 +55,28 @@ public class ProductServlet extends HttpServlet {
             HttpSession aSession = entry.getKey();
             Date date = new Date();
             long timeNow = date.getTime();
-            long timeDiff = timeNow - aSession.getLastAccessedTime();
-            String debugString = "<br>" + aSession.getId() + ":&nbsp&nbsp&nbsp&nbsplast access time: " + aSession.getLastAccessedTime() + "&nbsp&nbsp&nbsp&nbsptime diff: " + timeDiff;
-            if (timeDiff > 300000 && session != aSession) {
-                sessionsToRemove.add(aSession);
-                debugString += " (destroying soon)";
+            try {
+                long timeDiff = timeNow - aSession.getLastAccessedTime();
+                String debugString = "<br>" + aSession.getId() + ":&nbsp&nbsp&nbsp&nbsplast access time: " + aSession.getLastAccessedTime() + "&nbsp&nbsp&nbsp&nbsptime diff: " + timeDiff;
+                if (timeDiff > 5000 && session != aSession) {
+                    sessionsToRemove.add(aSession);
+                    debugString += " (destroying soon)";
+                }
+                debugOutput.add(debugString);
             }
-            debugOutput.add(debugString);
+            catch (IllegalStateException e) {
+                sessionsToRemove.add(aSession);
+                System.out.println("Caught IllegalStateException");
+            }
+            catch (Exception e) {
+                sessionsToRemove.add(aSession);
+                System.out.println("Caught some other Exception");
+            }
         }
 
         // Invalidate and remove sessions from currentlyViewedProductMap
         for (HttpSession aSession : sessionsToRemove) {
-            aSession.invalidate();
+            //aSession.invalidate();
             currentlyViewedProductMap.remove(aSession);
         }
 
