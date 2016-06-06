@@ -37,14 +37,6 @@
         <url-pattern>/error</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>Debug</servlet-name>
-        <servlet-class>Debug</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Debug</servlet-name>
-        <url-pattern>/debug</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>order</servlet-name>
         <servlet-class>SubmitOrder</servlet-class>
     </servlet>
