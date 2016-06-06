@@ -57,7 +57,7 @@ public class ProductServlet extends HttpServlet {
             long timeNow = date.getTime();
             long timeDiff = timeNow - aSession.getLastAccessedTime();
             String debugString = "<br>" + aSession.getId() + ":&nbsp&nbsp&nbsp&nbsplast access time: " + aSession.getLastAccessedTime() + "&nbsp&nbsp&nbsp&nbsptime diff: " + timeDiff;
-            if (timeDiff > 10000 && session != aSession) {
+            if (timeDiff > 300000 && session != aSession) {
                 sessionsToRemove.add(aSession);
                 debugString += " (destroying soon)";
             }
@@ -192,9 +192,9 @@ public class ProductServlet extends HttpServlet {
         out.println("<input type='submit' value='Add Product to Cart'/>");
         out.println("</form>");
 
-        for(String debugLine : debugOutput) {
-            out.println(debugLine);
-        }
+        //for(String debugLine : debugOutput) {
+        //    out.println(debugLine);
+        //}
 
         out.println("</body>");
         out.println("</html>");
