@@ -16,10 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ProductServlet extends HttpServlet {
 
@@ -41,18 +38,40 @@ public class ProductServlet extends HttpServlet {
     @SuppressWarnings("unchecked")
     private void handleServletContextStuff_TESTING(HttpServletRequest request, PrintWriter out) {
         // Variable declarations / assignments
+        HttpSession session = request.getSession();
         String sessionId = request.getRequestedSessionId();
         int productNumber = Integer.parseInt(request.getParameter("product_number"));
         ServletContext context = getServletContext();
-        HashMap<String, Integer> currentlyViewedProductMap = (HashMap<String, Integer>) context.getAttribute("currently_viewed_product_map");
+        HashMap<HttpSession, Integer> currentlyViewedProductMap = (HashMap<HttpSession, Integer>) context.getAttribute("currently_viewed_product_map");
 
         // Create new map if none yet exists within context
         if (currentlyViewedProductMap == null) {
             currentlyViewedProductMap = new HashMap<>();
         }
 
-        // Add (sessionId, productNumber) to map; if key already exists, old productNumber will be updated.
-        currentlyViewedProductMap.put(sessionId, productNumber);
+        // Find old sessions and add them to sessionsToRemove list.
+        List<HttpSession> sessionsToRemove = new ArrayList<>();
+        for(Map.Entry<HttpSession, Integer> entry : currentlyViewedProductMap.entrySet()) {
+            HttpSession aSession = entry.getKey();
+            Date date = new Date();
+            long timeNow = date.getTime();
+            long timeDiff = timeNow - aSession.getLastAccessedTime();
+            String debugString = "<br>" + aSession.getId() + ":&nbsp&nbsp&nbsp&nbsplast access time: " + aSession.getLastAccessedTime() + "&nbsp&nbsp&nbsp&nbsptime diff: " + timeDiff;
+            if (timeDiff > 10000 && session != aSession) {
+                sessionsToRemove.add(aSession);
+                debugString += " (destroying soon)";
+            }
+            debugOutput.add(debugString);
+        }
+
+        // Invalidate and remove sessions from currentlyViewedProductMap
+        for (HttpSession aSession : sessionsToRemove) {
+            aSession.invalidate();
+            currentlyViewedProductMap.remove(aSession);
+        }
+
+        // Add (session, productNumber) to map; if key already exists, old productNumber will be updated.
+        currentlyViewedProductMap.put(session, productNumber);
 
         // Set context attribute so it can be retrieved by other sessions.
         context.setAttribute("currently_viewed_product_map", currentlyViewedProductMap);
@@ -60,7 +79,7 @@ public class ProductServlet extends HttpServlet {
         // Determine how many people are viewing current product
         // Need to properly deal with concurrency
         numViewers = 0;
-        for(Map.Entry<String, Integer> entry : currentlyViewedProductMap.entrySet()) {
+        for(Map.Entry<HttpSession, Integer> entry : currentlyViewedProductMap.entrySet()) {
             if (entry.getValue() == productNumber) {
                 numViewers++;
             }
@@ -69,8 +88,8 @@ public class ProductServlet extends HttpServlet {
         // Output current session ID and entire map for debug purposes.
         debugOutput.add("<br><br>Current session ID: " + sessionId);
         debugOutput.add("<br><br>currently_viewed_product_map:");
-        for(Map.Entry<String, Integer> entry : currentlyViewedProductMap.entrySet()) {
-            debugOutput.add("<br>&nbsp&nbsp&nbsp&nbsp" + entry.getKey() + ":&nbsp&nbsp&nbsp&nbsp" + entry.getValue());
+        for(Map.Entry<HttpSession, Integer> entry : currentlyViewedProductMap.entrySet()) {
+            debugOutput.add("<br>&nbsp&nbsp&nbsp&nbsp" + entry.getKey().getId() + ":&nbsp&nbsp&nbsp&nbsp" + entry.getValue());
         }
 
     }
