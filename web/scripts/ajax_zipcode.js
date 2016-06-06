@@ -20,7 +20,7 @@ document.getElementById("zipcode").onblur = function () {
                     setCityState(split[0], split[1]);
                 }
             };
-            xhr.open("GET", "/checkout?event=onblur&zipcode=" + getZipFromInputBox(), true);
+            xhr.open("GET", "./checkout?event=onblur&zipcode=" + getZipFromInputBox(), true);
             xhr.send();
         }
         else if (getLengthOfNumber(zipcode) > 5) {
@@ -54,7 +54,7 @@ document.getElementById("zipcode").onkeyup = function () {
                     showZipSuggestions(split);
                 }
             };
-            xhr.open("GET", "/checkout?event=onkeyup&zipcode=" + zipcode, true);
+            xhr.open("GET", "./checkout?event=onkeyup&zipcode=" + zipcode, true);
             xhr.send();
         }
     }
